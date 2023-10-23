@@ -7,8 +7,11 @@ import produto.Produto;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
 
 public class RegistrarProduto implements ActionListener {
+	OperacoesProduto crudProduto = new OperacoesProduto();
+	Produto produto = new Produto();
 	private JFrame jf_registrar;
 
 	private JPanel jp_form;
@@ -117,9 +120,12 @@ public class RegistrarProduto implements ActionListener {
 			System.exit(0);
 		}
 		if (e.getSource() == bt_Criar) {
-			OperacoesProduto crudProduto = new OperacoesProduto();
-			Produto produto = new Produto(11, tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
+			
+			produto = new Produto(11, tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
 					Double.parseDouble(tf_preco.getText()));
+			Vector produtos=new Vector();
+			produtos.add(produto);
+			crudProduto.gravar(produtos, "bd/ProdutosDB.dat");
 			System.out.println("RRESULTADO"+produto.toString());
 		}
 	}

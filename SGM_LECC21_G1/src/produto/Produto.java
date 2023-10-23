@@ -16,7 +16,7 @@ public class Produto implements Serializable {
 	 * seja não fez a mudança necessariamente porque pode remover do carrinho que
 	 * seria devolver o produto a prateleira
 	 */
-
+public Produto() {}
 	public Produto(int codigoProd, String nome, int qtd, double preco) {
 		this.codigoProd = codigoProd;
 		this.nome = nome;
