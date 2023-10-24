@@ -6,7 +6,8 @@ import java.util.Vector;
 import leitura_escrita.Leitura_Escrita;
 
 public class OperacoesProduto {
-	Leitura_Escrita grava_le=new Leitura_Escrita();
+	Leitura_Escrita grava_le = new Leitura_Escrita();
+
 	public Vector adicionarNovoProduto(Vector lista, Produto prod) {
 //		if (existe(prod.getNome(), lista)) {
 //			int index = procurarNome(prod.getNome(), lista);
@@ -14,16 +15,28 @@ public class OperacoesProduto {
 //			return aumentarQtd(lista, ((Produto) lista.elementAt(index)).getId(), prod.getQtd());
 //		}
 		lista.add(prod);
-		return lista; //Retorna a lista toda
+		return lista; // Retorna a lista toda
 	}
+
+	public Vector recuperarObjecto(Vector lista, String caminho) {
+
+		// Recuperação de todos os clientes
+		File fileClientes = new File(caminho);
+		if (fileClientes.length() != 0) { // Vê se está vazio
+			return lista = (Vector) grava_le.recuperarObjecto(caminho);
+		}
+		System.out.println("LISTA");
+		return null;
+	}
+
 	public void recuperar(Vector clientes, String caminhoClientes) {
 		// Recuperação de todos os clientes
-				File fileClientes = new File(caminhoClientes);
-				if (fileClientes.length() != 0) { // Vê se está vazio
-					clientes = (Vector) grava_le.recuperarObjecto(caminhoClientes);
-				}
+		File fileClientes = new File(caminhoClientes);
+		if (fileClientes.length() != 0) { // Vê se está vazio
+			clientes = (Vector) grava_le.recuperarObjecto(caminhoClientes);
+		}
 	}
-	
+
 	public boolean gravar(Vector clientes, String caminhoClientes) {
 		return grava_le.gravarObjecto(clientes, caminhoClientes);
 	}
