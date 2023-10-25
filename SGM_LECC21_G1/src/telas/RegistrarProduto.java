@@ -113,9 +113,9 @@ public class RegistrarProduto implements ActionListener {
 
 		jf_registrar.setVisible(true);
 	}
-//	public static void main(String[] args) {
-//		new RegistrarProduto();
-//	}
+	public static void main(String[] args) {
+		new RegistrarProduto();
+	}
 //	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -134,9 +134,9 @@ public class RegistrarProduto implements ActionListener {
 			}
 			produto = new Produto(11, tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
 					Double.parseDouble(tf_preco.getText()));
-			
 			temp.add(produto);
 			crudProduto.gravar(temp, "bd/ProdutosDB.dat");
+			new ListaProdutos();
 			System.out.println("RRESULTADO"+produto.toString());
 		}
 	}

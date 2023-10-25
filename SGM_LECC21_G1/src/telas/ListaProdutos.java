@@ -15,14 +15,13 @@ public class ListaProdutos implements ActionListener {
 	Produto produto = new Produto();
 	private JFrame jf_registrar;
 
-	private JPanel jp_form;
+	private JPanel jp_tabela;
+	private JPanel jp_butoes;
 
 	private JPanel jp_codigo;
 	private JPanel jp_nome;
 	private JPanel jp_qtdInicial;
 	private JPanel jp_preco;
-
-	private JPanel jp_buttons;
 
 	private JLabel jb_titulo;
 
@@ -37,69 +36,57 @@ public class ListaProdutos implements ActionListener {
 	private JTextField tf_qtdInicial;
 
 	private JButton bt_Criar;
-	private JButton bt_Cancelar;
+	private JButton bt_Eliminar;
+	private JButton bt_Editar;
+	private JButton bt_filtrar;
 
 	private JTable jt_produtos;
 
-	
-	
 	// Column Names
-	private String[] coluna = { "Código", "Nome", "Quantidade", "Preço","Vendidos" };
+	private String[] coluna = { "Código", "Nome", "Quantidade", "Preço", "Vendidos", "Action" };
 
 	public ListaProdutos() {
 		jf_registrar = new JFrame();
 		jb_titulo = new JLabel("REGISTRE O PRODUTO");
-		jb_codigo = new JLabel("Código");
-		jb_nome = new JLabel("Nome");
-		jb_preco = new JLabel("Preco");
-		jb_qtdInicial = new JLabel("Quantidade Inicial");
 
-		tf_codigo = new JTextField(20);
-		tf_nome = new JTextField(20);
-		tf_qtdInicial = new JTextField(20);
-		tf_preco = new JTextField(20);
-//		tf_codigo=new JTextField(20);
+		bt_Criar = new JButton("REGISTRAR NOVO PRODUTO");
+		bt_Editar = new JButton("EDITAR PRODUTO");
+		bt_Eliminar = new JButton("ELIMINAR PRODUTO");
 
-		bt_Criar = new JButton("Criar");
-		bt_Cancelar = new JButton("Cancelar");
+		jp_tabela = new JPanel();
+		jp_butoes = new JPanel();
 
-		jp_form = new JPanel();
-
-		jp_preco = new JPanel();
-		jp_codigo = new JPanel();
-		jp_qtdInicial = new JPanel();
-		jp_nome = new JPanel();
-
-		jp_buttons = new JPanel();
-		
-		//------------POPULAR ARRAY COM O VECTOR DE OBJECTOS----------
+		// ------------POPULAR ARRAY COM O VECTOR DE OBJECTOS----------
 		// Recuperação de todos os Produtos
-		Vector temp=new Vector();
-				String caminhoProduto = "bd/ProdutosDB.dat";
-				File fileProdutos = new File(caminhoProduto);
-				if (fileProdutos.length() != 0) {
-					temp = (Vector) crudProduto.recuperarObjecto(temp,caminhoProduto);
-					System.out.println(((Produto)temp.get(0)).getNome());
-				}else {
-					System.out.println("Erro no FRAME");
-				}
-		
-				// Data to be displayed in the JTable
-		String[][] dados= new String[temp.size()][5];
-		for(int i=0;i<5;i++) {
-			for(int j=i;j<temp.size();j++) {
-				dados[i][0]=(((Produto)temp.get(j)).getId())+"";
-				dados[i][1]=(((Produto)temp.get(j)).getNome())+"";
-				dados[i][2]=(((Produto)temp.get(j)).getQtd())+"";
-				dados[i][3]=(((Produto)temp.get(j)).getPreco())+"";
-				dados[i][4]=(((Produto)temp.get(j)).getQtd())+"";
+		Vector temp = new Vector();
+		String caminhoProduto = "bd/ProdutosDB.dat";
+		File fileProdutos = new File(caminhoProduto);
+		if (fileProdutos.length() != 0) {
+			temp = (Vector) crudProduto.recuperarObjecto(temp, caminhoProduto);
+		} else {
+			System.out.println("Erro no FRAME");
+		}
+
+		// Data to be displayed in the JTable
+		String[][] dados = new String[temp.size()][6];
+		for (int i = 0; i < temp.size(); i++) {
+			for (int j = 0; j < 5; j++) {
+				dados[i][0] = (((Produto) temp.get(i)).getId()) + "";
+				dados[i][1] = (((Produto) temp.get(i)).getNome()) + "";
+				dados[i][2] = (((Produto) temp.get(i)).getQtd()) + "";
+				dados[i][3] = (((Produto) temp.get(i)).getPreco()) + "";
+				dados[i][4] = (((Produto) temp.get(i)).getQtd()) + "";
+//				dados[i][5] = new JButton("Delete") + "";
+				System.out.println(((Produto) temp.get(j)).toString());
 			}
 		}
-		
-		jt_produtos=new JTable(dados,coluna);
+		jf_registrar.setLayout(new BorderLayout());
+
+		jt_produtos = new JTable(dados, coluna);
+		jt_produtos.setAutoCreateRowSorter(true);
 		JScrollPane sp = new JScrollPane(jt_produtos);
-		jf_registrar.add(sp);
-		
+		jf_registrar.add(sp, BorderLayout.CENTER);
+
 		// -----DEFINIÇÕES DA JANELA*INICIO-------
 		jf_registrar.setTitle("Template de JForm");// O tittulo da janela.
 		jf_registrar.setSize(1280, 720);// Width and Height em pixels.[Comprimento, Largura]
@@ -107,15 +94,26 @@ public class ListaProdutos implements ActionListener {
 		jf_registrar.setLocationRelativeTo(null);// Onde o programa vai arrancar
 		jf_registrar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// Quando o utilizador clicar no x. Mata todos os
 																	// frames
+
 		// ------DEFINIÇÕES DA JANELA*FIM--------
 
 		// -----ACTION LISNETERS*INICIO--------
-		bt_Cancelar.addActionListener(this);
 		bt_Criar.addActionListener(this);
+		bt_Editar.addActionListener(this);
+		bt_Eliminar.addActionListener(this);
 		// ----ACTION LISTENERS*FIM----------
+		jp_butoes.setLayout(new FlowLayout());
 
-		jp_form.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 30));
+		jp_butoes.add(bt_Criar);
+		jp_butoes.add(bt_Editar);
+		jp_butoes.add(bt_Eliminar);
 
+		jp_tabela.setLayout(new FlowLayout());
+//		for (int i = 0; i < 3; i++) {
+//			jp_tabela.add(new JButton("Botão"));
+//		}
+		jf_registrar.add(jp_butoes, BorderLayout.NORTH);
+//		jf_registrar.add(jp_tabela);
 
 		jf_registrar.setVisible(true);
 	}
@@ -126,11 +124,11 @@ public class ListaProdutos implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() == bt_Cancelar) {
-			System.exit(0);
-		}
+//		if (e.getSource() == bt_Cancelar)  BOTÃO SAIR?
+//			System.exit(0);
+//		}
 		if (e.getSource() == bt_Criar) {
-
+			new RegistrarProduto();
 		}
 	}
 }
