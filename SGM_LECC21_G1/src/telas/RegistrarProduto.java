@@ -10,7 +10,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.util.Vector;
 
-public class RegistrarProduto implements ActionListener {
+public class RegistrarProduto extends JFrame implements ActionListener {
 	OperacoesProduto crudProduto = new OperacoesProduto();
 	Produto produto = new Produto();
 	private JFrame jf_registrar;
@@ -110,12 +110,22 @@ public class RegistrarProduto implements ActionListener {
 		jp_buttons.add(bt_Criar);
 		jf_registrar.add(jp_form, BorderLayout.CENTER);
 		jf_registrar.add(jp_buttons, BorderLayout.SOUTH);
-
-		jf_registrar.setVisible(true);
+		
+			jf_registrar.setVisible(true);
 	}
-	public static void main(String[] args) {
-		new RegistrarProduto();
+	
+//	public static void main(String[] args) {
+//		new RegistrarProduto();
+//	}
+	public void fechaRegistrarProduto() {
+		jf_registrar.setVisible(false);
 	}
+	public void editarProduto() {
+		tf_nome.setText("HOLA");
+		tf_qtdInicial.setText("200");
+		tf_preco.setText("Set");
+	}
+	
 //	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -123,21 +133,19 @@ public class RegistrarProduto implements ActionListener {
 			System.exit(0);
 		}
 		if (e.getSource() == bt_Criar) {
-			Vector temp=new Vector();
-			String caminhoProduto = "bd/ProdutosDB.dat";
-			File fileProdutos = new File(caminhoProduto);
-			if (fileProdutos.length() != 0) {
-				temp = (Vector) crudProduto.recuperarObjecto(temp,caminhoProduto);
-				System.out.println(((Produto)temp.get(0)).getNome());
-			}else {
-				System.out.println("Erro no FRAME");
-			}
-			produto = new Produto(11, tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
-					Double.parseDouble(tf_preco.getText()));
-			temp.add(produto);
-			crudProduto.gravar(temp, "bd/ProdutosDB.dat");
-			new ListaProdutos();
-			System.out.println("RRESULTADO"+produto.toString());
+			Vector temp=new Vector();//Vector temporário para recuperar o ficheiro
+				temp = (Vector) crudProduto.recuperarProdutoBD();//Preenchimento do vector temporario que vem do ficheiro
+				if(temp!=null) {
+					produto = new Produto(11, tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
+							Double.parseDouble(tf_preco.getText()));//ADIÇÃO DO OBJECTO PRODUTO, BASEANDO-SE NOS CAMPOS DO FORMULÁRIO
+					temp.add(produto);//ACTUALIZANDO O VECTOR DE OBJECTOS DO PRODUTO
+					//VERIFICAR SE CAMPOS ESTÃO VAZIOS
+					if(crudProduto.gravarProdutos(temp)) {//CASO TUDO CORRA BEM
+						JOptionPane.showMessageDialog(null, "PRODUTO REGISTRADO COM SUCESSO");//MENSAGEM DE SUCESSO
+					};
+				}//ELSE PARA VERIFICAR SE PRODUTO JÁ EXISTE
+				System.out.println((Produto)temp.lastElement());
+
 		}
 	}
 }

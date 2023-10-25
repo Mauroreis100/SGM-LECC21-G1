@@ -4,39 +4,44 @@ import java.io.*;
 import java.util.Vector;
 
 import leitura_escrita.Leitura_Escrita;
+import telas.ListaProdutos;
 
 public class OperacoesProduto {
 	Leitura_Escrita grava_le=new Leitura_Escrita();
 	public Vector adicionarNovoProduto(Vector lista, Produto prod) {
-//		if (existe(prod.getNome(), lista)) {
-//			int index = procurarNome(prod.getNome(), lista);
-//			System.out.println("Produto com este nome já existe, foi aumentada mais " + prod.getQtd() + " unidade(s)");
-//			return aumentarQtd(lista, ((Produto) lista.elementAt(index)).getId(), prod.getQtd());
-//		}
 		lista.add(prod);
 		return lista; //Retorna a lista toda
 	}
-	
-	public Vector recuperarObjecto(Vector lista, String caminho) {
-		
+	public Vector recuperarProdutoBD() {
+		Vector lista=new Vector();
 		// Recuperação de todos os clientes
-		File fileClientes = new File(caminho);
+		File fileClientes = new File("bd/ProdutosDB.dat");
 		if (fileClientes.length() != 0) { // Vê se está vazio
-			return lista = (Vector) grava_le.recuperarObjecto(caminho);
+			return lista = (Vector) grava_le.recuperarObjecto("bd/ProdutosDB.dat");
 		}
-		System.out.println("mnmn");
 		return null;
 	}
-	public void recuperar(Vector clientes, String caminhoClientes) {
-		// Recuperação de todos os clientes
-				File fileClientes = new File(caminhoClientes);
-				if (fileClientes.length() != 0) { // Vê se está vazio
-					clientes = (Vector) grava_le.recuperarObjecto(caminhoClientes);
-				}
+	
+	public boolean gravarProdutos(Vector clientes) {
+		return grava_le.gravarObjecto(clientes, "bd/ProdutosDB.dat");
 	}
 	
-	public boolean gravar(Vector clientes, String caminhoClientes) {
-		return grava_le.gravarObjecto(clientes, caminhoClientes);
+	public int procurarCodigo(Vector lista, int codigo) {
+		for (int i = 0; i < lista.size(); i++) {
+			if (((Produto) lista.get(i)).getId() == codigo) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	// Método que devolve o objecto Produto, do stock
+	public Produto produtoStock(int id, Vector lista) {
+		for (int i = 0; i < lista.size(); i++) {
+			if (((Produto) lista.get(i)).getId() == id) {
+				return (Produto) lista.get(i);
+			}
+		}
+		return null;
 	}
 	
 

@@ -7,22 +7,25 @@ import java.util.Vector;
 
 import javax.swing.*;
 
+import produto.Editar_Produto;
 import produto.OperacoesProduto;
 import produto.Produto;
 
 public class ListaProdutos implements ActionListener {
 	OperacoesProduto crudProduto = new OperacoesProduto();
+	Vector temp = crudProduto.recuperarProdutoBD();
 	Produto produto = new Produto();
 	private JFrame jf_registrar;
 
 	private JPanel jp_tabela;
 	private JPanel jp_butoes;
-
+	private JPanel jp_butoes_norte;
+	
 	private JPanel jp_codigo;
 	private JPanel jp_nome;
 	private JPanel jp_qtdInicial;
 	private JPanel jp_preco;
-
+	private JPanel jp_form;
 	private JLabel jb_titulo;
 
 	private JLabel jb_codigo;
@@ -39,6 +42,7 @@ public class ListaProdutos implements ActionListener {
 	private JButton bt_Eliminar;
 	private JButton bt_Editar;
 	private JButton bt_filtrar;
+	private JButton bt_Voltar;
 
 	private JTable jt_produtos;
 
@@ -48,7 +52,27 @@ public class ListaProdutos implements ActionListener {
 	public ListaProdutos() {
 		jf_registrar = new JFrame();
 		jb_titulo = new JLabel("REGISTRE O PRODUTO");
+		jb_titulo = new JLabel("REGISTRE O PRODUTO");
+		jb_codigo = new JLabel("Código");
+		jb_nome = new JLabel("Nome");
+		jb_preco = new JLabel("Preco");
+		jb_qtdInicial = new JLabel("Quantidade Inicial");
 
+		tf_codigo = new JTextField(20);
+		tf_nome = new JTextField(20);
+		tf_qtdInicial = new JTextField(20);
+		tf_preco = new JTextField(20);
+
+		bt_Voltar = new JButton("Voltar");
+
+		jp_form = new JPanel();
+
+		jp_preco = new JPanel();
+		jp_codigo = new JPanel();
+		jp_qtdInicial = new JPanel();
+		jp_nome = new JPanel();
+
+		jp_butoes_norte = new JPanel();
 		bt_Criar = new JButton("REGISTRAR NOVO PRODUTO");
 		bt_Editar = new JButton("EDITAR PRODUTO");
 		bt_Eliminar = new JButton("ELIMINAR PRODUTO");
@@ -56,33 +80,9 @@ public class ListaProdutos implements ActionListener {
 		jp_tabela = new JPanel();
 		jp_butoes = new JPanel();
 
-		// ------------POPULAR ARRAY COM O VECTOR DE OBJECTOS----------
-		// Recuperação de todos os Produtos
-		Vector temp = new Vector();
-		String caminhoProduto = "bd/ProdutosDB.dat";
-		File fileProdutos = new File(caminhoProduto);
-		if (fileProdutos.length() != 0) {
-			temp = (Vector) crudProduto.recuperarObjecto(temp, caminhoProduto);
-		} else {
-			System.out.println("Erro no FRAME");
-		}
-
-		// Data to be displayed in the JTable
-		String[][] dados = new String[temp.size()][6];
-		for (int i = 0; i < temp.size(); i++) {
-			for (int j = 0; j < 5; j++) {
-				dados[i][0] = (((Produto) temp.get(i)).getId()) + "";
-				dados[i][1] = (((Produto) temp.get(i)).getNome()) + "";
-				dados[i][2] = (((Produto) temp.get(i)).getQtd()) + "";
-				dados[i][3] = (((Produto) temp.get(i)).getPreco()) + "";
-				dados[i][4] = (((Produto) temp.get(i)).getQtd()) + "";
-//				dados[i][5] = new JButton("Delete") + "";
-				System.out.println(((Produto) temp.get(j)).toString());
-			}
-		}
 		jf_registrar.setLayout(new BorderLayout());
-
-		jt_produtos = new JTable(dados, coluna);
+		// ------------POPULAR ARRAY COM O VECTOR DE OBJECTOS----------
+		jt_produtos = new JTable(listarProdutos(temp), coluna);
 		jt_produtos.setAutoCreateRowSorter(true);
 		JScrollPane sp = new JScrollPane(jt_produtos);
 		jf_registrar.add(sp, BorderLayout.CENTER);
@@ -103,7 +103,35 @@ public class ListaProdutos implements ActionListener {
 		bt_Eliminar.addActionListener(this);
 		// ----ACTION LISTENERS*FIM----------
 		jp_butoes.setLayout(new FlowLayout());
+		jp_form.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 30));
+		
+	
+ 
+		
+//		jf_registrar.add(jb_titulo);
 
+		jp_codigo.add(jb_codigo);
+		jp_codigo.add(tf_codigo);
+
+		jp_form.add(jp_codigo);
+
+		jp_nome.add(jb_nome);
+		jp_nome.add(tf_nome);
+
+		jp_form.add(jp_nome);
+
+		jp_qtdInicial.add(jb_qtdInicial);
+		jp_qtdInicial.add(tf_qtdInicial);
+
+		jp_form.add(jp_qtdInicial);
+
+		jp_preco.add(jb_preco);
+		jp_preco.add(tf_preco);
+
+		jp_form.add(jp_preco);
+
+		jp_butoes_norte.add(bt_Criar);
+//		jp_buttons.add(bt_Voltar);
 		jp_butoes.add(bt_Criar);
 		jp_butoes.add(bt_Editar);
 		jp_butoes.add(bt_Eliminar);
@@ -112,14 +140,35 @@ public class ListaProdutos implements ActionListener {
 //		for (int i = 0; i < 3; i++) {
 //			jp_tabela.add(new JButton("Botão"));
 //		}
-		jf_registrar.add(jp_butoes, BorderLayout.NORTH);
-//		jf_registrar.add(jp_tabela);
-
+		jf_registrar.add(jp_butoes, BorderLayout.SOUTH);
+		jf_registrar.add(jp_form, BorderLayout.NORTH);
+////		jf_registrar.add(jp_tabela);
 		jf_registrar.setVisible(true);
 	}
 
 	public static void main(String[] args) {
 		new ListaProdutos();
+	}
+
+	public void FecharListarProdutos() {
+		jf_registrar.setVisible(false);
+	}
+
+	private String[][] listarProdutos(Vector temp) {
+//ESTE MÉTODO COLOCA TODOS OS DADOS DO VECTOR NUMA LISTA MULTIDIMENSIONAL
+		String[][] dados = new String[temp.size()][6];
+		for (int i = 0; i < temp.size(); i++) {
+			for (int j = 0; j < 5; j++) {
+				dados[i][0] = (((Produto) temp.get(i)).getId()) + "";
+				dados[i][1] = (((Produto) temp.get(i)).getNome()) + "";
+				dados[i][2] = (((Produto) temp.get(i)).getQtd()) + "";
+				dados[i][3] = (((Produto) temp.get(i)).getPreco()) + "";
+				dados[i][4] = (((Produto) temp.get(i)).getQtd()) + "";
+//					dados[i][5] = new JButton("Delete") + "";
+				System.out.println(((Produto) temp.get(j)).toString());
+			}
+		}
+		return dados;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -128,7 +177,26 @@ public class ListaProdutos implements ActionListener {
 //			System.exit(0);
 //		}
 		if (e.getSource() == bt_Criar) {
-			new RegistrarProduto();
+			Vector temp=new Vector();//Vector temporário para recuperar o ficheiro
+			temp = (Vector) crudProduto.recuperarProdutoBD();//Preenchimento do vector temporario que vem do ficheiro
+			if(temp!=null) {
+				produto = new Produto(11, tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
+						Double.parseDouble(tf_preco.getText()));//ADIÇÃO DO OBJECTO PRODUTO, BASEANDO-SE NOS CAMPOS DO FORMULÁRIO
+				temp.add(produto);//ACTUALIZANDO O VECTOR DE OBJECTOS DO PRODUTO
+				//VERIFICAR SE CAMPOS ESTÃO VAZIOS
+				if(crudProduto.gravarProdutos(temp)) {//CASO TUDO CORRA BEM
+					JOptionPane.showMessageDialog(null, "PRODUTO REGISTRADO COM SUCESSO");//MENSAGEM DE SUCESSO
+				};
+			}//ELSE PARA VERIFICAR SE PRODUTO JÁ EXISTE
+			new ListaProdutos();
+			FecharListarProdutos();
 		}
+		if (e.getSource() == bt_Editar) {
+			int codigo = Integer
+					.parseInt(JOptionPane.showInputDialog("INSIRA O CÓDIGO DO PRODUTO QUE PRETENDE EDITAR"));
+			new Editar_Produto(crudProduto.produtoStock(codigo, temp));
+			
+		}
+		
 	}
 }
