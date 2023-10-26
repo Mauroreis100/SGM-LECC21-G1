@@ -43,6 +43,18 @@ public class OperacoesProduto {
 		}
 		return null;
 	}
-	
+	//Remoção do produto pelo id
+	public Vector removerProduto(Vector lista, int codigo) {
+		int index = procurarCodigo(lista, codigo);
+		for (int i = 0; i < lista.size(); i++) {
+			if (index != -1) {
+				lista.remove(index);
+				System.out.println("Produto eliminado com sucesso");
+				return lista;
+			}
+		}
+		System.out.println("Produto não encontrado");
+		return lista;
+	}
 
 }

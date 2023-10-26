@@ -20,7 +20,7 @@ public class ListaProdutos implements ActionListener {
 	private JPanel jp_tabela;
 	private JPanel jp_butoes;
 	private JPanel jp_butoes_norte;
-	
+
 	private JPanel jp_codigo;
 	private JPanel jp_nome;
 	private JPanel jp_qtdInicial;
@@ -104,10 +104,7 @@ public class ListaProdutos implements ActionListener {
 		// ----ACTION LISTENERS*FIM----------
 		jp_butoes.setLayout(new FlowLayout());
 		jp_form.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 30));
-		
-	
- 
-		
+
 //		jf_registrar.add(jb_titulo);
 
 		jp_codigo.add(jb_codigo);
@@ -177,17 +174,19 @@ public class ListaProdutos implements ActionListener {
 //			System.exit(0);
 //		}
 		if (e.getSource() == bt_Criar) {
-			Vector temp=new Vector();//Vector temporário para recuperar o ficheiro
-			temp = (Vector) crudProduto.recuperarProdutoBD();//Preenchimento do vector temporario que vem do ficheiro
-			if(temp!=null) {
+			Vector temp = new Vector();// Vector temporário para recuperar o ficheiro
+			temp = (Vector) crudProduto.recuperarProdutoBD();// Preenchimento do vector temporario que vem do ficheiro
+			if (temp != null) {
 				produto = new Produto(11, tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
-						Double.parseDouble(tf_preco.getText()));//ADIÇÃO DO OBJECTO PRODUTO, BASEANDO-SE NOS CAMPOS DO FORMULÁRIO
-				temp.add(produto);//ACTUALIZANDO O VECTOR DE OBJECTOS DO PRODUTO
-				//VERIFICAR SE CAMPOS ESTÃO VAZIOS
-				if(crudProduto.gravarProdutos(temp)) {//CASO TUDO CORRA BEM
-					JOptionPane.showMessageDialog(null, "PRODUTO REGISTRADO COM SUCESSO");//MENSAGEM DE SUCESSO
-				};
-			}//ELSE PARA VERIFICAR SE PRODUTO JÁ EXISTE
+						Double.parseDouble(tf_preco.getText()));// ADIÇÃO DO OBJECTO PRODUTO, BASEANDO-SE NOS CAMPOS DO
+																// FORMULÁRIO
+				temp.add(produto);// ACTUALIZANDO O VECTOR DE OBJECTOS DO PRODUTO
+				// VERIFICAR SE CAMPOS ESTÃO VAZIOS
+				if (crudProduto.gravarProdutos(temp)) {// CASO TUDO CORRA BEM
+					JOptionPane.showMessageDialog(null, "PRODUTO REGISTRADO COM SUCESSO");// MENSAGEM DE SUCESSO
+				}
+				;
+			} // ELSE PARA VERIFICAR SE PRODUTO JÁ EXISTE
 			new ListaProdutos();
 			FecharListarProdutos();
 		}
@@ -195,8 +194,37 @@ public class ListaProdutos implements ActionListener {
 			int codigo = Integer
 					.parseInt(JOptionPane.showInputDialog("INSIRA O CÓDIGO DO PRODUTO QUE PRETENDE EDITAR"));
 			new Editar_Produto(crudProduto.produtoStock(codigo, temp));
-			
+
 		}
-		
+		if (e.getSource() == bt_Eliminar) {
+			int codigo = Integer
+					.parseInt(JOptionPane.showInputDialog("INSIRA O CÓDIGO DO PRODUTO QUE PRETENDE ELIMINAR"));
+			// VERIFICAÇÃO DE EXISTÊNCIA
+			Produto prod = crudProduto.produtoStock(codigo, temp);
+			if (prod != null) {
+				int opcao = JOptionPane.showConfirmDialog(null,
+						"TEM A CERTEZA QUE QUER APAGAR \"+\"(DSADAS\"+\" DO STOCK?", "ELIMINAR",
+						JOptionPane.YES_NO_OPTION);// YES apaga mesmo e NO não faz nada,
+				if (opcao == 0) {
+
+					crudProduto.gravarProdutos(crudProduto.removerProduto(temp, codigo));//GRAVA UMA REMOÇÃO FEITA
+					JOptionPane.showMessageDialog(null, "ELIMINADO COM SUCESSO!", "",
+							JOptionPane.ERROR_MESSAGE); // OK
+					FecharListarProdutos();
+					new ListaProdutos();
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "NÃO FOI ENCONTRADO", "PRODUTO NÃO FOI ENCONTRADO",
+						JOptionPane.WARNING_MESSAGE); // OK
+			}
+
+			// Rerenders
+			// the
+			// page
+			// "information", JOptionPane.INFORMATION_MESSAGE);
+//			new Editar_Produto(crudProduto.produtoStock(codigo, temp));
+
+		}
+
 	}
 }
