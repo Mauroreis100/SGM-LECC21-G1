@@ -194,7 +194,7 @@ public class FuncionarioApp {
     }
 
     private void saveFuncionarios() {
-        try (PrintWriter writer = new PrintWriter("funcionarios.txt")) {
+        try (PrintWriter writer = new PrintWriter("fornecedores.dat")) {
             for (Funcionario funcionario : funcionarios) {
                 writer.println(funcionario.getNome() + ";" + funcionario.getFuncao());
             }
@@ -204,7 +204,7 @@ public class FuncionarioApp {
     }
 
     private void loadFuncionarios() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("funcionarios.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("fornecedores.dat"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
