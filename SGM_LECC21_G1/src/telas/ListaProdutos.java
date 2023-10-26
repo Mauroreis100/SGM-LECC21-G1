@@ -11,9 +11,10 @@ import produto.Editar_Produto;
 import produto.OperacoesProduto;
 import produto.Produto;
 
-public class ListaProdutos implements ActionListener {
+public class ListaProdutos implements ActionListener, MouseListener {
 	OperacoesProduto crudProduto = new OperacoesProduto();
-	Vector temp = crudProduto.recuperarProdutoBD();
+	Vector temp = crudProduto.recuperarProdutoBD();// Preenchumento do vector de objectos do ficheiro na lista
+													// temporaria no progra
 	Produto produto = new Produto();
 	private JFrame jf_registrar;
 
@@ -102,6 +103,11 @@ public class ListaProdutos implements ActionListener {
 		bt_Editar.addActionListener(this);
 		bt_Eliminar.addActionListener(this);
 		// ----ACTION LISTENERS*FIM----------
+		// -----MOUSE LISNETERS*INICIO--------
+		tf_nome.addMouseListener(this);
+		tf_preco.addMouseListener(this);
+		tf_qtdInicial.addMouseListener(this);
+				// ----MOUSE LISTENERS*FIM----------
 		jp_butoes.setLayout(new FlowLayout());
 		jp_form.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 30));
 
@@ -152,7 +158,8 @@ public class ListaProdutos implements ActionListener {
 	}
 
 	private String[][] listarProdutos(Vector temp) {
-//ESTE MÉTODO COLOCA TODOS OS DADOS DO VECTOR NUMA LISTA MULTIDIMENSIONAL
+
+//ESTA IMPLEMENTAÇÃO COLOCA TODOS OS DADOS DO VECTOR NUMA LISTA MULTIDIMENSIONAL PARA A TABELA
 		String[][] dados = new String[temp.size()][6];
 		for (int i = 0; i < temp.size(); i++) {
 			for (int j = 0; j < 5; j++) {
@@ -165,30 +172,26 @@ public class ListaProdutos implements ActionListener {
 				System.out.println(((Produto) temp.get(j)).toString());
 			}
 		}
-		return dados;
+		return dados;//O CONSTRUTOR RETORNA A LISTA MULTIDIMENSIONAL
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-//		if (e.getSource() == bt_Cancelar)  BOTÃO SAIR?
-//			System.exit(0);
-//		}
+
 		if (e.getSource() == bt_Criar) {
-			Vector temp = new Vector();// Vector temporário para recuperar o ficheiro
-			temp = (Vector) crudProduto.recuperarProdutoBD();// Preenchimento do vector temporario que vem do ficheiro
 			if (temp != null) {
-				produto = new Produto(11, tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
-						Double.parseDouble(tf_preco.getText()));// ADIÇÃO DO OBJECTO PRODUTO, BASEANDO-SE NOS CAMPOS DO
-																// FORMULÁRIO
-				temp.add(produto);// ACTUALIZANDO O VECTOR DE OBJECTOS DO PRODUTO
-				// VERIFICAR SE CAMPOS ESTÃO VAZIOS
-				if (crudProduto.gravarProdutos(temp)) {// CASO TUDO CORRA BEM
-					JOptionPane.showMessageDialog(null, "PRODUTO REGISTRADO COM SUCESSO");// MENSAGEM DE SUCESSO
+				produto = new Produto(Integer.parseInt(tf_codigo.getText()), tf_nome.getText(),
+						Integer.parseInt(tf_qtdInicial.getText()), Double.parseDouble(tf_preco.getText())); // Objecto
+																											// preenchido
+																											// com o
+																											// formulário
+				temp.add(produto);// Actualização do vector temporário com o novo objecto
+				if (crudProduto.gravarProdutos(temp)) {//
+					JOptionPane.showMessageDialog(null, "PRODUTO REGISTRADO COM SUCESSO", "",
+							JOptionPane.ERROR_MESSAGE);// MENSAGEM DE SUCESSO
 				}
-				;
-			} // ELSE PARA VERIFICAR SE PRODUTO JÁ EXISTE
-			new ListaProdutos();
-			FecharListarProdutos();
+			} // ELSE PARA VERIFICAR SE PRODUTO JÁ EXISTE PELO NOME!!! -
+			new ListaProdutos();// Fecha
+			FecharListarProdutos();// Rerenderizar a página com produtos novoss
 		}
 		if (e.getSource() == bt_Editar) {
 			int codigo = Integer
@@ -222,5 +225,38 @@ public class ListaProdutos implements ActionListener {
 
 		}
 
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		if (e.getSource() == tf_nome || e.getSource() == tf_preco || e.getSource() == tf_qtdInicial) {
+			tf_codigo.setText((temp.size()+1)+"");
+		}
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		if (tf_nome.getText().equals("") && tf_preco.getText().equals("") && tf_qtdInicial.getText().equals("")) {
+			tf_codigo.setText("");
+		}
 	}
 }

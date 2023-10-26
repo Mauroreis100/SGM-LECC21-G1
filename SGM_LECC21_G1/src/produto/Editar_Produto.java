@@ -19,7 +19,6 @@ public class Editar_Produto extends JFrame implements ActionListener {
 	OperacoesProduto crudProduto = new OperacoesProduto();
 	Vector temp = crudProduto.recuperarProdutoBD();
 	Produto produto = new Produto();
-	
 
 	private JPanel jp_form;
 
@@ -126,20 +125,21 @@ public class Editar_Produto extends JFrame implements ActionListener {
 			System.exit(0);
 		}
 		if (e.getSource() == bt_Editar) {
-			int posicaoProdutoVector=crudProduto.procurarCodigo(temp, Integer.parseInt(tf_codigo.getText()));
-			if(posicaoProdutoVector!=-1) {
-				Produto prod=(Produto)temp.get(posicaoProdutoVector);
+			int posicaoProdutoVector = crudProduto.procurarCodigo(temp, Integer.parseInt(tf_codigo.getText()));
+			if (posicaoProdutoVector != -1) {
+				Produto prod = (Produto) temp.get(posicaoProdutoVector);
 				prod.setNome(tf_nome.getText());
 				prod.setPreco(Double.parseDouble(tf_preco.getText()));
 				prod.setQtd(Integer.parseInt(tf_qtdInicial.getText()));
 				temp.set(posicaoProdutoVector, prod);
 				crudProduto.gravarProdutos(temp);
-				JOptionPane.showMessageDialog(null, "PRODUTO EDITADO COM SUCESSO!", "", JOptionPane.INFORMATION_MESSAGE); // OK
+				JOptionPane.showMessageDialog(null, "PRODUTO EDITADO COM SUCESSO!", "",
+						JOptionPane.INFORMATION_MESSAGE); // OK
 				this.setVisible(false);
 				new ListaProdutos();
-			}else {
+			} else {
 				JOptionPane.showMessageDialog(null, "PRODUTO NÃO FOI ENCONTRADO", "", JOptionPane.ERROR_MESSAGE); // OK
-				
+
 			}
 		}
 

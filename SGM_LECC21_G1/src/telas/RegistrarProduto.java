@@ -10,6 +10,8 @@ import java.awt.event.*;
 import java.io.File;
 import java.util.Vector;
 
+
+//
 public class RegistrarProduto extends JFrame implements ActionListener {
 	OperacoesProduto crudProduto = new OperacoesProduto();
 	Produto produto = new Produto();
