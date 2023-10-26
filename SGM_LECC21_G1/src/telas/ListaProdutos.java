@@ -193,8 +193,11 @@ public class ListaProdutos implements ActionListener {
 		if (e.getSource() == bt_Editar) {
 			int codigo = Integer
 					.parseInt(JOptionPane.showInputDialog("INSIRA O CÓDIGO DO PRODUTO QUE PRETENDE EDITAR"));
-			new Editar_Produto(crudProduto.produtoStock(codigo, temp));
-
+			Produto prod = crudProduto.produtoStock(codigo, temp);
+			if (prod != null) {
+				new Editar_Produto(prod);
+				jf_registrar.setVisible(false);
+			}
 		}
 		if (e.getSource() == bt_Eliminar) {
 			int codigo = Integer
@@ -207,9 +210,8 @@ public class ListaProdutos implements ActionListener {
 						JOptionPane.YES_NO_OPTION);// YES apaga mesmo e NO não faz nada,
 				if (opcao == 0) {
 
-					crudProduto.gravarProdutos(crudProduto.removerProduto(temp, codigo));//GRAVA UMA REMOÇÃO FEITA
-					JOptionPane.showMessageDialog(null, "ELIMINADO COM SUCESSO!", "",
-							JOptionPane.ERROR_MESSAGE); // OK
+					crudProduto.gravarProdutos(crudProduto.removerProduto(temp, codigo));// GRAVA UMA REMOÇÃO FEITA
+					JOptionPane.showMessageDialog(null, "ELIMINADO COM SUCESSO!", "", JOptionPane.ERROR_MESSAGE); // OK
 					FecharListarProdutos();
 					new ListaProdutos();
 				}
@@ -217,12 +219,6 @@ public class ListaProdutos implements ActionListener {
 				JOptionPane.showMessageDialog(null, "NÃO FOI ENCONTRADO", "PRODUTO NÃO FOI ENCONTRADO",
 						JOptionPane.WARNING_MESSAGE); // OK
 			}
-
-			// Rerenders
-			// the
-			// page
-			// "information", JOptionPane.INFORMATION_MESSAGE);
-//			new Editar_Produto(crudProduto.produtoStock(codigo, temp));
 
 		}
 

@@ -4,17 +4,22 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class Editar_Produto extends JFrame implements ActionListener{
-	OperacoesProduto crudProduto = new OperacoesProduto();
-	Produto produto = new Produto();
+import telas.ListaProdutos;
 
+public class Editar_Produto extends JFrame implements ActionListener {
+	OperacoesProduto crudProduto = new OperacoesProduto();
+	Vector temp = crudProduto.recuperarProdutoBD();
+	Produto produto = new Produto();
+	
 
 	private JPanel jp_form;
 
@@ -40,9 +45,8 @@ public class Editar_Produto extends JFrame implements ActionListener{
 	private JButton bt_Editar;
 	private JButton bt_Cancelar;
 
-
 	public Editar_Produto(Produto prod) {
-	
+
 		jb_titulo = new JLabel("REGISTRE O PRODUTO");
 		jb_codigo = new JLabel("Código");
 		jb_nome = new JLabel("Nome");
@@ -50,18 +54,17 @@ public class Editar_Produto extends JFrame implements ActionListener{
 		jb_qtdInicial = new JLabel("Quantidade");
 
 		tf_codigo = new JTextField(20);
-		tf_codigo.setText(prod.getId()+"");
+		tf_codigo.setText(prod.getId() + "");
 		tf_codigo.setEnabled(false);
 		tf_nome = new JTextField(20);
 		tf_nome.setText(prod.getNome());
 		tf_qtdInicial = new JTextField(20);
-		tf_qtdInicial.setText(prod.getQtd()+"");
+		tf_qtdInicial.setText(prod.getQtd() + "");
 		tf_preco = new JTextField(20);
-		tf_preco.setText(prod.getPreco()+"");
+		tf_preco.setText(prod.getPreco() + "");
 
-
-		bt_Editar= new JButton("Editar");
-		bt_Cancelar = new JButton("Cancelar");
+		bt_Editar = new JButton("CONFIRMAR EDIÇÕES");
+		bt_Cancelar = new JButton("CANCELAR EDIÇÕES");
 
 		jp_form = new JPanel();
 
@@ -77,19 +80,16 @@ public class Editar_Produto extends JFrame implements ActionListener{
 		this.setLocation(100, 100);// Onde o programa vai arrancar
 		this.setLocationRelativeTo(null);// Onde o programa vai arrancar
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// Quando o utilizador clicar no x. Mata todos os
-																	// frames
+															// frames
 		// ------DEFINIÇÕES DA JANELA*FIM----------------------------------------
-		
-		//-----ACTION LISNETERS*INICIO-------------------------------
+
+		// -----ACTION LISNETERS*INICIO-------------------------------
 		bt_Cancelar.addActionListener(this);
 		bt_Editar.addActionListener(this);
-		//----ACTION LISTENERS*FIM----------------------------------
-		
+		// ----ACTION LISTENERS*FIM----------------------------------
+
 		jp_form.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 30));
-		
-	
- 
-		
+
 		this.add(jb_titulo);
 
 		jp_codigo.add(jb_codigo);
@@ -116,15 +116,32 @@ public class Editar_Produto extends JFrame implements ActionListener{
 		jp_buttons.add(bt_Editar);
 		this.add(jp_form, BorderLayout.CENTER);
 		this.add(jp_buttons, BorderLayout.SOUTH);
-		
-			this.setVisible(true);
-	}
 
+		this.setVisible(true);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (e.getSource() == bt_Cancelar) {
+			System.exit(0);
+		}
+		if (e.getSource() == bt_Editar) {
+			int posicaoProdutoVector=crudProduto.procurarCodigo(temp, Integer.parseInt(tf_codigo.getText()));
+			if(posicaoProdutoVector!=-1) {
+				Produto prod=(Produto)temp.get(posicaoProdutoVector);
+				prod.setNome(tf_nome.getText());
+				prod.setPreco(Double.parseDouble(tf_preco.getText()));
+				prod.setQtd(Integer.parseInt(tf_qtdInicial.getText()));
+				temp.set(posicaoProdutoVector, prod);
+				crudProduto.gravarProdutos(temp);
+				JOptionPane.showMessageDialog(null, "PRODUTO EDITADO COM SUCESSO!", "", JOptionPane.INFORMATION_MESSAGE); // OK
+				this.setVisible(false);
+				new ListaProdutos();
+			}else {
+				JOptionPane.showMessageDialog(null, "PRODUTO NÃO FOI ENCONTRADO", "", JOptionPane.ERROR_MESSAGE); // OK
+				
+			}
+		}
+
 	}
-	
 }

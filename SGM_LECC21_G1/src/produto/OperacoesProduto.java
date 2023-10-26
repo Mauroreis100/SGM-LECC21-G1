@@ -26,7 +26,7 @@ public class OperacoesProduto {
 		return grava_le.gravarObjecto(clientes, "bd/ProdutosDB.dat");
 	}
 	
-	public int procurarCodigo(Vector lista, int codigo) {
+	public int procurarCodigo(Vector lista, int codigo) {//DEVOLVE-ME A POSIÇÃO
 		for (int i = 0; i < lista.size(); i++) {
 			if (((Produto) lista.get(i)).getId() == codigo) {
 				return i;
@@ -34,7 +34,7 @@ public class OperacoesProduto {
 		}
 		return -1;
 	}
-	// Método que devolve o objecto Produto, do stock
+	
 	public Produto produtoStock(int id, Vector lista) {
 		for (int i = 0; i < lista.size(); i++) {
 			if (((Produto) lista.get(i)).getId() == id) {
@@ -43,18 +43,18 @@ public class OperacoesProduto {
 		}
 		return null;
 	}
-	//Remoção do produto pelo id
+
 	public Vector removerProduto(Vector lista, int codigo) {
 		int index = procurarCodigo(lista, codigo);
 		for (int i = 0; i < lista.size(); i++) {
 			if (index != -1) {
 				lista.remove(index);
-				System.out.println("Produto eliminado com sucesso");
 				return lista;
 			}
 		}
-		System.out.println("Produto não encontrado");
 		return lista;
 	}
+	
+	
 
 }
