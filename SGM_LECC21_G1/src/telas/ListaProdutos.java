@@ -7,9 +7,9 @@ import java.util.Vector;
 
 import javax.swing.*;
 
-import produto.Editar_Produto;
 import produto.OperacoesProduto;
 import produto.Produto;
+import excepcoes.CampoVazioException;
 
 public class ListaProdutos implements ActionListener, MouseListener {
 	OperacoesProduto crudProduto = new OperacoesProduto();
@@ -60,6 +60,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		jb_qtdInicial = new JLabel("Quantidade Inicial");
 
 		tf_codigo = new JTextField(20);
+		tf_codigo.setEnabled(false);
 		tf_nome = new JTextField(20);
 		tf_qtdInicial = new JTextField(20);
 		tf_preco = new JTextField(20);
@@ -107,7 +108,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		tf_nome.addMouseListener(this);
 		tf_preco.addMouseListener(this);
 		tf_qtdInicial.addMouseListener(this);
-				// ----MOUSE LISTENERS*FIM----------
+		// ----MOUSE LISTENERS*FIM----------
 		jp_butoes.setLayout(new FlowLayout());
 		jp_form.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 30));
 
@@ -172,36 +173,48 @@ public class ListaProdutos implements ActionListener, MouseListener {
 				System.out.println(((Produto) temp.get(j)).toString());
 			}
 		}
-		return dados;//O CONSTRUTOR RETORNA A LISTA MULTIDIMENSIONAL
+		return dados;// O CONSTRUTOR RETORNA A LISTA MULTIDIMENSIONAL
 	}
 
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getSource() == bt_Criar) {
-			if (temp != null) {
-				produto = new Produto(Integer.parseInt(tf_codigo.getText()), tf_nome.getText(),
-						Integer.parseInt(tf_qtdInicial.getText()), Double.parseDouble(tf_preco.getText())); // Objecto
-																											// preenchido
-																											// com o
-																											// formulário
-				temp.add(produto);// Actualização do vector temporário com o novo objecto
-				if (crudProduto.gravarProdutos(temp)) {//
-					JOptionPane.showMessageDialog(null, "PRODUTO REGISTRADO COM SUCESSO", "",
-							JOptionPane.ERROR_MESSAGE);// MENSAGEM DE SUCESSO
+		if ((e.getSource() == bt_Criar)) {
+			if (!(tf_nome.getText().equals("") && tf_preco.getText().equals("")
+					&& tf_qtdInicial.getText().equals(""))) {
+
+				if (crudProduto.existe(tf_nome.getText(), temp)) {
+					JOptionPane.showMessageDialog(null, "ATENÇÃO",
+							"PRODUTO COM NOME " + tf_nome.getText() + " JÁ EXISTE", JOptionPane.WARNING_MESSAGE); // OK
+				} else {
+					produto = new Produto(Integer.parseInt(tf_codigo.getText()), tf_nome.getText(),
+							Integer.parseInt(tf_qtdInicial.getText()), Double.parseDouble(tf_preco.getText())); // Preenchendo
+																												// objecto
+																												// com o
+																												// formulário
+					temp.add(produto);// Actualização do vector temporário com o novo objecto
+					if (crudProduto.gravarProdutos(temp)) {//
+						JOptionPane.showMessageDialog(null, "PRODUTO REGISTRADO COM SUCESSO", "REGISTRADO COM SUCESSO",
+								JOptionPane.WARNING_MESSAGE);// MENSAGEM DE SUCESSO
+						new ListaProdutos();// Fecha
+						FecharListarProdutos();// Rerenderizar a página com produtos novoss
+					} // ERRO NA GRAVAÇÃO
 				}
-			} // ELSE PARA VERIFICAR SE PRODUTO JÁ EXISTE PELO NOME!!! -
-			new ListaProdutos();// Fecha
-			FecharListarProdutos();// Rerenderizar a página com produtos novoss
+			} else {
+
+				JOptionPane.showMessageDialog(null, "EXISTÊNCIA DE CAMPOS VAZIOS! PREENCHA TODOS OS CAMPOS", "",
+						JOptionPane.WARNING_MESSAGE); // OK
+				throw new CampoVazioException("CAMPOS VAZIOS");
+			}
 		}
 		if (e.getSource() == bt_Editar) {
-			int codigo = Integer
-					.parseInt(JOptionPane.showInputDialog("INSIRA O CÓDIGO DO PRODUTO QUE PRETENDE EDITAR"));
+			int codigo = Integer.parseInt(JOptionPane.showInputDialog("INSIRA O CÓDIGO DO PRODUTO QUE PRETENDE EDITAR"));
 			Produto prod = crudProduto.produtoStock(codigo, temp);
 			if (prod != null) {
 				new Editar_Produto(prod);
 				jf_registrar.setVisible(false);
 			}
 		}
+
 		if (e.getSource() == bt_Eliminar) {
 			int codigo = Integer
 					.parseInt(JOptionPane.showInputDialog("INSIRA O CÓDIGO DO PRODUTO QUE PRETENDE ELIMINAR"));
@@ -248,9 +261,9 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (e.getSource() == tf_nome || e.getSource() == tf_preco || e.getSource() == tf_qtdInicial) {
-			tf_codigo.setText((temp.size()+1)+"");
+			tf_codigo.setText((temp.size() + 1) + "");
 		}
-		
+
 	}
 
 	@Override
@@ -259,4 +272,5 @@ public class ListaProdutos implements ActionListener, MouseListener {
 			tf_codigo.setText("");
 		}
 	}
+
 }

@@ -58,6 +58,28 @@ public class OperacoesProduto {
 		return lista;
 	}
 	
-	
+	public boolean existe(String nome, Vector lista) {
+		// Retira qualquer espaços que possa ter no nome
+		nome = nome.replace(" ", "");
+		for (int i = 0; i < lista.size(); i++) {
+			// Porcura por strings com o mesmo nome, ignorando a capitalização
+			if ((((Produto) lista.get(i)).getNome().replace(" ", "")).equalsIgnoreCase(nome)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	//Procura com o nome já....
+	public int procurarNome(String nome, Vector lista) {
+		nome = nome.replace(" ", "");
+		for (int i = 0; i < lista.size(); i++) {
+			// Porcura por strings com o mesmo nome, ignorando a capitalização
+			if ((((Produto) lista.get(i)).getNome().replace(" ", "")).equalsIgnoreCase(nome)) {
+				return i;
+			}
+		}
+		return -1;
+	}
 
 }
