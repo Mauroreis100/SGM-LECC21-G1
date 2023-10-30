@@ -83,7 +83,7 @@ public class FuncionarioApp {
                 showMainOptions();
             }
         });
-
+        int a ;
         panel.add(criarButton);
         panel.add(editarButton);
         panel.add(removerButton);
