@@ -127,16 +127,11 @@ public class Editar_Produto extends JFrame implements ActionListener {
 			System.exit(0);
 		}
 		if ((e.getSource() == bt_Editar)) {
-			if ((tf_nome.getText().isBlank() && tf_preco.getText().isBlank() && tf_qtdInicial.getText().isBlank())) {
+			if (!(tf_nome.getText().isBlank() && tf_preco.getText().isBlank() && tf_qtdInicial.getText().isBlank())) {
 
 				int posicaoProdutoVector = crudProduto.procurarCodigo(temp, Integer.parseInt(tf_codigo.getText()));
 				if (posicaoProdutoVector != -1) {
 					Produto prod = (Produto) temp.get(posicaoProdutoVector);
-
-					if (crudProduto.existe(tf_nome.getText(), temp)) {
-						JOptionPane.showMessageDialog(null, "ATENÇÃO",
-								"PRODUTO COM NOME " + tf_nome.getText() + " JÁ EXISTE", JOptionPane.WARNING_MESSAGE); // OK
-					} else {
 						prod.setNome(tf_nome.getText());
 						prod.setPreco(Double.parseDouble(tf_preco.getText()));
 						prod.setQtd(Integer.parseInt(tf_qtdInicial.getText()));
@@ -146,7 +141,6 @@ public class Editar_Produto extends JFrame implements ActionListener {
 								JOptionPane.INFORMATION_MESSAGE); // OK
 						this.setVisible(false);
 						new ListaProdutos();
-					}
 				} else {
 					JOptionPane.showMessageDialog(null, "PRODUTO NÃO FOI ENCONTRADO", "", JOptionPane.ERROR_MESSAGE); // OK
 
