@@ -65,6 +65,10 @@ public class ClienteOperacoes {
 	public boolean existe(String nome, Vector lista) {
 		// Retira qualquer espaços que possa ter no nome
 		nome = nome.replace(" ", "");
+		if(lista==null) {
+			return false;
+			//Caso a lista esteja vazia retorna falso, o que significa que não existe nenhum ficheiro para comparar
+		}
 		for (int i = 0; i < lista.size(); i++) {
 			// Porcura por strings com o mesmo nome, ignorando a capitalização
 			if ((((Cliente) lista.get(i)).getNome().replace(" ", "")).equalsIgnoreCase(nome)) {

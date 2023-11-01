@@ -13,7 +13,7 @@ import excepcoes.CampoVazioException;
 
 public class ListaProdutos implements ActionListener, MouseListener {
 	OperacoesProduto crudProduto = new OperacoesProduto();
-	Vector temp = crudProduto.recuperarProdutoBD();// Preenchumento do vector de objectos do ficheiro na lista
+	Vector temp = crudProduto.recuperarBD();// Preenchumento do vector de objectos do ficheiro na lista
 													// temporaria no progra
 	Produto produto = new Produto();
 	private JFrame jf_registrar;
@@ -192,7 +192,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 																												// com o
 																												// formulário
 					temp.add(produto);// Actualização do vector temporário com o novo objecto
-					if (crudProduto.gravarProdutos(temp)) {//
+					if (crudProduto.gravarObjecto(temp)) {//
 						JOptionPane.showMessageDialog(null, "PRODUTO REGISTRADO COM SUCESSO", "REGISTRADO COM SUCESSO",
 								JOptionPane.WARNING_MESSAGE);// MENSAGEM DE SUCESSO
 						new ListaProdutos();// Fecha
@@ -226,7 +226,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 						JOptionPane.YES_NO_OPTION);// YES apaga mesmo e NO não faz nada,
 				if (opcao == 0) {
 
-					crudProduto.gravarProdutos(crudProduto.removerProduto(temp, codigo));// GRAVA UMA REMOÇÃO FEITA
+					crudProduto.gravarObjecto(crudProduto.removerObjecto(temp, codigo));// GRAVA UMA REMOÇÃO FEITA
 					JOptionPane.showMessageDialog(null, "ELIMINADO COM SUCESSO!", "", JOptionPane.ERROR_MESSAGE); // OK
 					FecharListarProdutos();
 					new ListaProdutos();

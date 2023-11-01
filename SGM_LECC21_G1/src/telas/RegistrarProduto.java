@@ -136,13 +136,13 @@ public class RegistrarProduto extends JFrame implements ActionListener {
 		}
 		if (e.getSource() == bt_Criar) {
 			Vector temp=new Vector();//Vector temporário para recuperar o ficheiro
-				temp = (Vector) crudProduto.recuperarProdutoBD();//Preenchimento do vector temporario que vem do ficheiro
+				temp = (Vector) crudProduto.recuperarBD();//Preenchimento do vector temporario que vem do ficheiro
 				if(temp!=null) {
 					produto = new Produto(11, tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
 							Double.parseDouble(tf_preco.getText()));//ADIÇÃO DO OBJECTO PRODUTO, BASEANDO-SE NOS CAMPOS DO FORMULÁRIO
 					temp.add(produto);//ACTUALIZANDO O VECTOR DE OBJECTOS DO PRODUTO
 					//VERIFICAR SE CAMPOS ESTÃO VAZIOS
-					if(crudProduto.gravarProdutos(temp)) {//CASO TUDO CORRA BEM
+					if(crudProduto.gravarObjecto(temp)) {//CASO TUDO CORRA BEM
 						JOptionPane.showMessageDialog(null, "PRODUTO REGISTRADO COM SUCESSO");//MENSAGEM DE SUCESSO
 					};
 				}//ELSE PARA VERIFICAR SE PRODUTO JÁ EXISTE

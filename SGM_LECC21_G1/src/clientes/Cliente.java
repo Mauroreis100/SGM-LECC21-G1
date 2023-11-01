@@ -1,6 +1,9 @@
 package clientes;
 
-public class Cliente {
+import java.io.Serializable;
+
+public class Cliente implements Serializable{
+	//Tens de implementar o Serializable para que a classe possa ser gravada num ficheiro objecto. Solução: https://stackoverflow.com/questions/22299528/an-error-java-io-notserializableexception
 	private String nome;
 	private int id ;
 	private String BI,cell;

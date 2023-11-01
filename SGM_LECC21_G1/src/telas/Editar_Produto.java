@@ -19,7 +19,7 @@ import produto.Produto;
 
 public class Editar_Produto extends JFrame implements ActionListener {
 	OperacoesProduto crudProduto = new OperacoesProduto();
-	Vector temp = crudProduto.recuperarProdutoBD();
+	Vector temp = crudProduto.recuperarBD();
 	Produto produto = new Produto();
 
 	private JPanel jp_form;
@@ -136,7 +136,7 @@ public class Editar_Produto extends JFrame implements ActionListener {
 						prod.setPreco(Double.parseDouble(tf_preco.getText()));
 						prod.setQtd(Integer.parseInt(tf_qtdInicial.getText()));
 						temp.set(posicaoProdutoVector, prod);
-						crudProduto.gravarProdutos(temp);
+						crudProduto.gravarObjecto(temp);
 						JOptionPane.showMessageDialog(null, "PRODUTO EDITADO COM SUCESSO!", "",
 								JOptionPane.INFORMATION_MESSAGE); // OK
 						this.setVisible(false);
