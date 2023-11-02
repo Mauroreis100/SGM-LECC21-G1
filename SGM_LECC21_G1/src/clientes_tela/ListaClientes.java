@@ -71,12 +71,12 @@ public class ListaClientes extends JFrame implements ActionListener {
 		this.setLayout(new BorderLayout());
 		// ------------POPULAR ARRAY COM O VECTOR DE OBJECTOS----------
 		if (temp != null) {
-			
+
 			jt_Clientes = new JTable(listaClientes(temp), coluna);
 			jt_Clientes.setAutoCreateRowSorter(true);
 
 		} else {
-			temp=new Vector<>();
+			temp = new Vector<>();
 			jt_Clientes = new JTable(null);
 		}
 		JScrollPane sp = new JScrollPane(jt_Clientes);
@@ -100,7 +100,7 @@ public class ListaClientes extends JFrame implements ActionListener {
 		jp_top.add(jt_cell);
 		jp_top.add(jl_saldo);
 		jp_top.add(jt_saldo);
-		jp_top.setLayout(new FlowLayout(FlowLayout.LEFT));
+		jp_top.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		jp_bottom = new JPanel();
 		jp_bottom.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -144,13 +144,21 @@ public class ListaClientes extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ((e.getSource() == bt_Criar)) {
-			if (!(jt_nome.getText().equals("") && jt_BI.getText().equals("") && jt_cell.getText().equals(""))) {
-				
-				if (crudCliente.existe(jt_nome.getText(), temp)) {
+			if (!(jt_BI.getText().equals("") && jt_cell.getText().equals(""))) {
+				// SE O BI FOR IGUAL A UM CLIENTE JA EXISTENTE
+				if (crudCliente.existe(jt_BI.getText(), temp)) {
 					JOptionPane.showMessageDialog(null, "O Cliente com BI " + jt_BI.getText() + " já existe", "ATENÇÃO",
 							JOptionPane.WARNING_MESSAGE); // OK
+				}
+				// SE O NUMERO FOR IGUAL A UM JA EXISTENTE
+				else if (crudCliente.existe(jt_cell.getText(), temp)) {
+					JOptionPane.showMessageDialog(null, "O Cliente com o numero " + jt_cell.getText() + " já existe",
+							"ATENÇÃO", JOptionPane.WARNING_MESSAGE); // OK) {
+
 				} else {
-					//FIX HERE. VIMOS SOLUÇÃO JUNTOS!!!
+					// Inserção do ID de forma dinamico
+					jt_id.setText((temp.size() + 1) + "");
+					// FIX HERE. VIMOS SOLUÇÃO JUNTOS!!!
 					cliente = new Cliente(Integer.parseInt(jt_id.getText()), jt_nome.getText(), jt_BI.getText(),
 							jt_cell.getText(), Double.parseDouble(jt_saldo.getText())); // Preenchendo
 					// objecto
@@ -173,9 +181,14 @@ public class ListaClientes extends JFrame implements ActionListener {
 		if (e.getSource() == bt_Editar) {
 			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Cliente que pretende editar"));
 			Cliente cli = crudCliente.produtoStock(codigo, temp);
-			if (cli != null) {
-				new EditarClientes(cli);
-				this.setVisible(false);
+			//PROCURA /VERIFICA SE O CODIGO EXISTE
+			if (codigo <= temp.size()) {
+				if (cli != null) {
+					new EditarClientes(cli);
+					this.setVisible(false);
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "Cliente não foi encontrado", "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
@@ -183,16 +196,18 @@ public class ListaClientes extends JFrame implements ActionListener {
 			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Cliente que pretende eliminar"));
 			// VERIFICAÇÃO DE EXISTÊNCIA
 			Cliente cli = crudCliente.produtoStock(codigo, temp);
-			if (cli != null) {
-				int opcao = JOptionPane.showConfirmDialog(null,
-						"Confirma que pretende apagar o cliente" + cli.getNome() + " do sistema?", "ELIMINAR",
-						JOptionPane.YES_NO_OPTION);// YES apaga mesmo e NO não faz nada,
-				if (opcao == 0) {
-					crudCliente.gravarClientes(crudCliente.removerCliente(temp, codigo));// GRAVA UMA REMOÇÃO FEITA
-					JOptionPane.showMessageDialog(null, "Eliminado com sucesso!", "ELIMINADO",
-							JOptionPane.ERROR_MESSAGE); // OK
-					FecharListarCliente();
-					new ListaClientes();
+			if (codigo <= temp.size()) {
+				if (cli != null) {
+					int opcao = JOptionPane.showConfirmDialog(null,
+							"Confirma que pretende apagar o cliente  " + cli.getNome() + " do sistema?", "ELIMINAR",
+							JOptionPane.YES_NO_OPTION);// YES apaga mesmo e NO não faz nada,
+					if (opcao == 0) {
+						crudCliente.gravarClientes(crudCliente.removerCliente(temp, codigo));// GRAVA UMA REMOÇÃO FEITA
+						JOptionPane.showMessageDialog(null, "Eliminado com sucesso!", "ELIMINADO",
+								JOptionPane.ERROR_MESSAGE); // OK
+						FecharListarCliente();
+						new ListaClientes();
+					}
 				}
 			} else {
 				JOptionPane.showMessageDialog(null, "Cliente não foi encontrado!", "ERRO", JOptionPane.WARNING_MESSAGE); // OK
@@ -201,12 +216,4 @@ public class ListaClientes extends JFrame implements ActionListener {
 		}
 
 	}
-
-	public void mouseEntered(MouseEvent e) {
-		if (e.getSource() == jt_nome || e.getSource() == jt_BI || e.getSource() == jt_cell) {
-			jt_id.setText((temp.size() + 1) + "");
-		}
-
-	}
-
 }

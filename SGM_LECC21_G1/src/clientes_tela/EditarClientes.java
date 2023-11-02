@@ -43,6 +43,7 @@ public class EditarClientes extends JFrame implements ActionListener {
 		jt_id.setEditable(false);
 		jl_BI = new JLabel("BI :");
 		jt_BI = new JTextField(cli.getBI() + "");
+		jt_BI.setEditable(false);
 		jl_cell = new JLabel("Telefone :");
 		jt_cell = new JTextField(cli.getCell() + "");
 		jl_saldo = new JLabel("Saldo :");
@@ -56,7 +57,7 @@ public class EditarClientes extends JFrame implements ActionListener {
 
 		this.setLayout(new GridLayout(6,2,5,5));
 		this.setTitle("Editar Cliente");// O tittulo da janela.
-		this.setSize(1280, 720);// Width and Height em pixels.[Comprimento, Largura]
+		this.setSize(450, 210);// Width and Height em pixels.[Comprimento, Largura]
 		this.setLocation(100, 100);// Onde o programa vai arrancar
 		this.setLocationRelativeTo(null);// Onde o programa vai arrancar
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// Quando o utilizador clicar no x. Mata todos os
@@ -81,18 +82,19 @@ public class EditarClientes extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == bt_Cancela) {
-			System.exit(0);
+			new ListaClientes();
+			this.setVisible(false);
 		}
 		if ((e.getSource() == bt_Edite)) {
 			if (!(jt_nome.getText().isBlank() && jt_BI.getText().isBlank() && jt_cell.getText().isBlank()&& jt_saldo.getText().isBlank())) {
 				int posicaoClienteVector = crudCliente.procurarCodigo(temp, Integer.parseInt(jt_id.getText()));
 				if (posicaoClienteVector != -1) {
-					Cliente cli = (Cliente) temp.get(posicaoClienteVector);
-						cli.setNome(jt_nome.getText());
-						cli.setBI(jt_nome.getText());
-						cli.setCell(jt_nome.getText());
-						cli.setSaldo(Double.parseDouble(jt_saldo.getText()));
-						temp.set(posicaoClienteVector, cli);
+					Cliente cliente = (Cliente) temp.get(posicaoClienteVector);
+						cliente.setNome(jt_nome.getText());
+						cliente.setBI(jt_BI.getText());
+						cliente.setCell(jt_cell.getText());
+						cliente.setSaldo(Double.parseDouble(jt_saldo.getText()));
+						temp.set(posicaoClienteVector, cliente);
 						crudCliente.gravarClientes(temp);
 						JOptionPane.showMessageDialog(null, "Cliente Modificado com sucesso!", "SUCESSO",JOptionPane.INFORMATION_MESSAGE); // OK
 						this.setVisible(false);
