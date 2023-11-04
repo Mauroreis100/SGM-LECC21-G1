@@ -67,6 +67,8 @@ public class ListaClientes extends JFrame implements ActionListener {
 		bt_Criar.addActionListener(this);
 		bt_Eliminar.addActionListener(this);
 		bt_Editar.addActionListener(this);
+		bt_filtrar.addActionListener(this);
+		bt_Voltar.addActionListener(this);
 
 		this.setLayout(new BorderLayout());
 		// ------------POPULAR ARRAY COM O VECTOR DE OBJECTOS----------
@@ -108,6 +110,8 @@ public class ListaClientes extends JFrame implements ActionListener {
 		jp_bottom.add(bt_Criar);
 		jp_bottom.add(bt_Eliminar);
 		jp_bottom.add(bt_Editar);
+		jp_bottom.add(bt_filtrar);
+		jp_bottom.add(bt_Voltar);
 
 		this.add(jp_top, "North");
 		this.add(jp_bottom, "South");
@@ -196,7 +200,9 @@ public class ListaClientes extends JFrame implements ActionListener {
 			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Cliente que pretende eliminar"));
 			// VERIFICAÇÃO DE EXISTÊNCIA
 			Cliente cli = crudCliente.produtoStock(codigo, temp);
-			if (codigo <= temp.size()) {
+			
+			int a=crudCliente.procurarCodigo(temp,codigo);
+			if (a!=-1) {
 				if (cli != null) {
 					int opcao = JOptionPane.showConfirmDialog(null,
 							"Confirma que pretende apagar o cliente  " + cli.getNome() + " do sistema?", "ELIMINAR",
@@ -214,6 +220,11 @@ public class ListaClientes extends JFrame implements ActionListener {
 			}
 
 		}
-
+		if(e.getSource()==bt_filtrar) {
+			new FiltrarClientes();
+		}
+		if(e.getSource()==bt_Voltar) {
+			//new Menu();
+		}
 	}
 }
