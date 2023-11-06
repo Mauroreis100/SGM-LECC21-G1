@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 
 import armazemTela.ListaArmazem;
 import clientes_tela.ListaClientes;
-import comprar.CompraSelect;
+import comprar.CompraSele;
 import telas.ListaProdutos;
 
 public class Menu__Prin extends JFrame implements ActionListener {
@@ -87,7 +87,11 @@ public class Menu__Prin extends JFrame implements ActionListener {
 	public static void main(String args[]) {
 		new Menu__Prin();
 	}
-
+	public void Menu__Prin(boolean b) {
+		b=false;
+		this.setVisible(b);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -108,11 +112,16 @@ public class Menu__Prin extends JFrame implements ActionListener {
 			new ListaClientes();
 		}
 		if(e.getSource()==jb6) {
-			new CompraSelect();
-			Timer time=new Timer(90000 , null);
-			time.isRunning();
-			this.setVisible(false);
-		}
+			String[] options = { "Compra", "Histórico" };
+			int x = JOptionPane.showOptionDialog(null, "Selecione o que fazer", "PICK...",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			if (x == 0) {
+				this.setVisible(false);
+				new CompraSele();
+				} else {
+					//HISTÓRICO
+				}
+			}
 		if(e.getSource()==jb5) {
 			System.exit(0);
 		}
