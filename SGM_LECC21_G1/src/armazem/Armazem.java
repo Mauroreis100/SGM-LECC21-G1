@@ -9,12 +9,12 @@ public class Armazem implements Serializable{
 	
 	public Armazem() {}
 
-	public Armazem(int id, String nome, int quantidade) {
+	public Armazem(int id, String nome) {
 		super();
 		this.nome = nome;
 		
 		this.id = id;
-		this.quantidade = quantidade;
+		//this.quantidade = quantidade;
 	}
 	
 	//GETTERS AND SETTERS

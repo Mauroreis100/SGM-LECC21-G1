@@ -49,7 +49,7 @@ public class ListaArmazem extends JFrame implements ActionListener {
 	private JTable jt_Armazems;
 
 	// Column Names
-	private String[] coluna = { "Código", "Nome", "Tipo de Produto", "Quantidade" };
+	private String[] coluna = { "Código", "Nome" , "Quantidade" };
 
 	public ListaArmazem() {
 
@@ -188,8 +188,7 @@ public class ListaArmazem extends JFrame implements ActionListener {
 					// Inserção do ID de forma dinamico
 					jt_id.setText((temp.size() + 1) + "");
 
-					arm = new Armazem(Integer.parseInt(jt_id.getText()), jt_nome.getText(),
-							Integer.parseInt(jt_quantidade.getText())); // Preenchendo
+					arm = new Armazem(Integer.parseInt(jt_id.getText()), jt_nome.getText()); // Preenchendo
 
 					temp.add(arm);// Actualização do vector temporário com o novo objecto
 					if (crudArmazem.gravarObjecto(temp)) {//
