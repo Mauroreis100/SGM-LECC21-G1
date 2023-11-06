@@ -8,6 +8,7 @@ import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import armazem.*;
 import produto.OperacoesProduto;
 import produto.Produto;
 import excepcoes.CampoVazioException;
@@ -15,7 +16,7 @@ import excepcoes.CampoVazioException;
 public class ListaProdutos implements ActionListener, MouseListener {
 	OperacoesProduto crudProduto = new OperacoesProduto();
 	Vector temp = crudProduto.recuperarBD();// Preenchumento do vector de objectos do ficheiro na lista
-											// temporaria no progra
+	ArmazemOperacoes opArmazens = new ArmazemOperacoes(); // temporaria no progra
 	Produto produto = new Produto();
 	private JFrame jf_registrar;
 
@@ -50,13 +51,14 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	private JButton bt_Eliminar;
 	private JButton bt_Editar;
 	private JButton bt_filtrar;
-	private JButton bt_Voltar,bt_Relatorio;
+	private JButton bt_Voltar, bt_Relatorio;
 
 	private JTable jt_produtos;
 	private DefaultTableModel tm_listagemModel;
-	
+
 	// Column Names
-	private String[] coluna = { "Código","Armazem", "Nome", "Stock Minímo", "Quantidade", "Preço", "Nº Vendas","Fornecedor"};
+	private String[] coluna = { "Código", "Armazem", "Nome", "Stock Minímo", "Quantidade", "Preço", "Nº Vendas",
+			"Fornecedor" };
 
 	public ListaProdutos() {
 		jf_registrar = new JFrame();
@@ -75,13 +77,16 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		tf_qtdInicial = new JTextField(10);
 		tf_preco = new JTextField(10);
 
-		String fornecedores[]= { "1-A", "2-B", "Manga", "Milho" };
+		String fornecedores[] = { "1-A", "2-B", "Manga", "Milho" };
 		cb_fornecedor = new JComboBox(fornecedores);// Só deixa escolher 1 item
 
-		String armazem[]= { "1-A", "2-B", "Manga", "Milho" };
+		String armazem[] = new String[opArmazens.recuperarBD().size()];
+		
+		for(int i=0;i<opArmazens.recuperarBD().size();i++) {
+			armazem[i]=((Armazem)opArmazens.recuperarBD().get(i)).getId()+"-"+((Armazem)opArmazens.recuperarBD().get(i)).getNome();
+		}
 		cb_armazem = new JComboBox(armazem);// Só deixa escolher 1 item
 
-		
 		bt_Voltar = new JButton("Voltar");
 
 		jp_form = new JPanel();
@@ -90,27 +95,26 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		jp_codigo = new JPanel();
 		jp_qtdInicial = new JPanel();
 		jp_nome = new JPanel();
-		jp_fornecedor=new JPanel();
-		jp_armazem=new JPanel();
-		
+		jp_fornecedor = new JPanel();
+		jp_armazem = new JPanel();
 
 		jp_butoes_norte = new JPanel();
 		bt_Criar = new JButton("REGISTRAR NOVO PRODUTO");
 		bt_Editar = new JButton("EDITAR PRODUTO");
 		bt_Eliminar = new JButton("ELIMINAR PRODUTO");
 		bt_filtrar = new JButton("FILTRO");
-		bt_Relatorio=new JButton("RELATÓRIO");
+		bt_Relatorio = new JButton("RELATÓRIO");
 
 		jp_tabela = new JPanel();
 		jp_butoes = new JPanel();
 
 		jf_registrar.setLayout(new BorderLayout());
 		// ------------POPULAR ARRAY COM O VECTOR DE OBJECTOS----------
-		if(temp!=null) {
+		if (temp != null) {
 			jt_produtos = new JTable(listarProdutos(temp), coluna);
 			jt_produtos.setAutoCreateRowSorter(true);
-			
-		}else {
+
+		} else {
 			temp = new Vector<>();
 			jt_produtos = new JTable(null);
 		}
@@ -132,7 +136,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		bt_Eliminar.addActionListener(this);
 		bt_filtrar.addActionListener(this);
 		// ----ACTION LISTENERS*FIM-------------------
-		
+
 		// -----MOUSE LISNETERS*INICIO--------
 		tf_nome.addMouseListener(this);
 		tf_preco.addMouseListener(this);
@@ -160,16 +164,16 @@ public class ListaProdutos implements ActionListener, MouseListener {
 
 		jp_fornecedor.add(jb_fornecedor);
 		jp_fornecedor.add(cb_fornecedor);
-		
+
 		jp_form.add(jp_fornecedor);
-		
+
 		jp_armazem.add(jb_armazem);
 		jp_armazem.add(cb_armazem);
-		
+
 		jp_form.add(jp_armazem);
-		
+
 //		jp_armazem.add(jb_fornecedor);
-		
+
 		jp_preco.add(jb_preco);
 		jp_preco.add(tf_preco);
 
@@ -205,16 +209,16 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		// MULTIDIMENSIONAL PARA A TABELA
 		String[][] dados = new String[temp.size()][8];
 		for (int i = 0; i < temp.size(); i++) {
-				dados[i][0] = (((Produto) temp.get(i)).getId()) + "";
-				dados[i][1] = (((Produto) temp.get(i)).getArmazen_nr()) + "";
-				dados[i][2] = (((Produto) temp.get(i)).getNome()) + "";
-				dados[i][3] = (((Produto) temp.get(i)).getStockMinimo()) + "";
-				dados[i][4] = (((Produto) temp.get(i)).getQtd()) + "";
-				dados[i][5] = (((Produto) temp.get(i)).getPreco()) + "";
-				dados[i][6] = (((Produto) temp.get(i)).getVendas()) + "";
-				dados[i][7] = (((Produto) temp.get(i)).getFornecedor()) + "";
-				System.out.println(((Produto) temp.get(i)).toString());
-			
+			dados[i][0] = (((Produto) temp.get(i)).getId()) + "";
+			dados[i][1] = (((Produto) temp.get(i)).getArmazen_nr()) + "";
+			dados[i][2] = (((Produto) temp.get(i)).getNome()) + "";
+			dados[i][3] = (((Produto) temp.get(i)).getStockMinimo()) + "";
+			dados[i][4] = (((Produto) temp.get(i)).getQtd()) + "";
+			dados[i][5] = (((Produto) temp.get(i)).getPreco()) + "";
+			dados[i][6] = (((Produto) temp.get(i)).getVendas()) + "";
+			dados[i][7] = (((Produto) temp.get(i)).getFornecedor()) + "";
+			System.out.println(((Produto) temp.get(i)).toString());
+
 		}
 		return dados;// O CONSTRUTOR RETORNA A LISTA MULTIDIMENSIONAL
 	}
@@ -229,11 +233,12 @@ public class ListaProdutos implements ActionListener, MouseListener {
 					JOptionPane.showMessageDialog(null, "ATENÇÃO",
 							"PRODUTO COM NOME " + tf_nome.getText() + " JÁ EXISTE", JOptionPane.WARNING_MESSAGE); // OK
 				} else {
-					produto = new Produto(Integer.parseInt(tf_codigo.getText()),(cb_armazem.getSelectedIndex()), tf_nome.getText(),
-							Integer.parseInt(tf_qtdInicial.getText()), Double.parseDouble(tf_preco.getText()),0,cb_fornecedor.getSelectedItem().toString()); // Preenchendo
-																												// objecto
-																												// com o
-																												// formulário
+					produto = new Produto(Integer.parseInt(tf_codigo.getText()), (cb_armazem.getSelectedIndex()),
+							tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
+							Double.parseDouble(tf_preco.getText()), 0, cb_fornecedor.getSelectedItem().toString()); // Preenchendo
+					// objecto
+					// com o
+					// formulário
 					temp.add(produto);// Actualização do vector temporário com o novo objecto
 					if (crudProduto.gravarObjecto(temp)) {//
 						JOptionPane.showMessageDialog(null, "PRODUTO REGISTRADO COM SUCESSO", "REGISTRADO COM SUCESSO",
@@ -321,10 +326,10 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (e.getSource() == tf_nome || e.getSource() == tf_preco || e.getSource() == tf_qtdInicial) {
-			if(temp!=null) {
-				tf_codigo.setText(temp.size()+1+"");
-			}else {
-				tf_codigo.setText(((Produto)temp.lastElement()).getId()+1 + "");	
+			if (temp != null) {
+				tf_codigo.setText(temp.size() + 1 + "");
+			} else {
+				tf_codigo.setText(((Produto) temp.lastElement()).getId() + 1 + "");
 			}
 		}
 
