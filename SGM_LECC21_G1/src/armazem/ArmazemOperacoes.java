@@ -3,8 +3,8 @@ package armazem;
 import java.io.*;
 import java.util.Vector;
 
-import clientes.Cliente;
 import leitura_escrita.Leitura_Escrita;
+import produto.Produto;
 import interfaces.Operacoes;
 public class ArmazemOperacoes implements Operacoes {
 	// Instância das classes de gravação e remoção de objectos no ficheiro
@@ -81,6 +81,26 @@ public class ArmazemOperacoes implements Operacoes {
 		}
 		return -1;
 	}
+	
+	public void inserirArmazem(Vector lista, Armazem armazem) {
+		
+			lista.addElement(armazem);
+	
+	}
+	
+	public void armazemUpdateName(String nome, String novoNome, Vector lista) {
+		
+		for (int i = 0; i < lista.size(); i++) {
+			System.out.println("Inseriro o novo nome");
+
+			if (((Armazem) lista.get(i)).getNome() == nome) {
+				((Armazem) lista.get(i)).setNome(novoNome);
+				
+			}
+		}
+	
+	}
+	
 
 
 
