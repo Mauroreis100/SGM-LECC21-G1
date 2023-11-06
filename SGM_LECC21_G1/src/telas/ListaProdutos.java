@@ -60,7 +60,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		jb_nome = new JLabel("Nome");
 		jb_preco = new JLabel("Preco");
 		jb_qtdInicial = new JLabel("Stock Minímo");
-
+//		jt_produtos.setEnabled(false);
 		tf_codigo = new JTextField(20);
 		tf_codigo.setEnabled(false);
 		tf_nome = new JTextField(20);
@@ -88,8 +88,14 @@ public class ListaProdutos implements ActionListener, MouseListener {
 
 		jf_registrar.setLayout(new BorderLayout());
 		// ------------POPULAR ARRAY COM O VECTOR DE OBJECTOS----------
-		jt_produtos = new JTable(listarProdutos(temp), coluna);
-		jt_produtos.setAutoCreateRowSorter(true);
+		if(temp!=null) {
+			jt_produtos = new JTable(listarProdutos(temp), coluna);
+			jt_produtos.setAutoCreateRowSorter(true);
+			
+		}else {
+			temp = new Vector<>();
+			jt_produtos = new JTable(null);
+		}
 		JScrollPane sp = new JScrollPane(jt_produtos);
 		jf_registrar.add(sp, BorderLayout.CENTER);
 
@@ -256,7 +262,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 //							JOptionPane.WARNING_MESSAGE); // OK
 //				}
 //			}
-			new FiltrarProdutos();
+			new FiltrarProdutos(new Vector());
 		}
 
 	}
@@ -282,7 +288,11 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (e.getSource() == tf_nome || e.getSource() == tf_preco || e.getSource() == tf_qtdInicial) {
-			tf_codigo.setText(((Produto)temp.lastElement()).getId()+1 + "");
+			if(temp!=null) {
+				tf_codigo.setText(temp.size()+1+"");
+			}else {
+				tf_codigo.setText(((Produto)temp.lastElement()).getId()+1 + "");	
+			}
 		}
 
 	}

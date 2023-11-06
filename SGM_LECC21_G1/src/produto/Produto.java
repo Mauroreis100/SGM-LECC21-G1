@@ -25,7 +25,13 @@ public Produto() {}
 		this.nome = nome;
 		this.qtd = qtd;
 		this.preco = preco;
+		
 	}
+//	public Produto(int stockMinimo,	String fornecedor, String foto) {
+//		this.fornecedor=fornecedor;
+//		this.foto=foto;
+//		this.stockMinimo=stockMinimo;
+//	}
 
 	public int getVendas() {
 		return vendas;
