@@ -87,10 +87,6 @@ public class Menu__Prin extends JFrame implements ActionListener {
 	public static void main(String args[]) {
 		new Menu__Prin();
 	}
-	public void Menu__Prin(boolean b) {
-		b=false;
-		this.setVisible(b);
-	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {

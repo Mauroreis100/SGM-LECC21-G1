@@ -13,6 +13,7 @@ import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import carrinho.Carrinho;
 import clientes.Cliente;
 import clientes.ClienteOperacoes;
 import produto.OperacoesProduto;
@@ -28,7 +29,7 @@ public class Compra extends JFrame implements ActionListener, MouseListener {
 	Produto produto = new Produto();
 
 	private JLabel jl, jl2, jl3;
-	private JPanel jp,jp1;
+	private JPanel jp, jp1;
 
 	private JTable jt_produtos;
 	private DefaultTableModel tm_listagemModel;
@@ -68,12 +69,12 @@ public class Compra extends JFrame implements ActionListener, MouseListener {
 		jp.setLayout(new FlowLayout(FlowLayout.TRAILING));
 		jp.setBackground(Color.LIGHT_GRAY);
 
-		jp1=new JPanel();
+		jp1 = new JPanel();
 		jp1.add(jb1);
-		
+
 		this.add(jp, "North");
 		this.add(sp, BorderLayout.CENTER);
-		this.add(jp1,"South");
+		this.add(jp1, "South");
 
 		this.setVisible(true);
 	}
@@ -97,46 +98,49 @@ public class Compra extends JFrame implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == jb1) {
-			int a=Integer.parseInt(JOptionPane.showInputDialog("Insira a quantidade de :  que pretende comprar"));
-			if(!(a==0)) {
-				System.out.println("MY BALLZ");
+			int b = Integer.parseInt(JOptionPane.showInputDialog("Insira o ID do produto que pretende comprar"));
+			b=b-1;
+			for (int i = 0; i < temp_p.size(); i++) {
+				if (b == ((Produto) temp_p.get(i)).getId()) {
+					int a = Integer.parseInt(JOptionPane.showInputDialog("Insira a quantidade de : "+((Produto) temp_p.get(i)).getNome()+"  que pretende comprar"));
+					if ((a <((Produto) temp_p.get(i)).getQtd()) && a!=0) {
+						new Carrinho(a,i);
+					}else {
+						JOptionPane.showMessageDialog(null, "Valor inválido!", "ERRO", JOptionPane.WARNING_MESSAGE); // OK
+
+					}
+				}
 			}
 		}
-	}  
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		  if (e.getSource() == jt_produtos) {
-		        int row = jt_produtos.getSelectedRow(); // Get the selected row
-		        if (row >= 0) {
-		            String productID = (String) jt_produtos.getValueAt(row, 0); // Get the ID from the selected row
-		            System.out.println("Selected Product ID: " + productID);
-		        }
-		    }
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-}   
+}
