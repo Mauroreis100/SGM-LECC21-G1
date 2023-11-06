@@ -13,6 +13,7 @@ import javax.swing.*;
 import clientes.Cliente;
 import clientes.ClienteOperacoes;
 import excepcoes.CampoVazioException;
+import menu.Menu__Prin;
 
 public class ListaClientes extends JFrame implements ActionListener {
 	ClienteOperacoes crudCliente = new ClienteOperacoes();
@@ -132,14 +133,13 @@ public class ListaClientes extends JFrame implements ActionListener {
 
 		String[][] dados = new String[temp.size()][6];
 		for (int i = 0; i < temp.size(); i++) {
-			for (int j = 0; j < 5; j++) {
 				dados[i][0] = (((Cliente) temp.get(i)).getId()) + "";
 				dados[i][1] = (((Cliente) temp.get(i)).getNome()) + "";
 				dados[i][2] = (((Cliente) temp.get(i)).getBI()) + "";
 				dados[i][3] = (((Cliente) temp.get(i)).getCell()) + "";
 				dados[i][4] = (((Cliente) temp.get(i)).getSaldo()) + "";
 				System.out.println(((Cliente) temp.get(i)).toString());
-			}
+			
 		}
 		return dados;// O CONSTRUTOR RETORNA A LISTA MULTIDIMENSIONAL
 
@@ -161,7 +161,7 @@ public class ListaClientes extends JFrame implements ActionListener {
 
 				} else {
 					// Inserção do ID de forma dinamico
-					jt_id.setText((temp.size() + 1) + "");
+					jt_id.setText(((Cliente)temp.lastElement()).getId()+1+ "");
 					// FIX HERE. VIMOS SOLUÇÃO JUNTOS!!!
 					cliente = new Cliente(Integer.parseInt(jt_id.getText()), jt_nome.getText(), jt_BI.getText(),
 							jt_cell.getText(), Double.parseDouble(jt_saldo.getText())); // Preenchendo
@@ -224,7 +224,8 @@ public class ListaClientes extends JFrame implements ActionListener {
 			new FiltrarClientes();
 		}
 		if(e.getSource()==bt_Voltar) {
-			//new Menu();
+			this.setVisible(false);
+			new Menu__Prin();
 		}
 	}
 }
