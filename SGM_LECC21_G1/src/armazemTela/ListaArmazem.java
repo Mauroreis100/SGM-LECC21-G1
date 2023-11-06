@@ -1,4 +1,6 @@
-package clientes_tela;
+package armazemTela;
+
+
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -9,27 +11,27 @@ import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.*;
-
-import clientes.Cliente;
-import clientes.ClienteOperacoes;
+import produto.Produto;
+import armazem.Armazem;
+import armazem.ArmazemOperacoes;
+import armazem.ArmazemOperacoes;
 import excepcoes.CampoVazioException;
-import menu.Menu__Prin;
 
-public class ListaClientes extends JFrame implements ActionListener {
-	ClienteOperacoes crudCliente = new ClienteOperacoes();
-	Vector temp = crudCliente.recuperarClientesBD();// Preenchumento do vector de objectos do ficheiro na lista
+public class ListaArmazem extends JFrame implements ActionListener {
+	ArmazemOperacoes crudArmazem = new ArmazemOperacoes();
+	Vector temp = crudArmazem.recuperarBD();// Preenchumento do vector de objectos do ficheiro na lista
 
-	Cliente cliente = new Cliente();// temporaria no progra
+	Armazem arm = new Armazem();// temporaria no progra
 	private JLabel jl_nome;
 	private JLabel jl_id;
-	private JLabel jl_BI;
-	private JLabel jl_saldo;
+	private JLabel jl_tipoProduto;
+	private JLabel jl_quantidade;
 	private JLabel jl_cell;
 
 	private JTextField jt_nome;
 	private JTextField jt_id;
-	private JTextField jt_BI;
-	private JTextField jt_saldo;
+	private JTextField jt_tipoProduto;
+	private JTextField jt_quantidade;
 	private JTextField jt_cell;
 
 	private JButton bt_Criar;
@@ -41,23 +43,23 @@ public class ListaClientes extends JFrame implements ActionListener {
 	private JPanel jp_top;
 	private JPanel jp_bottom;
 
-	private JTable jt_Clientes;
+	private JTable jt_Armazems;
 
 	// Column Names
-	private String[] coluna = { "Código", "Nome", "BI", "Telefone", "Saldo" };
+	private String[] coluna = { "Código", "Nome", "Tipo de Produto", "Telefone", "Quantidade" };
 
-	public ListaClientes() {
+	public ListaArmazem() {
 		jl_nome = new JLabel("Nome :");
 		jt_nome = new JTextField(15);
 		jl_id = new JLabel("codigo :");
 		jt_id = new JTextField(5);
 		jt_id.setEditable(false);
-		jl_BI = new JLabel("BI :");
-		jt_BI = new JTextField(15);
+		jl_tipoProduto = new JLabel("Tipo de Produto :");
+		jt_tipoProduto = new JTextField(15);
 		jl_cell = new JLabel("Telefone :");
 		jt_cell = new JTextField(15);
-		jl_saldo = new JLabel("Saldo :");
-		jt_saldo = new JTextField(15);
+		jl_quantidade = new JLabel("Quantidade :");
+		jt_quantidade = new JTextField(15);
 
 		bt_Criar = new JButton("Registra");
 		bt_Eliminar = new JButton("Remover");
@@ -75,19 +77,18 @@ public class ListaClientes extends JFrame implements ActionListener {
 		// ------------POPULAR ARRAY COM O VECTOR DE OBJECTOS----------
 		if (temp != null) {
 
-			jt_Clientes = new JTable(listaClientes(temp), coluna);
-			jt_Clientes.setAutoCreateRowSorter(true);
+			jt_Armazems = new JTable(listaArmazems(temp), coluna);
+			jt_Armazems.setAutoCreateRowSorter(true);
 
 		} else {
 			temp = new Vector<>();
-			jt_Clientes = new JTable(null);
+			jt_Armazems = new JTable(null);
 		}
-		jt_Clientes.setEnabled(false);
-		JScrollPane sp = new JScrollPane(jt_Clientes);
+		JScrollPane sp = new JScrollPane(jt_Armazems);
 		this.add(sp, BorderLayout.CENTER);
 
 		// -----DEFINIÇÕES DA JANELA*INICIO-------
-		this.setTitle("Lista de Clientes");// O tittulo da janela.
+		this.setTitle("Lista de Armazens");// O tittulo da janela.
 		this.setSize(1280, 720);// Width and Height em pixels.[Comprimento, Largura]
 		this.setLocation(100, 100);// Onde o programa vai arrancar
 		this.setLocationRelativeTo(null);// Onde o programa vai arrancar
@@ -98,12 +99,12 @@ public class ListaClientes extends JFrame implements ActionListener {
 		jp_top.add(jt_id);
 		jp_top.add(jl_nome);
 		jp_top.add(jt_nome);
-		jp_top.add(jl_BI);
-		jp_top.add(jt_BI);
+		jp_top.add(jl_tipoProduto);
+		jp_top.add(jt_tipoProduto);
 		jp_top.add(jl_cell);
 		jp_top.add(jt_cell);
-		jp_top.add(jl_saldo);
-		jp_top.add(jt_saldo);
+		jp_top.add(jl_quantidade);
+		jp_top.add(jt_quantidade);
 		jp_top.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		jp_bottom = new JPanel();
@@ -122,24 +123,23 @@ public class ListaClientes extends JFrame implements ActionListener {
 	}
 
 	public static void main(String args[]) {
-		new ListaClientes();
+		new ListaArmazem();
 	}
 
-	public void FecharListarCliente() {
+	public void FecharListarArmazem() {
 		this.setVisible(false);
 	}
 
-	private String[][] listaClientes(Vector temp) {
+	private String[][] listaArmazems(Vector temp) {
 //ESTA IMPLEMENTAÇÃO COLOCA TODOS OS DADOS DO VECTOR NUMA LISTA MULTIDIMENSIONAL PARA A TABELA
 
 		String[][] dados = new String[temp.size()][6];
 		for (int i = 0; i < temp.size(); i++) {
-				dados[i][0] = (((Cliente) temp.get(i)).getId()) + "";
-				dados[i][1] = (((Cliente) temp.get(i)).getNome()) + "";
-				dados[i][2] = (((Cliente) temp.get(i)).getBI()) + "";
-				dados[i][3] = (((Cliente) temp.get(i)).getCell()) + "";
-				dados[i][4] = (((Cliente) temp.get(i)).getSaldo()) + "";
-				System.out.println(((Cliente) temp.get(i)).toString());
+				dados[i][0] = (((Armazem) temp.get(i)).getId()) + "";
+				dados[i][1] = (((Armazem) temp.get(i)).getNome()) + "";
+				dados[i][2] = (((Armazem) temp.get(i)).getTipoProduto()) + "";
+				dados[i][3] = (((Armazem) temp.get(i)).getQuantidade()) + "";
+				System.out.println(((Armazem) temp.get(i)).toString());
 			
 		}
 		return dados;// O CONSTRUTOR RETORNA A LISTA MULTIDIMENSIONAL
@@ -149,32 +149,31 @@ public class ListaClientes extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ((e.getSource() == bt_Criar)) {
-			if (!(jt_BI.getText().equals("") && jt_cell.getText().equals(""))) {
-				// SE O BI FOR IGUAL A UM CLIENTE JA EXISTENTE
-				if (crudCliente.existe(jt_BI.getText(), temp)) {
-					JOptionPane.showMessageDialog(null, "O Cliente com BI " + jt_BI.getText() + " já existe", "ATENÇÃO",
+			if (!(jt_tipoProduto.getText().equals("") && jt_cell.getText().equals(""))) {
+				// SE O Tipo de Produto FOR IGUAL A UM CLIENTE JA EXISTENTE
+				if (crudArmazem.existe(jt_tipoProduto.getText(), temp)) {
+					JOptionPane.showMessageDialog(null, "O Armazem com Tipo de Produto " + jt_tipoProduto.getText() + " já existe", "ATENÇÃO",
 							JOptionPane.WARNING_MESSAGE); // OK
 				}
 				// SE O NUMERO FOR IGUAL A UM JA EXISTENTE
-				else if (crudCliente.existe(jt_cell.getText(), temp)) {
-					JOptionPane.showMessageDialog(null, "O Cliente com o numero " + jt_cell.getText() + " já existe",
+				else if (crudArmazem.existe(jt_cell.getText(), temp)) {
+					JOptionPane.showMessageDialog(null, "O Armazem com o numero " + jt_cell.getText() + " já existe",
 							"ATENÇÃO", JOptionPane.WARNING_MESSAGE); // OK) {
 
 				} else {
 					// Inserção do ID de forma dinamico
-					jt_id.setText(((Cliente)temp.lastElement()).getId()+1+ "");
+					jt_id.setText((temp.size() + 1) + "");
 					// FIX HERE. VIMOS SOLUÇÃO JUNTOS!!!
-					cliente = new Cliente(Integer.parseInt(jt_id.getText()), jt_nome.getText(), jt_BI.getText(),
-							jt_cell.getText(), Double.parseDouble(jt_saldo.getText())); // Preenchendo
+					arm = new Armazem(); // Preenchendo
 					// objecto
 					// com o
 					// formulário
-					temp.add(cliente);// Actualização do vector temporário com o novo objecto
-					if (crudCliente.gravarClientes(temp)) {//
-						JOptionPane.showMessageDialog(null, "Cliente Registrado com sucesso", "SUCESSO",
+					temp.add(arm);// Actualização do vector temporário com o novo objecto
+					if (crudArmazem.gravarObjecto(temp)) {//
+						JOptionPane.showMessageDialog(null, "Armazem Registrado com sucesso", "SUCESSO",
 								JOptionPane.PLAIN_MESSAGE);// MENSAGEM DE SUCESSO
-						new ListaClientes();// Fecha
-						FecharListarCliente();// Rerenderizar a página com produtos novoss
+						new ListaArmazem();// Fecha
+						FecharListarArmazem();// Rerenderizar a página com produtos novoss
 					} // ERRO NA GRAVAÇÃO
 				}
 			} else {
@@ -183,50 +182,50 @@ public class ListaClientes extends JFrame implements ActionListener {
 				throw new CampoVazioException("CAMPOS VAZIOS");
 			}
 		}
+		
 		if (e.getSource() == bt_Editar) {
-			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Cliente que pretende editar"));
-			Cliente cli = crudCliente.produtoStock(codigo, temp);
+			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Armazem que pretende editar"));
+			Armazem cli = crudArmazem.produtoStock(codigo, temp);
 			//PROCURA /VERIFICA SE O CODIGO EXISTE
 			if (codigo <= temp.size()) {
 				if (cli != null) {
-					new EditarClientes(cli);
+					new EditarArmazem(arm);
 					this.setVisible(false);
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "Cliente não foi encontrado", "ERROR", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Armazem não foi encontrado", "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
 		if (e.getSource() == bt_Eliminar) {
-			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Cliente que pretende eliminar"));
+			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Armazem que pretende eliminar"));
 			// VERIFICAÇÃO DE EXISTÊNCIA
-			Cliente cli = crudCliente.produtoStock(codigo, temp);
+			Armazem cli = crudArmazem.produtoStock(codigo, temp);
 			
-			int a=crudCliente.procurarCodigo(temp,codigo);
+			int a=crudArmazem.procurarCodigo(temp,codigo);
 			if (a!=-1) {
 				if (cli != null) {
 					int opcao = JOptionPane.showConfirmDialog(null,
-							"Confirma que pretende apagar o cliente  " + cli.getNome() + " do sistema?", "ELIMINAR",
+							"Confirma que pretende apagar o arm  " + cli.getNome() + " do sistema?", "ELIMINAR",
 							JOptionPane.YES_NO_OPTION);// YES apaga mesmo e NO não faz nada,
 					if (opcao == 0) {
-						crudCliente.gravarClientes(crudCliente.removerCliente(temp, codigo));// GRAVA UMA REMOÇÃO FEITA
+						crudArmazem.gravarObjecto(crudArmazem.removerObjecto(temp, codigo));// GRAVA UMA REMOÇÃO FEITA
 						JOptionPane.showMessageDialog(null, "Eliminado com sucesso!", "ELIMINADO",
 								JOptionPane.ERROR_MESSAGE); // OK
-						FecharListarCliente();
-						new ListaClientes();
+						FecharListarArmazem();
+						new ListaArmazem();
 					}
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "Cliente não foi encontrado!", "ERRO", JOptionPane.WARNING_MESSAGE); // OK
+				JOptionPane.showMessageDialog(null, "Armazem não foi encontrado!", "ERRO", JOptionPane.WARNING_MESSAGE); // OK
 			}
 
 		}
-		if(e.getSource()==bt_filtrar) {
-			new FiltrarClientes();
-		}
-		if(e.getSource()==bt_Voltar) {
-			this.setVisible(false);
-			new Menu__Prin();
-		}
+//		if(e.getSource()==bt_filtrar) {
+//			new FiltrarArmazems();
+//		}
+//		if(e.getSource()==bt_Voltar) {
+//			//new Menu();
+//		}
 	}
 }

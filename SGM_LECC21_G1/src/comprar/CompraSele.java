@@ -1,4 +1,4 @@
-package clientes_tela;
+package comprar;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -17,14 +17,13 @@ import javax.swing.JTextField;
 
 import clientes.Cliente;
 import clientes.ClienteOperacoes;
+import menu.Menu__Prin;
 
-public class NomeFiltro extends JFrame implements ActionListener {
+public class CompraSele extends JFrame implements ActionListener {
 	ClienteOperacoes crudCliente = new ClienteOperacoes();
-	Vector temp = crudCliente.recuperarClientesBD();// Preenchumento do vector de objectos do ficheiro na lista
-	Vector nome = crudCliente.recuperarClientesBD();
-	
+	Vector temp = crudCliente.recuperarClientesBD();// Preenchumento do vector de objectos do ficheiro na lista	
 	Cliente cliente = new Cliente();// temporaria no progra
-	private JTable jt_Clientes,jf_Clientes;
+	private JTable jt_Clientes;
 	private JPanel jp;
 	private JLabel jl_f;
 	private JTextField jtf_se;
@@ -33,15 +32,15 @@ public class NomeFiltro extends JFrame implements ActionListener {
 
 	private String[] coluna = { "Código", "Nome", "BI", "Telefone", "Saldo" };
 
-	public NomeFiltro() {
-		jl_f = new JLabel("Insira o nome que pretende filtar");
+	public CompraSele() {
+		jl_f = new JLabel("Escolha o ID do cliente para fazer a compra");
 		jtf_se = new JTextField(15);
-		jt_nome_bt = new JButton("Procura");
-
+		jt_nome_bt = new JButton("Compra");
+		
 		jt_nome_bt.addActionListener(this);
 		// -----DEFINIÇÕES DA JANELA*INICIO-------
-		this.setTitle("Nome");// O tittulo da janela.
-		this.setSize(500, 500);// Width and Height em pixels.[Comprimento, Largura]
+		this.setTitle("Escolha");// O tittulo da janela.
+		this.setSize(550, 500);// Width and Height em pixels.[Comprimento, Largura]
 		this.setLocation(980, 500);// Onde o programa vai arrancar
 		this.setLocationRelativeTo(null);// Onde o programa vai arrancar
 		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);// Quando o utilizador clicar no x. Mata todos os
@@ -61,8 +60,8 @@ public class NomeFiltro extends JFrame implements ActionListener {
 			temp = new Vector<>();
 			jt_Clientes = new JTable(null);
 		}
-		jt_Clientes.setEnabled(false);
 		this.add(jp, "North");
+		jt_Clientes.setEnabled(false);
 		JScrollPane sp = new JScrollPane(jt_Clientes);
 		this.add(sp, BorderLayout.CENTER);
 
@@ -75,14 +74,12 @@ public class NomeFiltro extends JFrame implements ActionListener {
 
 		String[][] dados = new String[temp.size()][6];
 		for (int i = 0; i < temp.size(); i++) {
-			for (int j = 0; j < 5; j++) {
 				dados[i][0] = (((Cliente) temp.get(i)).getId()) + "";
 				dados[i][1] = (((Cliente) temp.get(i)).getNome()) + "";
 				dados[i][2] = (((Cliente) temp.get(i)).getBI()) + "";
 				dados[i][3] = (((Cliente) temp.get(i)).getCell()) + "";
 				dados[i][4] = (((Cliente) temp.get(i)).getSaldo()) + "";
 				System.out.println(((Cliente) temp.get(i)).toString());
-			}
 		}
 		return dados;// O CONSTRUTOR RETORNA A LISTA MULTIDIMENSIONAL
 
@@ -96,33 +93,16 @@ public class NomeFiltro extends JFrame implements ActionListener {
 			if (!(jtf_se.getText().equals(""))) {
 				String[][] dados = new String[temp.size()][5];
 				for (int i = 0; i < temp.size(); i++) {
-					if (((Cliente) temp.get(i)).getNome().equalsIgnoreCase(jtf_se.getText())) {
-						for (int j = 0; j < 5; j++) {
-							dados[i][0] = (((Cliente) temp.get(i)).getId()) + "";
+					if (((Cliente) temp.get(i)).getId()==Integer.parseInt(jtf_se.getText())) {
+							dados[i][0] = (((Cliente) temp.get(i)).getId()) + ""; 
 							dados[i][1] = (((Cliente) temp.get(i)).getNome()) + "";
 							dados[i][2] = (((Cliente) temp.get(i)).getBI()) + "";
 							dados[i][3] = (((Cliente) temp.get(i)).getCell()) + "";
 							dados[i][4] = (((Cliente) temp.get(i)).getSaldo()) + "";
 							System.out.println(((Cliente) temp.get(i)).toString());
-			
-						}
+							new Compra(i);
 					}
 				}
-				JFrame jf=new JFrame();
-				JTable tb=new JTable(dados,coluna);
-				
-				jf.setTitle("Pesquisa de :  "+jtf_se.getText());// O tittulo da janela.
-				jf.setSize(500, 500);// Width and Height em pixels.[Comprimento, Largura]
-				jf.setLocation(980, 500);// Onde o programa vai arrancar
-				jf.setLocationRelativeTo(null);// Onde o programa vai arrancar
-				jf.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);// Quando o utilizador clicar no x. Mata todos os
-				jf.setResizable(false);
-				jf.setLayout(new BorderLayout());
-				JScrollPane sp = new JScrollPane(tb);
-				jf.add(sp, BorderLayout.CENTER);
-				
-		
-				jf.setVisible(true);	
 			} else {
 				JOptionPane.showMessageDialog(null, "Pesquisa Vazia!", "",JOptionPane.WARNING_MESSAGE); 
 			}
