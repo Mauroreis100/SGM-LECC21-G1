@@ -206,8 +206,8 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		String[][] dados = new String[temp.size()][8];
 		for (int i = 0; i < temp.size(); i++) {
 				dados[i][0] = (((Produto) temp.get(i)).getId()) + "";
-				dados[i][1] = (((Produto) temp.get(i)).getNome()) + "";
-				dados[i][2] = (((Produto) temp.get(i)).getArmazen_nr()) + "";
+				dados[i][1] = (((Produto) temp.get(i)).getArmazen_nr()) + "";
+				dados[i][2] = (((Produto) temp.get(i)).getNome()) + "";
 				dados[i][3] = (((Produto) temp.get(i)).getStockMinimo()) + "";
 				dados[i][4] = (((Produto) temp.get(i)).getQtd()) + "";
 				dados[i][5] = (((Produto) temp.get(i)).getPreco()) + "";
