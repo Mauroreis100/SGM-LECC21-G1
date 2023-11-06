@@ -2,25 +2,23 @@ package armazem;
 import java.io.Serializable;
 public class Armazem implements Serializable{
 
-	private String nome, tipoProduto;
+	private String nome;
 	private int id, quantidade;
 	
 	
 	
 	public Armazem() {}
 
-	public Armazem(int id, String nome, String tipoProduto, int quantidade) {
+	public Armazem(int id, String nome, int quantidade) {
 		super();
 		this.nome = nome;
-		this.tipoProduto = tipoProduto;
+		
 		this.id = id;
 		this.quantidade = quantidade;
 	}
 	
 	//GETTERS AND SETTERS
-	public String getTipoProduto() {return tipoProduto;}
-	
-	public void setTipoProduto(String tipoProduto) {this.tipoProduto = tipoProduto;}
+
 	
 	public int getQuantidade() {return quantidade;}
 	
@@ -36,7 +34,7 @@ public class Armazem implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Armazem [nome=" + nome + ", tipoProduto=" + tipoProduto + ", id=" + id + ", quantidade=" + quantidade
+		return "Armazem [nome=" + nome + ", id=" + id + ", quantidade=" + quantidade
 				+ "]";
 	}
 	

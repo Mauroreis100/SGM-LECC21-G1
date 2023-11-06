@@ -27,13 +27,13 @@ public class ListaArmazem extends JFrame implements ActionListener {
 
 	private JLabel jl_nome;
 	private JLabel jl_id;
-	private JLabel jl_tipoProduto;
+	
 	private JLabel jl_quantidade;
 	//private JLabel jl_cell;
 
 	private JTextField jt_nome;
 	private JTextField jt_id;
-	private JTextField jt_tipoProduto;
+
 	private JTextField jt_quantidade;
 	private JTextField jt_cell;
 
@@ -79,8 +79,7 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		jl_id = new JLabel("codigo :");
 		jt_id = new JTextField(5);
 		jt_id.setEditable(false);
-		jl_tipoProduto = new JLabel("Tipo de Produto :");
-		jt_tipoProduto = new JTextField(15);
+
 		//		jl_cell = new JLabel("Telefone :");
 		//		jt_cell = new JTextField(15);
 		jl_quantidade = new JLabel("Quantidade :");
@@ -129,12 +128,11 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		jp_top.add(jt_id);
 		jp_top.add(jl_nome);
 		jp_top.add(jt_nome);
-		jp_top.add(jl_tipoProduto);
-		jp_top.add(jt_tipoProduto);
-		//		jp_top.add(jl_cell);
-		//		jp_top.add(jt_cell);
-		jp_top.add(jl_quantidade);
-		jp_top.add(jt_quantidade);
+		
+		
+		
+//		jp_top.add(jl_quantidade);
+//		jp_top.add(jt_quantidade);
 		jp_top.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		jp_bottom = new JPanel();
@@ -167,8 +165,8 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		for (int i = 0; i < temp.size(); i++) {
 			dados[i][0] = (((Armazem) temp.get(i)).getId()) + "";
 			dados[i][1] = (((Armazem) temp.get(i)).getNome()) + "";
-			dados[i][2] = (((Armazem) temp.get(i)).getTipoProduto()) + "";
-			dados[i][3] = (((Armazem) temp.get(i)).getQuantidade()) + "";
+			
+			dados[i][2] = (((Armazem) temp.get(i)).getQuantidade()) + "";
 			System.out.println(((Armazem) temp.get(i)).toString());
 
 		}
@@ -179,9 +177,9 @@ public class ListaArmazem extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ((e.getSource() == bt_Criar)) {
-			if (!(jt_tipoProduto.getText().equals("") && jt_cell.getText().equals(""))) {
+			if (!(jt_nome.getText().equals("") && jt_cell.getText().equals(""))) {
 				// SE O Tipo de Produto FOR IGUAL A UM CLIENTE JA EXISTENTE
-				if (crudArmazem.existe(jt_tipoProduto.getText(), temp)) {
+				if (crudArmazem.existe(jt_nome.getText(), temp)) {
 					JOptionPane.showMessageDialog(null, "O produto com nome existe" + jt_nome.getText() + " já existe", "ATENÇÃO",
 							JOptionPane.WARNING_MESSAGE); // OK
 				}
@@ -190,7 +188,7 @@ public class ListaArmazem extends JFrame implements ActionListener {
 					// Inserção do ID de forma dinamico
 					jt_id.setText((temp.size() + 1) + "");
 
-					arm = new Armazem(Integer.parseInt(jt_id.getText()), jt_nome.getText(), jt_tipoProduto.getText(),
+					arm = new Armazem(Integer.parseInt(jt_id.getText()), jt_nome.getText(),
 							Integer.parseInt(jt_quantidade.getText())); // Preenchendo
 
 					temp.add(arm);// Actualização do vector temporário com o novo objecto
