@@ -56,6 +56,8 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		ImageIcon icon = new ImageIcon("assets/icons/delete_garbage.png");
 		ImageIcon icon2 = new ImageIcon("assets/icons/save_disk.png");
 		ImageIcon icon3 = new ImageIcon("assets/icons/edit.png");
+		ImageIcon icon4 = new ImageIcon("assets/icons/filter_funil.png");
+		ImageIcon icon5 = new ImageIcon("assets/icons/Back.png");
 		
 		int larguraDesejada = 10;
 		int alturaDesejada = 10;
@@ -63,10 +65,14 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		Image imagemRedimensionada = icon.getImage().getScaledInstance(larguraDesejada, alturaDesejada, Image.SCALE_SMOOTH);
 		Image imagemRedimensionada2 = icon2.getImage().getScaledInstance(larguraDesejada, alturaDesejada, Image.SCALE_SMOOTH);
 		Image imagemRedimensionada3 = icon3.getImage().getScaledInstance(larguraDesejada, alturaDesejada, Image.SCALE_SMOOTH);
+		Image imagemRedimensionada4 = icon4.getImage().getScaledInstance(larguraDesejada, alturaDesejada, Image.SCALE_SMOOTH);
+		Image imagemRedimensionada5 = icon5.getImage().getScaledInstance(larguraDesejada, alturaDesejada, Image.SCALE_SMOOTH);
 		
 		ImageIcon novoIcon = new ImageIcon(imagemRedimensionada);
 		ImageIcon novoIcon2 = new ImageIcon(imagemRedimensionada2);
 		ImageIcon novoIcon3 = new ImageIcon(imagemRedimensionada3);
+		ImageIcon novoIcon4 = new ImageIcon(imagemRedimensionada4);
+		ImageIcon novoIcon5 = new ImageIcon(imagemRedimensionada5);
 		
 		jl_nome = new JLabel("Nome :");
 		jt_nome = new JTextField(15);
@@ -86,8 +92,10 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		bt_Eliminar.setText("Remover");
 		bt_Editar = new JButton(novoIcon3);
 		bt_Editar.setText("Edita");
-		bt_filtrar = new JButton("Filtrar");
-		bt_Voltar = new JButton("Voltar");
+		bt_filtrar = new JButton(novoIcon4);
+		bt_filtrar.setText("Filtrar");
+		bt_Voltar = new JButton(novoIcon5);
+		bt_Voltar.setText("Voltar");
 
 		bt_Criar.addActionListener(this);
 		bt_Eliminar.addActionListener(this);
