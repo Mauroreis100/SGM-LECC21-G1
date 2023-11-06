@@ -153,7 +153,7 @@ public class ListaArmazem extends JFrame implements ActionListener {
 			if (!(jt_tipoProduto.getText().equals("") && jt_cell.getText().equals(""))) {
 				// SE O Tipo de Produto FOR IGUAL A UM CLIENTE JA EXISTENTE
 				if (crudArmazem.existe(jt_tipoProduto.getText(), temp)) {
-					JOptionPane.showMessageDialog(null, "O Armazem com Tipo de Produto " + jt_tipoProduto.getText() + " já existe", "ATENÇÃO",
+					JOptionPane.showMessageDialog(null, "O produto com nome existe" + jt_nome.getText() + " já existe", "ATENÇÃO",
 							JOptionPane.WARNING_MESSAGE); // OK
 				}
 		
