@@ -12,6 +12,7 @@ public class Produto implements Serializable {
 	private int vendas=0;// Váriavel que conta, quantas vezes o produto foi vendido
 //	private String ou int de Fornecedor
 	private double preco;
+	//PRAZO DE VALIDADE
 
 	/*
 	 * No momento que lês para inserir um produto no vector Decidi não lidar com a
