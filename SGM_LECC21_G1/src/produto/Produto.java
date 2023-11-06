@@ -109,8 +109,13 @@ public Produto() {}
 
 	@Override
 	public String toString() {
-		return "Produto [codigoProd=" + codigoProd + ", nome=" + nome + ", qtd=" + qtd + ", vendas=" + vendas
-				+ ", preco=" + preco + "]\n";
+		return nome+"\t\t"+preco+"\t"+qtd+"\t"+preco+"\t\t"+(preco*qtd)+"\n";
+	}
+	public String printProduto() {
+		
+		return "Produto [codigoProd=" + codigoProd + ", armazen_nr=" + armazen_nr + ", nome=" + nome + ", foto=" + foto
+				+ ", stockMinimo=" + stockMinimo + ", fornecedor=" + fornecedor + ", qtd=" + qtd + ", vendas=" + vendas
+				+ ", preco=" + preco + "]";
 	}
 	
 }
