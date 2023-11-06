@@ -1,9 +1,24 @@
 package armazem;
+import java.io.Serializable;
+public class Armazem implements Serializable{
 
-public class Armazem {
+	private String nome, tipoProduto;
+	private int id, quantidade;
+	
 
-	private String nome;
-	private int id ;
+	
+	public String getTipoProduto() {
+		return tipoProduto;
+	}
+	public void setTipoProduto(String tipoProduto) {
+		this.tipoProduto = tipoProduto;
+	}
+	public int getQuantidade() {
+		return quantidade;
+	}
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
+	}
 	public String getNome() {
 		return nome;
 	}
