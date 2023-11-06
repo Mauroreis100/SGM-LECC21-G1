@@ -102,12 +102,17 @@ public class Compra extends JFrame implements ActionListener, MouseListener {
 				System.out.println("MY BALLZ");
 			}
 		}
-	}
-
+	}  
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		  if (e.getSource() == jt_produtos) {
+		        int row = jt_produtos.getSelectedRow(); // Get the selected row
+		        if (row >= 0) {
+		            String productID = (String) jt_produtos.getValueAt(row, 0); // Get the ID from the selected row
+		            System.out.println("Selected Product ID: " + productID);
+		        }
+		    }
 	}
 
 	@Override
@@ -134,4 +139,4 @@ public class Compra extends JFrame implements ActionListener, MouseListener {
 		
 	}
 
-}
+}   
