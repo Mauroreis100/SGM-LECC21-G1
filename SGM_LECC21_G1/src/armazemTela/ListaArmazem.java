@@ -210,7 +210,7 @@ public class ListaArmazem extends JFrame implements ActionListener {
 			//PROCURA /VERIFICA SE O CODIGO EXISTE
 			if (codigo <= temp.size()) {
 				if (armazemC != null) {
-					new EditarArmazem(arm);
+					new EditarArmazem(armazemC);
 					this.setVisible(false);
 				}
 			} else {
