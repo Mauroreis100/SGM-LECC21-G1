@@ -37,7 +37,7 @@ public class NumeroFiltro extends JFrame implements ActionListener {
 		jl_f = new JLabel("Insira o numero que pretende filtar");
 		jtf_se = new JTextField(15);
 		jt_nome_bt = new JButton("Procura");
-
+		
 		jt_nome_bt.addActionListener(this);
 		// -----DEFINIÇÕES DA JANELA*INICIO-------
 		this.setTitle("Numero");// O tittulo da janela.
