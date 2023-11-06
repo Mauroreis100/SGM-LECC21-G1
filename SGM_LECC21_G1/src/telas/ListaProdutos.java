@@ -48,7 +48,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	private JTable jt_produtos;
 
 	// Column Names
-	private String[] coluna = { "Código", "Nome", "Quantidade", "Preço", "Vendidos", "Action" };
+	private String[] coluna = { "Código", "Nome", "Quantidade", "Preço", "Vendidos" };
 
 	public ListaProdutos() {
 		jf_registrar = new JFrame();
@@ -78,7 +78,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		bt_Criar = new JButton("REGISTRAR NOVO PRODUTO");
 		bt_Editar = new JButton("EDITAR PRODUTO");
 		bt_Eliminar = new JButton("ELIMINAR PRODUTO");
-
+		bt_filtrar = new JButton("FILTRAR POR");
 		jp_tabela = new JPanel();
 		jp_butoes = new JPanel();
 
@@ -103,6 +103,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		bt_Criar.addActionListener(this);
 		bt_Editar.addActionListener(this);
 		bt_Eliminar.addActionListener(this);
+		bt_filtrar.addActionListener(this);
 		// ----ACTION LISTENERS*FIM----------
 		// -----MOUSE LISNETERS*INICIO--------
 		tf_nome.addMouseListener(this);
@@ -139,12 +140,15 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		jp_butoes.add(bt_Criar);
 		jp_butoes.add(bt_Editar);
 		jp_butoes.add(bt_Eliminar);
+		jp_butoes.add(bt_filtrar);
+		jp_butoes.add(new JSeparator());
 
 		jp_tabela.setLayout(new FlowLayout());
 //		for (int i = 0; i < 3; i++) {
 //			jp_tabela.add(new JButton("Botão"));
 //		}
 		jf_registrar.add(jp_butoes, BorderLayout.SOUTH);
+
 		jf_registrar.add(jp_form, BorderLayout.NORTH);
 ////		jf_registrar.add(jp_tabela);
 		jf_registrar.setVisible(true);
@@ -207,7 +211,8 @@ public class ListaProdutos implements ActionListener, MouseListener {
 			}
 		}
 		if (e.getSource() == bt_Editar) {
-			int codigo = Integer.parseInt(JOptionPane.showInputDialog("INSIRA O CÓDIGO DO PRODUTO QUE PRETENDE EDITAR"));
+			int codigo = Integer
+					.parseInt(JOptionPane.showInputDialog("INSIRA O CÓDIGO DO PRODUTO QUE PRETENDE EDITAR"));
 			Produto prod = crudProduto.produtoStock(codigo, temp);
 			if (prod != null) {
 				new Editar_Produto(prod);
@@ -236,6 +241,9 @@ public class ListaProdutos implements ActionListener, MouseListener {
 						JOptionPane.WARNING_MESSAGE); // OK
 			}
 
+		}
+		if (e.getSource() == bt_filtrar) {
+			System.out.println("REAL");
 		}
 
 	}
