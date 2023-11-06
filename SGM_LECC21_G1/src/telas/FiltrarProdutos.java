@@ -24,7 +24,8 @@ public class FiltrarProdutos extends JFrame implements ActionListener {
 	private JTextField tf_codigo,tf_nome;
 
 	private JButton jt_nome_bt;
-
+	private JRadioButton jrb_nome, jrb_id;
+	private ButtonGroup bg_select;
 	private String[] coluna = { "Código", "Nome", "Quantidade", "Preço", "Vendidos" };
 
 	public FiltrarProdutos(Vector lista) {
@@ -33,9 +34,13 @@ public class FiltrarProdutos extends JFrame implements ActionListener {
 		lb_nome=new JLabel("Nome:");
 		tf_nome=new JTextField(8);
 		lb_id=new JLabel("ID:");
-		tf_codigo = new JTextField(15);
+		tf_codigo = new JTextField(5);
 		jt_nome_bt = new JButton("Procura");
-
+		jrb_nome = new JRadioButton("ID");
+		jrb_id = new JRadioButton("NOME");
+		bg_select = new ButtonGroup();
+		bg_select.add(jrb_nome);
+		bg_select.add(jrb_id);
 		jt_nome_bt.addActionListener(this);
 		// -----DEFINIÇÕES DA JANELA*INICIO-------
 		this.setTitle("Filtrar por");// O tittulo da janela.
@@ -65,7 +70,9 @@ public class FiltrarProdutos extends JFrame implements ActionListener {
 		}
 		JScrollPane sp = new JScrollPane(jt_Clientes);
 		this.add(sp, BorderLayout.CENTER);
-
+		JPanel rb=new JPanel();
+	
+		this.add(rb,BorderLayout.SOUTH);
 		this.setVisible(true);
 	}
 
@@ -128,5 +135,6 @@ public class FiltrarProdutos extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Pesquisa Vazia!", "",JOptionPane.WARNING_MESSAGE); 
 			}
 		}
+	
 	}
 

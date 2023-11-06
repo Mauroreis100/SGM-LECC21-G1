@@ -91,10 +91,10 @@ public class OperacoesProduto implements Operacoes {
 
 	public Vector filtrarNomes(String nome, Vector vec) {
 		nome = nome.replace(" ", "");
-		
+		nome=nome.toLowerCase();
 		Vector vectorNomes = new Vector();
 		for (int i = 0; i < vec.size(); i++) {
-			if ((((Produto) vec.get(i)).getNome()).startsWith(nome)) {
+			if ((((Produto) vec.get(i)).getNome()).toLowerCase().startsWith(nome)) {
 				vectorNomes.add((Produto)vec.get(i));
 			}
 		}
