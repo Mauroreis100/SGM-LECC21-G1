@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import menu.Menu__Prin;
+
 public class Autenticar extends JFrame implements ActionListener{
 	private JLabel jl_user,jl_pass;
 	private JTextField jt_user;
@@ -51,9 +53,9 @@ public class Autenticar extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource()==jb_acess) {
-			if(jt_user.getText().equals("Admin")&&jp_pass.getText().equals("12345")) {
+			if(jt_user.getText().equals("Admin")&&jp_pass.getText().equals("0000")) {
 				//-Inserção do nosso Menu ao inves de ListaProdutos
-				new ListaProdutos();
+				new Menu__Prin();
 				this.setVisible(false);
 				
 			}else {

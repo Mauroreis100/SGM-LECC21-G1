@@ -13,6 +13,7 @@ import javax.swing.*;
 import clientes.Cliente;
 import clientes.ClienteOperacoes;
 import excepcoes.CampoVazioException;
+import menu.Menu__Prin;
 
 public class ListaClientes extends JFrame implements ActionListener {
 	ClienteOperacoes crudCliente = new ClienteOperacoes();
@@ -160,7 +161,7 @@ public class ListaClientes extends JFrame implements ActionListener {
 
 				} else {
 					// Inserção do ID de forma dinamico
-					jt_id.setText((temp.size() + 1) + "");
+					jt_id.setText(((Cliente)temp.lastElement()).getId()+1+ "");
 					// FIX HERE. VIMOS SOLUÇÃO JUNTOS!!!
 					cliente = new Cliente(Integer.parseInt(jt_id.getText()), jt_nome.getText(), jt_BI.getText(),
 							jt_cell.getText(), Double.parseDouble(jt_saldo.getText())); // Preenchendo
@@ -223,7 +224,8 @@ public class ListaClientes extends JFrame implements ActionListener {
 			new FiltrarClientes();
 		}
 		if(e.getSource()==bt_Voltar) {
-			//new Menu();
+			this.setVisible(false);
+			new Menu__Prin();
 		}
 	}
 }
