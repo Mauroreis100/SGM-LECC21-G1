@@ -14,6 +14,7 @@ import javax.swing.*;
 import produto.Produto;
 import armazem.Armazem;
 import armazem.ArmazemOperacoes;
+import clientes.Cliente;
 import armazem.ArmazemOperacoes;
 import excepcoes.CampoVazioException;
 
@@ -46,7 +47,7 @@ public class ListaArmazem extends JFrame implements ActionListener {
 	private JTable jt_Armazems;
 
 	// Column Names
-	private String[] coluna = { "Código", "Nome", "Tipo de Produto", "Telefone", "Quantidade" };
+	private String[] coluna = { "Código", "Nome", "Tipo de Produto", "Quantidade" };
 
 	public ListaArmazem() {
 		jl_nome = new JLabel("Nome :");
@@ -56,8 +57,8 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		jt_id.setEditable(false);
 		jl_tipoProduto = new JLabel("Tipo de Produto :");
 		jt_tipoProduto = new JTextField(15);
-		jl_cell = new JLabel("Telefone :");
-		jt_cell = new JTextField(15);
+//		jl_cell = new JLabel("Telefone :");
+//		jt_cell = new JTextField(15);
 		jl_quantidade = new JLabel("Quantidade :");
 		jt_quantidade = new JTextField(15);
 
@@ -92,7 +93,7 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		this.setSize(1280, 720);// Width and Height em pixels.[Comprimento, Largura]
 		this.setLocation(100, 100);// Onde o programa vai arrancar
 		this.setLocationRelativeTo(null);// Onde o programa vai arrancar
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// Quando o utilizador clicar no x. Mata todos os
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// Quando o utilizador armazemCcar no x. Mata todos os
 
 		jp_top = new JPanel();
 		jp_top.add(jl_id);
@@ -101,8 +102,8 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		jp_top.add(jt_nome);
 		jp_top.add(jl_tipoProduto);
 		jp_top.add(jt_tipoProduto);
-		jp_top.add(jl_cell);
-		jp_top.add(jt_cell);
+//		jp_top.add(jl_cell);
+//		jp_top.add(jt_cell);
 		jp_top.add(jl_quantidade);
 		jp_top.add(jt_quantidade);
 		jp_top.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -155,19 +156,14 @@ public class ListaArmazem extends JFrame implements ActionListener {
 					JOptionPane.showMessageDialog(null, "O Armazem com Tipo de Produto " + jt_tipoProduto.getText() + " já existe", "ATENÇÃO",
 							JOptionPane.WARNING_MESSAGE); // OK
 				}
-				// SE O NUMERO FOR IGUAL A UM JA EXISTENTE
-				else if (crudArmazem.existe(jt_cell.getText(), temp)) {
-					JOptionPane.showMessageDialog(null, "O Armazem com o numero " + jt_cell.getText() + " já existe",
-							"ATENÇÃO", JOptionPane.WARNING_MESSAGE); // OK) {
-
-				} else {
+		
+				 else {
 					// Inserção do ID de forma dinamico
-					jt_id.setText((temp.size() + 1) + "");
-					// FIX HERE. VIMOS SOLUÇÃO JUNTOS!!!
-					arm = new Armazem(); // Preenchendo
-					// objecto
-					// com o
-					// formulário
+					 jt_id.setText((temp.size() + 1) + "");
+					 
+					 arm = new Armazem(Integer.parseInt(jt_id.getText()), jt_nome.getText(), jt_tipoProduto.getText(),
+								 Integer.parseInt(jt_quantidade.getText())); // Preenchendo
+					
 					temp.add(arm);// Actualização do vector temporário com o novo objecto
 					if (crudArmazem.gravarObjecto(temp)) {//
 						JOptionPane.showMessageDialog(null, "Armazem Registrado com sucesso", "SUCESSO",
@@ -185,10 +181,10 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		
 		if (e.getSource() == bt_Editar) {
 			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Armazem que pretende editar"));
-			Armazem cli = crudArmazem.produtoStock(codigo, temp);
+			Armazem armazemC = crudArmazem.produtoStock(codigo, temp);
 			//PROCURA /VERIFICA SE O CODIGO EXISTE
 			if (codigo <= temp.size()) {
-				if (cli != null) {
+				if (armazemC != null) {
 					new EditarArmazem(arm);
 					this.setVisible(false);
 				}
@@ -200,13 +196,13 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		if (e.getSource() == bt_Eliminar) {
 			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Armazem que pretende eliminar"));
 			// VERIFICAÇÃO DE EXISTÊNCIA
-			Armazem cli = crudArmazem.produtoStock(codigo, temp);
+			Armazem armazemC = crudArmazem.produtoStock(codigo, temp);
 			
 			int a=crudArmazem.procurarCodigo(temp,codigo);
 			if (a!=-1) {
-				if (cli != null) {
+				if (armazemC != null) {
 					int opcao = JOptionPane.showConfirmDialog(null,
-							"Confirma que pretende apagar o arm  " + cli.getNome() + " do sistema?", "ELIMINAR",
+							"Confirma que pretende apagar o arm  " + armazemC.getNome() + " do sistema?", "ELIMINAR",
 							JOptionPane.YES_NO_OPTION);// YES apaga mesmo e NO não faz nada,
 					if (opcao == 0) {
 						crudArmazem.gravarObjecto(crudArmazem.removerObjecto(temp, codigo));// GRAVA UMA REMOÇÃO FEITA

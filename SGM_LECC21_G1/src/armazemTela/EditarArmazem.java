@@ -25,14 +25,14 @@ public class EditarArmazem extends JFrame implements ActionListener {
 
 	private JLabel jl_nome;
 	private JLabel jl_id;
-	private JLabel jl_BI;
-	private JLabel jl_saldo;
+	private JLabel jl_tipoProduto;
+	private JLabel jl_quantidade;
 	private JLabel jl_cell;
 
 	private JTextField jt_nome;
 	private JTextField jt_id;
-	private JTextField jt_BI;
-	private JTextField jt_saldo;
+	private JTextField jt_tipoProduto;
+	private JTextField jt_quantidade;
 	private JTextField jt_cell;
 
 	private JButton bt_Edite;
@@ -44,13 +44,13 @@ public class EditarArmazem extends JFrame implements ActionListener {
 		jl_id = new JLabel("codigo :");
 		jt_id = new JTextField(armazem.getId() + "");
 		jt_id.setEditable(false);
-		jl_BI = new JLabel("BI :");
-//		jt_BI = new JTextField(armazem.getBI() + "");
-//		jt_BI.setEditable(false);
+		jl_tipoProduto = new JLabel("Tipo de Produto :");
+		jt_tipoProduto = new JTextField(armazem.getTipoProduto() + "");
+		jt_tipoProduto.setEditable(false);
 //		jl_cell = new JLabel("Telefone :");
 //		jt_cell = new JTextField(armazem.getCell() + "");
-//		jl_saldo = new JLabel("Saldo :");
-//		jt_saldo = new JTextField(armazem.getSaldo() + "");
+//		jl_quantidade = new JLabel("Quantidade :");
+		jt_quantidade = new JTextField(armazem.getQuantidade() + "");
 
 		bt_Edite = new JButton("Editar");
 		bt_Cancela = new JButton("Cancelar");
@@ -69,12 +69,12 @@ public class EditarArmazem extends JFrame implements ActionListener {
 		this.add(jt_id);
 		this.add(jl_nome);
 		this.add(jt_nome);
-		this.add(jl_BI);
-		this.add(jt_BI);
+		this.add(jl_tipoProduto);
+		this.add(jt_tipoProduto);
 		this.add(jl_cell);
 		this.add(jt_cell);
-		this.add(jl_saldo);
-		this.add(jt_saldo);
+		this.add(jl_quantidade);
+		this.add(jt_quantidade);
 		this.add(bt_Cancela);
 		this.add(bt_Edite);
 
@@ -89,14 +89,14 @@ public class EditarArmazem extends JFrame implements ActionListener {
 			this.setVisible(false);
 		}
 		if ((e.getSource() == bt_Edite)) {
-			if (!(jt_nome.getText().isBlank() && jt_BI.getText().isBlank() && jt_cell.getText().isBlank()&& jt_saldo.getText().isBlank())) {
+			if (!(jt_nome.getText().isBlank() && jt_tipoProduto.getText().isBlank() && jt_cell.getText().isBlank()&& jt_quantidade.getText().isBlank())) {
 				int posicaoClienteVector = crudArmazem.procurarCodigo(temp, Integer.parseInt(jt_id.getText()));
 				if (posicaoClienteVector != -1) {
 					Armazem armazemente = (Armazem) temp.get(posicaoClienteVector);
 						armazemente.setNome(jt_nome.getText());
-//						armazemente.setBI(jt_BI.getText());
+//						armazemente.setBI(jt_tipoProduto.getText());
 //						armazemente.setCell(jt_cell.getText());
-//						armazemente.setSaldo(Double.parseDouble(jt_saldo.getText()));
+//						armazemente.setSaldo(Double.parseDouble(jt_quantidade.getText()));
 						temp.set(posicaoClienteVector, armazemente);
 						crudArmazem.gravarObjecto(temp);
 						JOptionPane.showMessageDialog(null, "Cliente Modificado com sucesso!", "SUCESSO",JOptionPane.INFORMATION_MESSAGE); // OK
