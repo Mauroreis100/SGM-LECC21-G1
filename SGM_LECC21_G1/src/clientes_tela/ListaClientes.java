@@ -132,14 +132,13 @@ public class ListaClientes extends JFrame implements ActionListener {
 
 		String[][] dados = new String[temp.size()][6];
 		for (int i = 0; i < temp.size(); i++) {
-			for (int j = 0; j < 5; j++) {
 				dados[i][0] = (((Cliente) temp.get(i)).getId()) + "";
 				dados[i][1] = (((Cliente) temp.get(i)).getNome()) + "";
 				dados[i][2] = (((Cliente) temp.get(i)).getBI()) + "";
 				dados[i][3] = (((Cliente) temp.get(i)).getCell()) + "";
 				dados[i][4] = (((Cliente) temp.get(i)).getSaldo()) + "";
 				System.out.println(((Cliente) temp.get(i)).toString());
-			}
+			
 		}
 		return dados;// O CONSTRUTOR RETORNA A LISTA MULTIDIMENSIONAL
 
