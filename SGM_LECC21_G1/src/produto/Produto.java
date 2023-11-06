@@ -3,13 +3,13 @@ package produto;
 import java.io.Serializable;
 
 public class Produto implements Serializable {
-	private int codigoProd;
+	private int codigoProd, armazen_nr;
 	private String nome;
 	private String foto;
-	private int stockMinimo;
+	private int stockMinimo=5;
 	private String fornecedor;
 	private int qtd;
-	private int vendas;// Váriavel que conta, quantas vezes o produto foi vendido
+	private int vendas=0;// Váriavel que conta, quantas vezes o produto foi vendido
 //	private String ou int de Fornecedor
 	private double preco;
 
@@ -20,12 +20,15 @@ public class Produto implements Serializable {
 	 * seria devolver o produto a prateleira
 	 */
 public Produto() {}
-	public Produto(int codigoProd, String nome, int qtd, double preco) {
+	public Produto(int codigoProd,int armazen_nr, String nome, int qtd, double preco,int vendas, String fornecedor) {
 		this.codigoProd = codigoProd;
 		this.nome = nome;
+		this.armazen_nr=armazen_nr;
 		this.qtd = qtd;
+		this.stockMinimo=5;
 		this.preco = preco;
-		
+		this.vendas=vendas;
+		this.fornecedor=fornecedor;
 	}
 //	public Produto(int stockMinimo,	String fornecedor, String foto) {
 //		this.fornecedor=fornecedor;
@@ -33,6 +36,36 @@ public Produto() {}
 //		this.stockMinimo=stockMinimo;
 //	}
 
+	public int getArmazen_nr() {
+		return armazen_nr;
+	}
+	public void setArmazen_nr(int armazen_nr) {
+		this.armazen_nr = armazen_nr;
+	}
+	public int getCodigoProd() {
+		return codigoProd;
+	}
+	public void setCodigoProd(int codigoProd) {
+		this.codigoProd = codigoProd;
+	}
+	public String getFoto() {
+		return foto;
+	}
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+	public int getStockMinimo() {
+		return stockMinimo;
+	}
+	public void setStockMinimo(int stockMinimo) {
+		this.stockMinimo = stockMinimo;
+	}
+	public String getFornecedor() {
+		return fornecedor;
+	}
+	public void setFornecedor(String fornecedor) {
+		this.fornecedor = fornecedor;
+	}
 	public int getVendas() {
 		return vendas;
 	}
