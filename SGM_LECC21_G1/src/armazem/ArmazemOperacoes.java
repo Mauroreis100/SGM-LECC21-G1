@@ -100,17 +100,7 @@ public class ArmazemOperacoes implements Operacoes {
 
 	}
 
-	public void armazemUpdateTipoProduto(String nome, String tipoProduto, Vector lista) {
 
-		for (int i = 0; i < lista.size(); i++) {
-
-			if (((Armazem) lista.get(i)).getNome() == nome) {
-				((Armazem) lista.get(i)).setTipoProduto(tipoProduto);
-
-			}
-		}
-
-	}
 
 	public Armazem produtoStock(int id, Vector lista) {
 		// TODO Auto-generated method stub

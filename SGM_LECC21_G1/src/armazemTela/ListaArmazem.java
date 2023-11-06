@@ -1,10 +1,10 @@
 package armazemTela;
 
 
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -14,6 +14,7 @@ import javax.swing.*;
 import produto.Produto;
 import armazem.Armazem;
 import armazem.ArmazemOperacoes;
+import clientes.Cliente;
 import armazem.ArmazemOperacoes;
 import excepcoes.CampoVazioException;
 
@@ -22,15 +23,16 @@ public class ListaArmazem extends JFrame implements ActionListener {
 	Vector temp = crudArmazem.recuperarBD();// Preenchumento do vector de objectos do ficheiro na lista
 
 	Armazem arm = new Armazem();// temporaria no progra
+
 	private JLabel jl_nome;
 	private JLabel jl_id;
-	private JLabel jl_tipoProduto;
+	
 	private JLabel jl_quantidade;
-	private JLabel jl_cell;
+	//private JLabel jl_cell;
 
 	private JTextField jt_nome;
 	private JTextField jt_id;
-	private JTextField jt_tipoProduto;
+
 	private JTextField jt_quantidade;
 	private JTextField jt_cell;
 
@@ -46,26 +48,52 @@ public class ListaArmazem extends JFrame implements ActionListener {
 	private JTable jt_Armazems;
 
 	// Column Names
-	private String[] coluna = { "Código", "Nome", "Tipo de Produto", "Telefone", "Quantidade" };
+	private String[] coluna = { "Código", "Nome" , "Quantidade" };
 
 	public ListaArmazem() {
+
+		ImageIcon icon = new ImageIcon("assets/icons/delete_garbage.png");
+		ImageIcon icon2 = new ImageIcon("assets/icons/save_disk.png");
+		ImageIcon icon3 = new ImageIcon("assets/icons/edit.png");
+		ImageIcon icon4 = new ImageIcon("assets/icons/filter_funil.png");
+		ImageIcon icon5 = new ImageIcon("assets/icons/Back.png");
+		
+		int larguraDesejada = 10;
+		int alturaDesejada = 10;
+
+		Image imagemRedimensionada = icon.getImage().getScaledInstance(larguraDesejada, alturaDesejada, Image.SCALE_SMOOTH);
+		Image imagemRedimensionada2 = icon2.getImage().getScaledInstance(larguraDesejada, alturaDesejada, Image.SCALE_SMOOTH);
+		Image imagemRedimensionada3 = icon3.getImage().getScaledInstance(larguraDesejada, alturaDesejada, Image.SCALE_SMOOTH);
+		Image imagemRedimensionada4 = icon4.getImage().getScaledInstance(larguraDesejada, alturaDesejada, Image.SCALE_SMOOTH);
+		Image imagemRedimensionada5 = icon5.getImage().getScaledInstance(larguraDesejada, alturaDesejada, Image.SCALE_SMOOTH);
+		
+		ImageIcon novoIcon = new ImageIcon(imagemRedimensionada);
+		ImageIcon novoIcon2 = new ImageIcon(imagemRedimensionada2);
+		ImageIcon novoIcon3 = new ImageIcon(imagemRedimensionada3);
+		ImageIcon novoIcon4 = new ImageIcon(imagemRedimensionada4);
+		ImageIcon novoIcon5 = new ImageIcon(imagemRedimensionada5);
+		
 		jl_nome = new JLabel("Nome :");
 		jt_nome = new JTextField(15);
 		jl_id = new JLabel("codigo :");
 		jt_id = new JTextField(5);
 		jt_id.setEditable(false);
-		jl_tipoProduto = new JLabel("Tipo de Produto :");
-		jt_tipoProduto = new JTextField(15);
-		jl_cell = new JLabel("Telefone :");
-		jt_cell = new JTextField(15);
+
+		//		jl_cell = new JLabel("Telefone :");
+		//		jt_cell = new JTextField(15);
 		jl_quantidade = new JLabel("Quantidade :");
 		jt_quantidade = new JTextField(15);
 
-		bt_Criar = new JButton("Registra");
-		bt_Eliminar = new JButton("Remover");
-		bt_Editar = new JButton("Edita");
-		bt_filtrar = new JButton("Filtrar");
-		bt_Voltar = new JButton("Voltar");
+		bt_Criar = new JButton(novoIcon2);
+		bt_Criar.setText("Registra");
+		bt_Eliminar = new JButton(novoIcon);
+		bt_Eliminar.setText("Remover");
+		bt_Editar = new JButton(novoIcon3);
+		bt_Editar.setText("Edita");
+		bt_filtrar = new JButton(novoIcon4);
+		bt_filtrar.setText("Filtrar");
+		bt_Voltar = new JButton(novoIcon5);
+		bt_Voltar.setText("Voltar");
 
 		bt_Criar.addActionListener(this);
 		bt_Eliminar.addActionListener(this);
@@ -92,19 +120,18 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		this.setSize(1280, 720);// Width and Height em pixels.[Comprimento, Largura]
 		this.setLocation(100, 100);// Onde o programa vai arrancar
 		this.setLocationRelativeTo(null);// Onde o programa vai arrancar
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// Quando o utilizador clicar no x. Mata todos os
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// Quando o utilizador armazemCcar no x. Mata todos os
 
 		jp_top = new JPanel();
 		jp_top.add(jl_id);
 		jp_top.add(jt_id);
 		jp_top.add(jl_nome);
 		jp_top.add(jt_nome);
-		jp_top.add(jl_tipoProduto);
-		jp_top.add(jt_tipoProduto);
-		jp_top.add(jl_cell);
-		jp_top.add(jt_cell);
-		jp_top.add(jl_quantidade);
-		jp_top.add(jt_quantidade);
+		
+		
+		
+//		jp_top.add(jl_quantidade);
+//		jp_top.add(jt_quantidade);
 		jp_top.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		jp_bottom = new JPanel();
@@ -131,16 +158,16 @@ public class ListaArmazem extends JFrame implements ActionListener {
 	}
 
 	private String[][] listaArmazems(Vector temp) {
-//ESTA IMPLEMENTAÇÃO COLOCA TODOS OS DADOS DO VECTOR NUMA LISTA MULTIDIMENSIONAL PARA A TABELA
+		//ESTA IMPLEMENTAÇÃO COLOCA TODOS OS DADOS DO VECTOR NUMA LISTA MULTIDIMENSIONAL PARA A TABELA
 
 		String[][] dados = new String[temp.size()][6];
 		for (int i = 0; i < temp.size(); i++) {
-				dados[i][0] = (((Armazem) temp.get(i)).getId()) + "";
-				dados[i][1] = (((Armazem) temp.get(i)).getNome()) + "";
-				dados[i][2] = (((Armazem) temp.get(i)).getTipoProduto()) + "";
-				dados[i][3] = (((Armazem) temp.get(i)).getQuantidade()) + "";
-				System.out.println(((Armazem) temp.get(i)).toString());
+			dados[i][0] = (((Armazem) temp.get(i)).getId()) + "";
+			dados[i][1] = (((Armazem) temp.get(i)).getNome()) + "";
 			
+			dados[i][2] = (((Armazem) temp.get(i)).getQuantidade()) + "";
+			System.out.println(((Armazem) temp.get(i)).toString());
+
 		}
 		return dados;// O CONSTRUTOR RETORNA A LISTA MULTIDIMENSIONAL
 
@@ -149,25 +176,19 @@ public class ListaArmazem extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ((e.getSource() == bt_Criar)) {
-			if (!(jt_tipoProduto.getText().equals("") && jt_cell.getText().equals(""))) {
+			if (!(jt_nome.getText().equals("") && jt_cell.getText().equals(""))) {
 				// SE O Tipo de Produto FOR IGUAL A UM CLIENTE JA EXISTENTE
-				if (crudArmazem.existe(jt_tipoProduto.getText(), temp)) {
-					JOptionPane.showMessageDialog(null, "O Armazem com Tipo de Produto " + jt_tipoProduto.getText() + " já existe", "ATENÇÃO",
+				if (crudArmazem.existe(jt_nome.getText(), temp)) {
+					JOptionPane.showMessageDialog(null, "O produto com nome existe" + jt_nome.getText() + " já existe", "ATENÇÃO",
 							JOptionPane.WARNING_MESSAGE); // OK
 				}
-				// SE O NUMERO FOR IGUAL A UM JA EXISTENTE
-				else if (crudArmazem.existe(jt_cell.getText(), temp)) {
-					JOptionPane.showMessageDialog(null, "O Armazem com o numero " + jt_cell.getText() + " já existe",
-							"ATENÇÃO", JOptionPane.WARNING_MESSAGE); // OK) {
 
-				} else {
+				else {
 					// Inserção do ID de forma dinamico
 					jt_id.setText((temp.size() + 1) + "");
-					// FIX HERE. VIMOS SOLUÇÃO JUNTOS!!!
-					arm = new Armazem(); // Preenchendo
-					// objecto
-					// com o
-					// formulário
+
+					arm = new Armazem(Integer.parseInt(jt_id.getText()), jt_nome.getText()); // Preenchendo
+
 					temp.add(arm);// Actualização do vector temporário com o novo objecto
 					if (crudArmazem.gravarObjecto(temp)) {//
 						JOptionPane.showMessageDialog(null, "Armazem Registrado com sucesso", "SUCESSO",
@@ -182,14 +203,14 @@ public class ListaArmazem extends JFrame implements ActionListener {
 				throw new CampoVazioException("CAMPOS VAZIOS");
 			}
 		}
-		
+
 		if (e.getSource() == bt_Editar) {
 			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Armazem que pretende editar"));
-			Armazem cli = crudArmazem.produtoStock(codigo, temp);
+			Armazem armazemC = crudArmazem.produtoStock(codigo, temp);
 			//PROCURA /VERIFICA SE O CODIGO EXISTE
 			if (codigo <= temp.size()) {
-				if (cli != null) {
-					new EditarArmazem(arm);
+				if (armazemC != null) {
+					new EditarArmazem(armazemC);
 					this.setVisible(false);
 				}
 			} else {
@@ -200,13 +221,13 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		if (e.getSource() == bt_Eliminar) {
 			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Armazem que pretende eliminar"));
 			// VERIFICAÇÃO DE EXISTÊNCIA
-			Armazem cli = crudArmazem.produtoStock(codigo, temp);
-			
+			Armazem armazemC = crudArmazem.produtoStock(codigo, temp);
+
 			int a=crudArmazem.procurarCodigo(temp,codigo);
 			if (a!=-1) {
-				if (cli != null) {
+				if (armazemC != null) {
 					int opcao = JOptionPane.showConfirmDialog(null,
-							"Confirma que pretende apagar o arm  " + cli.getNome() + " do sistema?", "ELIMINAR",
+							"Confirma que pretende apagar o arm  " + armazemC.getNome() + " do sistema?", "ELIMINAR",
 							JOptionPane.YES_NO_OPTION);// YES apaga mesmo e NO não faz nada,
 					if (opcao == 0) {
 						crudArmazem.gravarObjecto(crudArmazem.removerObjecto(temp, codigo));// GRAVA UMA REMOÇÃO FEITA
@@ -221,11 +242,11 @@ public class ListaArmazem extends JFrame implements ActionListener {
 			}
 
 		}
-//		if(e.getSource()==bt_filtrar) {
-//			new FiltrarArmazems();
-//		}
-//		if(e.getSource()==bt_Voltar) {
-//			//new Menu();
-//		}
+		//		if(e.getSource()==bt_filtrar) {
+		//			new FiltrarArmazems();
+		//		}
+		//		if(e.getSource()==bt_Voltar) {
+		//			//new Menu();
+		//		}
 	}
 }

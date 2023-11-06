@@ -3,6 +3,7 @@ package clientes_tela;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -47,6 +48,15 @@ public class ListaClientes extends JFrame implements ActionListener {
 	private String[] coluna = { "Código", "Nome", "BI", "Telefone", "Saldo" };
 
 	public ListaClientes() {
+		ImageIcon icon = new ImageIcon("assets/icons/delete_garbage.png");
+		int larguraDesejada = 10;
+        int alturaDesejada = 10;
+        
+        Image imagemRedimensionada = icon.getImage().getScaledInstance(
+        larguraDesejada, alturaDesejada, Image.SCALE_SMOOTH);
+        
+        ImageIcon novoIcon = new ImageIcon(imagemRedimensionada);
+        
 		jl_nome = new JLabel("Nome :");
 		jt_nome = new JTextField(15);
 		jl_id = new JLabel("codigo :");
@@ -60,7 +70,8 @@ public class ListaClientes extends JFrame implements ActionListener {
 		jt_saldo = new JTextField(15);
 
 		bt_Criar = new JButton("Registra");
-		bt_Eliminar = new JButton("Remover");
+		bt_Eliminar = new JButton(novoIcon);
+		bt_Eliminar.setText("Remover");
 		bt_Editar = new JButton("Edita");
 		bt_filtrar = new JButton("Filtrar");
 		bt_Voltar = new JButton("Voltar");
