@@ -110,7 +110,7 @@ public Produto() {}
 	@Override
 	public String toString() {
 		return "Produto [codigoProd=" + codigoProd + ", nome=" + nome + ", qtd=" + qtd + ", vendas=" + vendas
-				+ ", preco=" + preco + "]";
+				+ ", preco=" + preco + "]\n";
 	}
 	
 }
