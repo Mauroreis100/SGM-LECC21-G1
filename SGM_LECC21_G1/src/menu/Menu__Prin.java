@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.JFrame;
 
 import clientes_tela.ListaClientes;
+import comprar.CompraSelect;
 
 public class Menu__Prin extends JFrame implements ActionListener {
 	private JButton jb1,jb2,jb3,jb4,jb5,jb6,jb7;
@@ -47,8 +48,8 @@ public class Menu__Prin extends JFrame implements ActionListener {
 
 		
 		this.setTitle("Menu");
-		this.setSize(600,750);
-		this.setLocation(350,50);
+		this.setSize(this.getMaximumSize());
+		this.setLocation(0,0);
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 		
@@ -110,8 +111,7 @@ public class Menu__Prin extends JFrame implements ActionListener {
 			new ListaClientes();
 		}
 		if(e.getSource()==jb6) {
-			this.setVisible(false);
-			//new ListaClientes();
+			new CompraSelect();
 		}
 		if(e.getSource()==jb5) {
 			System.exit(0);
