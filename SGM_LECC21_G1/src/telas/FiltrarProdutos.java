@@ -9,13 +9,15 @@ import javax.swing.*;
 
 import clientes.Cliente;
 import clientes.ClienteOperacoes;
+import produto.OperacoesProduto;
+import produto.Produto;
 
 public class FiltrarProdutos extends JFrame implements ActionListener {
-	ClienteOperacoes crudCliente = new ClienteOperacoes();
-	Vector temp = crudCliente.recuperarClientesBD();// Preenchumento do vector de objectos do ficheiro na lista
+	OperacoesProduto crudProduto= new OperacoesProduto();
+	Vector temp = crudProduto.recuperarBD();// Preenchumento do vector de objectos do ficheiro na lista
 	
 	
-	Cliente cliente = new Cliente();// temporaria no progra
+	Produto prod = new Produto();// temporaria no progra
 	private JTable jt_Clientes, jf_Clientes;
 	private JPanel jp;
 	private JLabel jl_filtrar,lb_nome,lb_id;
@@ -23,7 +25,7 @@ public class FiltrarProdutos extends JFrame implements ActionListener {
 
 	private JButton jt_nome_bt;
 
-	private String[] coluna = { "Código", "Nome", "BI", "Telefone", "Saldo" };
+	private String[] coluna = { "Código", "Nome", "Quantidade", "Preço", "Vendidos" };
 
 	public FiltrarProdutos() {
 //		jl_filtrar = new JLabel(":");
@@ -64,14 +66,12 @@ public class FiltrarProdutos extends JFrame implements ActionListener {
 	private void Tabela(Vector temp) {
 		String[][] dados = new String[temp.size()][6];
 		for (int i = 0; i < temp.size(); i++) {
-			for (int j = 0; j < 5; j++) {
-				dados[i][0] = (((Cliente) temp.get(i)).getId()) + "";
-				dados[i][1] = (((Cliente) temp.get(i)).getNome()) + "";
-				dados[i][2] = (((Cliente) temp.get(i)).getBI()) + "";
-				dados[i][3] = (((Cliente) temp.get(i)).getCell()) + "";
-				dados[i][4] = (((Cliente) temp.get(i)).getSaldo()) + "";
-				System.out.println(((Cliente) temp.get(i)).toString());
-			}
+		
+				dados[i][0] = (((Produto) temp.get(i)).getId()) + "";
+				dados[i][1] = (((Produto) temp.get(i)).getNome()) + "";
+				dados[i][2] = (((Produto) temp.get(i)).getQtd()) + "";
+				dados[i][3] = (((Produto) temp.get(i)).getPreco()) + "";
+				dados[i][4] = (((Produto) temp.get(i)).getQtd()) + "";
 		}
 		if (temp != null) {
 			jt_Clientes = new JTable(dados, coluna);
@@ -91,15 +91,13 @@ public class FiltrarProdutos extends JFrame implements ActionListener {
 			if (!(tf_codigo.getText().equals(""))) {
 				String[][] dados = new String[temp.size()][5];
 				for (int i = 0; i < temp.size(); i++) {
-					if (((Cliente) temp.get(i)).getNome().equalsIgnoreCase(tf_codigo.getText())) {
+					if (((Produto) temp.get(i)).getNome().equalsIgnoreCase(tf_codigo.getText())) {
 						for (int j = 0; j < 5; j++) {
-							dados[i][0] = (((Cliente) temp.get(i)).getId()) + "";
-							dados[i][1] = (((Cliente) temp.get(i)).getNome()) + "";
-							dados[i][2] = (((Cliente) temp.get(i)).getBI()) + "";
-							dados[i][3] = (((Cliente) temp.get(i)).getCell()) + "";
-							dados[i][4] = (((Cliente) temp.get(i)).getSaldo()) + "";
-							System.out.println(((Cliente) temp.get(i)).toString());
-			
+							dados[i][0] = (((Produto) temp.get(i)).getId()) + "";
+							dados[i][1] = (((Produto) temp.get(i)).getNome()) + "";
+							dados[i][2] = (((Produto) temp.get(i)).getQtd()) + "";
+							dados[i][3] = (((Produto) temp.get(i)).getPreco()) + "";
+							dados[i][4] = (((Produto) temp.get(i)).getQtd()) + "";
 						}
 					}
 				}

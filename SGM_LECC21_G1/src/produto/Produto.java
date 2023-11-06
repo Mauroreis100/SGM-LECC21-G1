@@ -6,6 +6,8 @@ public class Produto implements Serializable {
 	private int codigoProd;
 	private String nome;
 	private String foto;
+	private int stockMinimo;
+	private String fornecedor;
 	private int qtd;
 	private int vendas;// Váriavel que conta, quantas vezes o produto foi vendido
 //	private String ou int de Fornecedor
