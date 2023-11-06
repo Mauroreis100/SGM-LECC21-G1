@@ -11,16 +11,18 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.JFrame;
 
+import armazemTela.ListaArmazem;
 import clientes_tela.ListaClientes;
 import comprar.CompraSelect;
+import telas.ListaProdutos;
 
 public class Menu__Prin extends JFrame implements ActionListener {
 	private JButton jb1,jb2,jb3,jb4,jb5,jb6,jb7;
 	private JPanel jp,jp1,jp3,jp4;
-	private JLabel jl,jlemp,jl_img1,jl_img2,jlemp1,jl_img3;
-	private JPanel jp5,jp6;
+	private JLabel jl,jl_img1;
+
 	//IMAGENS
-	private ImageIcon img1,img2,img3,img4;
+	private ImageIcon img1;
 	
 	public Menu__Prin () {
 		jb1=new JButton("Armazém");
@@ -34,12 +36,6 @@ public class Menu__Prin extends JFrame implements ActionListener {
 		jl=new JLabel("MENU PRINCIPAL");
 		jl.setForeground(Color.GRAY);
 		jl.setFont(new Font("Times New Roman",Font.BOLD,40));
-		jlemp=new JLabel("We offer you the best and qulaity shooping expirience and help \r\n"
-				+ "Money can buy because we are legit the best and only formost");
-		jlemp1=new JLabel("We offer you the best and qulaity shooping expirience and help \r\n"
-				+ "Money can buy because we are legit the best and only formost");
-		jlemp.setFont(new Font("Times New Roman",getFont().PLAIN,12));
-		jlemp1.setFont(new Font("Times New Roman",getFont().PLAIN,12));
 		
 		jp=new JPanel();
 		jp1=new JPanel();
@@ -91,12 +87,13 @@ public class Menu__Prin extends JFrame implements ActionListener {
 	public static void main(String args[]) {
 		new Menu__Prin();
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource()==jb1) {
 			this.setVisible(false);
-			//new ListaClientes();
+			new ListaArmazem();
 		}
 		if(e.getSource()==jb2) {
 			this.setVisible(false);
@@ -104,7 +101,7 @@ public class Menu__Prin extends JFrame implements ActionListener {
 		}
 		if(e.getSource()==jb3) {
 			this.setVisible(false);
-			//new ListaClientes();
+			new ListaProdutos();
 		}
 		if(e.getSource()==jb4) {
 			this.setVisible(false);
@@ -112,6 +109,9 @@ public class Menu__Prin extends JFrame implements ActionListener {
 		}
 		if(e.getSource()==jb6) {
 			new CompraSelect();
+			Timer time=new Timer(90000 , null);
+			time.isRunning();
+			this.setVisible(false);
 		}
 		if(e.getSource()==jb5) {
 			System.exit(0);

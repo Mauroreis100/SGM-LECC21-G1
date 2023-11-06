@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import menu.Menu__Prin;
+
 public class CompraSelect extends JFrame implements ActionListener {
 	private JButton jb_nome;
 	private JButton jb_cell;

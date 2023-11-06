@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 
 import clientes.Cliente;
 import clientes.ClienteOperacoes;
+import menu.Menu__Prin;
 
 public class CompraSele extends JFrame implements ActionListener {
 	ClienteOperacoes crudCliente = new ClienteOperacoes();
@@ -60,6 +61,7 @@ public class CompraSele extends JFrame implements ActionListener {
 			jt_Clientes = new JTable(null);
 		}
 		this.add(jp, "North");
+		jt_Clientes.setEnabled(false);
 		JScrollPane sp = new JScrollPane(jt_Clientes);
 		this.add(sp, BorderLayout.CENTER);
 

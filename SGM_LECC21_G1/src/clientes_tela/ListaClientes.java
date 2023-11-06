@@ -82,6 +82,7 @@ public class ListaClientes extends JFrame implements ActionListener {
 			temp = new Vector<>();
 			jt_Clientes = new JTable(null);
 		}
+		jt_Clientes.setEnabled(false);
 		JScrollPane sp = new JScrollPane(jt_Clientes);
 		this.add(sp, BorderLayout.CENTER);
 

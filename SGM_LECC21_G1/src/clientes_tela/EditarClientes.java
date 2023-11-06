@@ -43,7 +43,7 @@ public class EditarClientes extends JFrame implements ActionListener {
 		jt_id.setEditable(false);
 		jl_BI = new JLabel("BI :");
 		jt_BI = new JTextField(cli.getBI() + "");
-		jt_BI.setEditable(false);
+		//jt_BI.setEditable(false);
 		jl_cell = new JLabel("Telefone :");
 		jt_cell = new JTextField(cli.getCell() + "");
 		jl_saldo = new JLabel("Saldo :");
