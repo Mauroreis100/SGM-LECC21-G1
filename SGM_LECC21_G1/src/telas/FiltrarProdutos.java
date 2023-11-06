@@ -9,30 +9,38 @@ import javax.swing.*;
 
 import clientes.Cliente;
 import clientes.ClienteOperacoes;
+import produto.OperacoesProduto;
+import produto.Produto;
 
 public class FiltrarProdutos extends JFrame implements ActionListener {
-	ClienteOperacoes crudCliente = new ClienteOperacoes();
-	Vector temp = crudCliente.recuperarClientesBD();// Preenchumento do vector de objectos do ficheiro na lista
+	OperacoesProduto crudProduto= new OperacoesProduto();
+	Vector temp = crudProduto.recuperarBD();// Preenchumento do vector de objectos do ficheiro na lista
 	
 	
-	Cliente cliente = new Cliente();// temporaria no progra
+	Produto prod = new Produto();// temporaria no progra
 	private JTable jt_Clientes, jf_Clientes;
 	private JPanel jp;
 	private JLabel jl_filtrar,lb_nome,lb_id;
 	private JTextField tf_codigo,tf_nome;
 
 	private JButton jt_nome_bt;
+	private JRadioButton jrb_nome, jrb_id;
+	private ButtonGroup bg_select;
+	private String[] coluna = { "Código", "Nome", "Quantidade", "Preço", "Vendidos" };
 
-	private String[] coluna = { "Código", "Nome", "BI", "Telefone", "Saldo" };
-
-	public FiltrarProdutos() {
+	public FiltrarProdutos(Vector lista) {
+	
 //		jl_filtrar = new JLabel(":");
 		lb_nome=new JLabel("Nome:");
 		tf_nome=new JTextField(8);
 		lb_id=new JLabel("ID:");
-		tf_codigo = new JTextField(15);
+		tf_codigo = new JTextField(5);
 		jt_nome_bt = new JButton("Procura");
-
+		jrb_nome = new JRadioButton("ID");
+		jrb_id = new JRadioButton("NOME");
+		bg_select = new ButtonGroup();
+		bg_select.add(jrb_nome);
+		bg_select.add(jrb_id);
 		jt_nome_bt.addActionListener(this);
 		// -----DEFINIÇÕES DA JANELA*INICIO-------
 		this.setTitle("Filtrar por");// O tittulo da janela.
@@ -54,24 +62,31 @@ public class FiltrarProdutos extends JFrame implements ActionListener {
 
 	
 		this.add(jp, "North");
-		Tabela(temp);
+		if(lista!=null) {
+			Tabela(lista);			
+		}else {
+			lista=new Vector();
+			jt_Clientes = new JTable(null);
+		}
 		JScrollPane sp = new JScrollPane(jt_Clientes);
 		this.add(sp, BorderLayout.CENTER);
-
+		JPanel rb=new JPanel();
+	
+		this.add(rb,BorderLayout.SOUTH);
 		this.setVisible(true);
 	}
 
+	public void closeJanela() {
+		this.setVisible(false);
+	}
 	private void Tabela(Vector temp) {
 		String[][] dados = new String[temp.size()][6];
 		for (int i = 0; i < temp.size(); i++) {
-			for (int j = 0; j < 5; j++) {
-				dados[i][0] = (((Cliente) temp.get(i)).getId()) + "";
-				dados[i][1] = (((Cliente) temp.get(i)).getNome()) + "";
-				dados[i][2] = (((Cliente) temp.get(i)).getBI()) + "";
-				dados[i][3] = (((Cliente) temp.get(i)).getCell()) + "";
-				dados[i][4] = (((Cliente) temp.get(i)).getSaldo()) + "";
-				System.out.println(((Cliente) temp.get(i)).toString());
-			}
+				dados[i][0] = (((Produto) temp.get(i)).getId()) + "";
+				dados[i][1] = (((Produto) temp.get(i)).getNome()) + "";
+				dados[i][2] = (((Produto) temp.get(i)).getQtd()) + "";
+				dados[i][3] = (((Produto) temp.get(i)).getPreco()) + "";
+				dados[i][4] = (((Produto) temp.get(i)).getQtd()) + "";
 		}
 		if (temp != null) {
 			jt_Clientes = new JTable(dados, coluna);
@@ -87,41 +102,39 @@ public class FiltrarProdutos extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == jt_nome_bt) {
-			this.setVisible(false);
-			if (!(tf_codigo.getText().equals(""))) {
-				String[][] dados = new String[temp.size()][5];
-				for (int i = 0; i < temp.size(); i++) {
-					if (((Cliente) temp.get(i)).getNome().equalsIgnoreCase(tf_codigo.getText())) {
-						for (int j = 0; j < 5; j++) {
-							dados[i][0] = (((Cliente) temp.get(i)).getId()) + "";
-							dados[i][1] = (((Cliente) temp.get(i)).getNome()) + "";
-							dados[i][2] = (((Cliente) temp.get(i)).getBI()) + "";
-							dados[i][3] = (((Cliente) temp.get(i)).getCell()) + "";
-							dados[i][4] = (((Cliente) temp.get(i)).getSaldo()) + "";
-							System.out.println(((Cliente) temp.get(i)).toString());
-			
-						}
-					}
-				}
-				JFrame jf=new JFrame();
-				JTable tb=new JTable(dados,coluna);
-				
-				jf.setTitle("Pesquisa de :  "+tf_codigo.getText());// O tittulo da janela.
-				jf.setSize(500, 500);// Width and Height em pixels.[Comprimento, Largura]
-				jf.setLocation(980, 500);// Onde o programa vai arrancar
-				jf.setLocationRelativeTo(null);// Onde o programa vai arrancar
-				jf.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);// Quando o utilizador clicar no x. Mata todos os
-				jf.setResizable(false);
-				jf.setLayout(new BorderLayout());
-				JScrollPane sp = new JScrollPane(tb);
-				jf.add(sp, BorderLayout.CENTER);
-				
-		
-				jf.setVisible(true);	
+			Vector nomes=crudProduto.filtrarNomes(tf_nome.getText(),temp);
+			closeJanela();
+			new FiltrarProdutos(nomes);
+//			this.setVisible(false);
+//			if (!(tf_nome.getText().equals(""))) {
+//				String[][] dados = new String[nomes.size()][5];
+//				for (int i = 0; i < nomes.size(); i++) {
+//
+//							dados[i][0] = (((Produto) nomes.get(i)).getId()) + "";
+//							dados[i][1] = (((Produto) nomes.get(i)).getNome()) + "";
+//							dados[i][2] = (((Produto) nomes.get(i)).getQtd()) + "";
+//							dados[i][3] = (((Produto) nomes.get(i)).getPreco()) + "";
+//							dados[i][4] = (((Produto) nomes.get(i)).getQtd()) + "";
+//				}
+//				JFrame jf=new JFrame();
+//				JTable tb=new JTable(dados,coluna);
+//				
+//				jf.setTitle("Pesquisa de :  "+tf_codigo.getText());// O tittulo da janela.
+//				jf.setSize(500, 500);// Width and Height em pixels.[Comprimento, Largura]
+//				jf.setLocation(980, 500);// Onde o programa vai arrancar
+//				jf.setLocationRelativeTo(null);// Onde o programa vai arrancar
+//				jf.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);// Quando o utilizador clicar no x. Mata todos os
+//				jf.setResizable(false);
+//				jf.setLayout(new BorderLayout());
+//				JScrollPane sp = new JScrollPane(tb);
+//				jf.add(sp, BorderLayout.CENTER);
+//				
+//		
+//				jf.setVisible(true);	
 			} else {
 				JOptionPane.showMessageDialog(null, "Pesquisa Vazia!", "",JOptionPane.WARNING_MESSAGE); 
 			}
 		}
+	
 	}
 
-}
