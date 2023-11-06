@@ -7,9 +7,12 @@ import produto.Produto;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.Vector;
 
-public class RegistrarProduto implements ActionListener {
+
+//
+public class RegistrarProduto extends JFrame implements ActionListener {
 	OperacoesProduto crudProduto = new OperacoesProduto();
 	Produto produto = new Produto();
 	private JFrame jf_registrar;
@@ -38,6 +41,7 @@ public class RegistrarProduto implements ActionListener {
 	private JButton bt_Criar;
 	private JButton bt_Cancelar;
 
+
 	public RegistrarProduto() {
 		jf_registrar = new JFrame();
 		jb_titulo = new JLabel("REGISTRE O PRODUTO");
@@ -50,7 +54,7 @@ public class RegistrarProduto implements ActionListener {
 		tf_nome = new JTextField(20);
 		tf_qtdInicial = new JTextField(20);
 		tf_preco = new JTextField(20);
-//		tf_codigo=new JTextField(20);
+
 
 		bt_Criar = new JButton("Criar");
 		bt_Cancelar = new JButton("Cancelar");
@@ -63,23 +67,26 @@ public class RegistrarProduto implements ActionListener {
 		jp_nome = new JPanel();
 
 		jp_buttons = new JPanel();
-		// -----DEFINIÇÕES DA JANELA*INICIO-------
+		// -----DEFINIÇÕES DA JANELA*INICIO---------------------------------------
 		jf_registrar.setTitle("Template de JForm");// O tittulo da janela.
 		jf_registrar.setSize(1280, 720);// Width and Height em pixels.[Comprimento, Largura]
 		jf_registrar.setLocation(100, 100);// Onde o programa vai arrancar
 		jf_registrar.setLocationRelativeTo(null);// Onde o programa vai arrancar
 		jf_registrar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// Quando o utilizador clicar no x. Mata todos os
 																	// frames
-		// ------DEFINIÇÕES DA JANELA*FIM--------
+		// ------DEFINIÇÕES DA JANELA*FIM----------------------------------------
 		
-		//-----ACTION LISNETERS*INICIO--------
+		//-----ACTION LISNETERS*INICIO-------------------------------
 		bt_Cancelar.addActionListener(this);
 		bt_Criar.addActionListener(this);
-		//----ACTION LISTENERS*FIM----------
+		//----ACTION LISTENERS*FIM----------------------------------
 		
 		jp_form.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 30));
+		
+	
+ 
+		
 		jf_registrar.add(jb_titulo);
-		// JSeparator()
 
 		jp_codigo.add(jb_codigo);
 		jp_codigo.add(tf_codigo);
@@ -105,28 +112,42 @@ public class RegistrarProduto implements ActionListener {
 		jp_buttons.add(bt_Criar);
 		jf_registrar.add(jp_form, BorderLayout.CENTER);
 		jf_registrar.add(jp_buttons, BorderLayout.SOUTH);
-
-		jf_registrar.setVisible(true);
+		
+			jf_registrar.setVisible(true);
 	}
-
-	public static void main(String[] args) {
-		new RegistrarProduto();
+	
+//	public static void main(String[] args) {
+//		new RegistrarProduto();
+//	}
+	public void fechaRegistrarProduto() {
+		jf_registrar.setVisible(false);
 	}
-
-	@Override
+	public void editarProduto() {
+		tf_nome.setText("HOLA");
+		tf_qtdInicial.setText("200");
+		tf_preco.setText("Set");
+	}
+	
+//	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == bt_Cancelar) {
 			System.exit(0);
 		}
 		if (e.getSource() == bt_Criar) {
-			
-			produto = new Produto(11, tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
-					Double.parseDouble(tf_preco.getText()));
-			Vector produtos=new Vector();
-			produtos.add(produto);
-			crudProduto.gravar(produtos, "bd/ProdutosDB.dat");
-			System.out.println("RRESULTADO"+produto.toString());
+			Vector temp=new Vector();//Vector temporário para recuperar o ficheiro
+				temp = (Vector) crudProduto.recuperarBD();//Preenchimento do vector temporario que vem do ficheiro
+				if(temp!=null) {
+					produto = new Produto(11, tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
+							Double.parseDouble(tf_preco.getText()));//ADIÇÃO DO OBJECTO PRODUTO, BASEANDO-SE NOS CAMPOS DO FORMULÁRIO
+					temp.add(produto);//ACTUALIZANDO O VECTOR DE OBJECTOS DO PRODUTO
+					//VERIFICAR SE CAMPOS ESTÃO VAZIOS
+					if(crudProduto.gravarObjecto(temp)) {//CASO TUDO CORRA BEM
+						JOptionPane.showMessageDialog(null, "PRODUTO REGISTRADO COM SUCESSO");//MENSAGEM DE SUCESSO
+					};
+				}//ELSE PARA VERIFICAR SE PRODUTO JÁ EXISTE
+				System.out.println((Produto)temp.lastElement());
+
 		}
 	}
 }
