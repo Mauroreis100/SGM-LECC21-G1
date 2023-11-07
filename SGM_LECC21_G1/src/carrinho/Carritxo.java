@@ -1,13 +1,15 @@
 package carrinho;
 
-public class Carritxo {
-	String id;
+import java.io.Serializable;
+
+public class Carritxo implements Serializable{
+	int id;
 	private int qtd;
 	private String nome;
 	private double preco,total;
 	
 
-	public Carritxo(String id,String nome, int qtd, double preco, double total) {
+	public Carritxo(int id,String nome, int qtd, double preco, double total) {
 		super();
 		this.id = id;
 		this.qtd = qtd;
@@ -16,11 +18,11 @@ public class Carritxo {
 		this.total = total;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -58,7 +60,7 @@ public class Carritxo {
 
 	@Override
 	public String toString() {
-		return "Carritxo [id=" + id + ", qtd=" + qtd + ", nome=" + nome + ", preco=" + preco + ", total=" + total + "]";
+		return nome+"\t\t"+preco+"\t"+qtd+"\t"+preco+"\t\t"+(preco*qtd)+"\n";
 	}
 	
 	

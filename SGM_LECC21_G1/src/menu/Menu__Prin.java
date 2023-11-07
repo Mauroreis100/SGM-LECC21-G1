@@ -113,7 +113,7 @@ public class Menu__Prin extends JFrame implements ActionListener {
 					JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 			if (x == 0) {
 				this.setVisible(false);
-				new CompraSele();
+				new CompraSele(1);
 				} else {
 					//HISTÓRICO
 				}

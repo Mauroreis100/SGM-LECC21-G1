@@ -17,34 +17,53 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
+import carrinho.Carritxo;
 import clientes.Cliente;
 import clientes.ClienteOperacoes;
 import menu.Menu__Prin;
 import produto.OperacoesProduto;
 import produto.Produto;
+import vendas_telas.Compra_Sucesso;
 
 public class CompraSele extends JFrame implements ActionListener {
 	OperacoesProduto crudProduto = new OperacoesProduto();
 	Vector temp = crudProduto.recuperarBD();// Preenchumento do vector de objectos do ficheiro na listanto do vector de objectos do ficheiro na lista	
+	Vector carrinho=new Vector();
+	ClienteOperacoes crudCliente = new ClienteOperacoes();
+	Vector clientes = crudCliente.recuperarClientesBD();
 	
 	private JTable jt_Clientes;
-	private JPanel jp,jp_produtos,jp_produto;
+	private JPanel jp,jp_produtos,jp_produto,jp_carrinho,jp_carrinho_butoes;
 	private JLabel jl_f;
 	private JTextField jtf_se;
 
-	private JButton jt_nome_bt;
+	private JButton bt_editar,bt_finalizar,bt_cancelar;
 
 	private String[] coluna = { "Código", "Nome", "BI", "Telefone", "Saldo" };
-
-	public CompraSele() {
-		jl_f = new JLabel("Escolha o ID do cliente para fazer a compra");
+	private JTable tb_listagem;
+	private DefaultTableModel tm_listagemModel;
+	public CompraSele(int id_cliente) {
 		jtf_se = new JTextField(15);
-		jt_nome_bt = new JButton("Compra");
+		bt_editar = new JButton("Editar");
+		bt_finalizar=new JButton("Finalizar");
 		jp=new JPanel();
 		jp_produto=new JPanel();
 		jp_produtos=new JPanel();
-		jt_nome_bt.addActionListener(this);
+		jp_carrinho=new JPanel();
+		jp_carrinho_butoes=new JPanel();
+		tm_listagemModel = new DefaultTableModel();
+		tm_listagemModel.addColumn("ID");
+		tm_listagemModel.addColumn("Nome");
+		tm_listagemModel.addColumn("Quantidade");
+		tm_listagemModel.addColumn("Preço p/ Uni");
+		tm_listagemModel.addColumn("Valor");
+		tb_listagem = new JTable(tm_listagemModel);
+		
+		
+		bt_editar.addActionListener(this);
+		bt_finalizar.addActionListener(this);
 		// -----DEFINIÇÕES DA JANELA*INICIO-------
 		this.setTitle("Escolha");// O tittulo da janela.
 		this.setSize(950, 500);// Width and Height em pixels.[Comprimento, Largura]
@@ -54,7 +73,9 @@ public class CompraSele extends JFrame implements ActionListener {
 		this.setResizable(true);
 		this.setLayout(new GridLayout(1,2));
 		jp.setLayout(new GridLayout(2,1,2,2));
-
+		jp_carrinho_butoes.setLayout(new FlowLayout());
+		
+		
 //		jp = new JPanel();
 		for (int i = 0; i < temp.size(); i++) {
 			ImageIcon img_icon=new ImageIcon(((Produto)temp.get(i)).getFoto());
@@ -66,14 +87,21 @@ public class CompraSele extends JFrame implements ActionListener {
 			JButton bt_produtos = new JButton(((Produto)temp.get(i)).getNome(),novoIcon);
 			bt_produtos.setVerticalTextPosition(JButton.BOTTOM);
 			bt_produtos.setHorizontalTextPosition(JButton.CENTER);
+			String nomeProd=((Produto)temp.get(i)).getNome();
+			Produto prod=(Produto)temp.get(i);
+			int posicao=i;
+			jp.add(bt_produtos);
+			tm_listagemModel.setRowCount(0);
 			bt_produtos.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	                // Your action code here
-	                JOptionPane.showInputDialog("Quantidade");
+	            	int quantidade=Integer.parseInt(JOptionPane.showInputDialog("Quanttidade de "+nomeProd));
+	            	carrinho.add(new Carritxo(prod.getId(),prod.getNome(),quantidade,prod.getPreco(),prod.getPreco()*quantidade));
+	            	tm_listagemModel.addRow(new Object[] {prod.getId(),prod.getNome(),quantidade,prod.getPreco(),prod.getPreco()*quantidade});
+	            	System.out.println(carrinho.toString());
 	            }
 	        });
-			jp.add(bt_produtos);
 
 		}
 
@@ -89,8 +117,16 @@ public class CompraSele extends JFrame implements ActionListener {
 		jp_produtos.add(jp);
 //		this.add(jp, BorderLayout.CENTER);
 //		jt_Clientes.setEnabled(false);
+		
 		JScrollPane sp = new JScrollPane(jp_produtos);
+		jp_carrinho.add(sp);
+		jp_carrinho_butoes.add(bt_editar);
+		jp_carrinho_butoes.add(bt_finalizar);
+		jp_carrinho.add(new JScrollPane(tb_listagem));
+		jp_carrinho.add(jp_carrinho_butoes, BorderLayout.SOUTH);
 		this.add(sp);
+		this.add(jp_carrinho);
+//		add();
 
 		this.setVisible(true);
 	}
@@ -114,28 +150,13 @@ public class CompraSele extends JFrame implements ActionListener {
 //
 //	@Override
 	public static void main(String[] args) {
-		new CompraSele();
+		new CompraSele(1);
 	}
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() == jt_nome_bt) {
-//			this.setVisible(false);
-//			if (!(jtf_se.getText().equals(""))) {
-//				String[][] dados = new String[temp.size()][5];
-//				for (int i = 0; i < temp.size(); i++) {
-//					if (((Cliente) temp.get(i)).getId()==Integer.parseInt(jtf_se.getText())) {
-//							dados[i][0] = (((Cliente) temp.get(i)).getId()) + ""; 
-//							dados[i][1] = (((Cliente) temp.get(i)).getNome()) + "";
-//							dados[i][2] = (((Cliente) temp.get(i)).getBI()) + "";
-//							dados[i][3] = (((Cliente) temp.get(i)).getCell()) + "";
-//							dados[i][4] = (((Cliente) temp.get(i)).getSaldo()) + "";
-//							System.out.println(((Cliente) temp.get(i)).toString());
-//							new Compra(i);
-//					}
-//				}
-//			} else {
-//				JOptionPane.showMessageDialog(null, "Pesquisa Vazia!", "",JOptionPane.WARNING_MESSAGE); 
-//			}
+		if (e.getSource() == bt_finalizar) {
+
+			new Compra_Sucesso(crudCliente.procuraClienteID(1,clientes),carrinho);
 		}
 	}
 

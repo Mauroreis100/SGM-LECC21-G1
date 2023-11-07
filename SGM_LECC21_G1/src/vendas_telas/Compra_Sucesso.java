@@ -2,29 +2,38 @@ package vendas_telas;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.*;
 
+import carrinho.Carritxo;
 import clientes.Cliente;
 import produto.Produto;
 import vendas.OperacoesVenda_Dinheiro;
 import vendas.Venda_Dinheiro;
 
-public class Compra_Sucesso extends JFrame implements ActionListener{
-//	OperacoesVenda_Dinheiro vendas=new OperacoesVenda_Dinheiro();
-//	Venda_Dinheiro ultima_venda=(Venda_Dinheiro)vendas.recuperarVendas().lastElement();
-	Vector itens = new Vector();
+public class Compra_Sucesso extends JFrame implements ActionListener {
+	OperacoesVenda_Dinheiro opVendas=new OperacoesVenda_Dinheiro();
+//	Venda_Dinheiro ultima_venda=(Venda_Dinheiro)opVendas.recuperarVendas().lastElement();
+	Vector vendas_Vector = opVendas.recuperarVendas();
 
 	private JButton bt_fechar;
 	private JTextArea ta_recibo;
 
-	Compra_Sucesso() {
-		itens.add(new Produto(1, 1, "Maçã", 2, 20, 2, "Fornecedor"));
-		itens.add(new Produto(1, 1, "Maçã", 2, 20, 2, "Fornecedor"));
-		itens.add(new Produto(1, 1, "Maçã", 2, 20, 2, "Fornecedor"));
-		Venda_Dinheiro ultima_venda = new Venda_Dinheiro(1, new Cliente(1, "Mauro", "213", "3112", 3000), itens, 30000);
-		;
+	public Compra_Sucesso(Cliente cliente,Vector carrinho) {
+//		itens.add(new Produto(1, 1, "Maçã", 2, 20, 2, "Fornecedor"));
+//		itens.add(new Produto(1, 1, "Maçã", 2, 20, 2, "Fornecedor"));
+//		itens.add(new Produto(1, 1, "Maçã", 2, 20, 2, "Fornecedor"));
+		double total=0;
+	for(int i=0;i<carrinho.size();i++) {
+		total+=((Carritxo)carrinho.get(i)).getTotal();
+	}
+		Venda_Dinheiro ultima_venda = new Venda_Dinheiro(1, cliente, carrinho, total);
+		if(vendas_Vector==null) {
+			vendas_Vector=new Vector();
+		}
+		vendas_Vector.add(ultima_venda);
 		ta_recibo = new JTextArea();
 
 		bt_fechar=new JButton("FECHAR");
@@ -49,14 +58,12 @@ public class Compra_Sucesso extends JFrame implements ActionListener{
 		this.setVisible(true);
 	}
 
-	public static void main(String[] args) {
-		new Compra_Sucesso();
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource()==bt_fechar) {
+		if (e.getSource() == bt_fechar) {
+			opVendas.gravarVendas(vendas_Vector);
+			//fazer operações disto onde podes ler too
 			System.exit(0);
 		}
 	}
