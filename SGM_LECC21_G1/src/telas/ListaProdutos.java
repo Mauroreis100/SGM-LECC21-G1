@@ -340,6 +340,9 @@ public class ListaProdutos implements ActionListener, MouseListener {
 			if (prod != null) {
 				new Editar_Produto(prod);
 				jf_registrar.setVisible(false);
+			}else {
+				JOptionPane.showMessageDialog(null, "NÃO FOI ENCONTRADO", "PRODUTO NÃO FOI ENCONTRADO",
+						JOptionPane.WARNING_MESSAGE); // OK
 			}
 		}
 

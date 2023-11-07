@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import carrinho.Carritxo;
+import carrinho.OperacoesCarrinho;
 import clientes.Cliente;
 import clientes.ClienteOperacoes;
 import menu.Menu__Prin;
@@ -33,20 +34,20 @@ public class CompraSele extends JFrame implements ActionListener {
 	Vector carrinho=new Vector();
 	ClienteOperacoes crudCliente = new ClienteOperacoes();
 	Vector clientes = crudCliente.recuperarClientesBD();
-	
+	OperacoesCarrinho op_Carrinho=new OperacoesCarrinho();
 	private JTable jt_Clientes;
 	private JPanel jp,jp_produtos,jp_produto,jp_carrinho,jp_carrinho_butoes;
 	private JLabel jl_f;
 	private JTextField jtf_se;
 
-	private JButton bt_editar,bt_finalizar,bt_cancelar;
+	private JButton bt_remover,bt_finalizar,bt_cancelar;
 
 	private String[] coluna = { "Código", "Nome", "BI", "Telefone", "Saldo" };
 	private JTable tb_listagem;
 	private DefaultTableModel tm_listagemModel;
 	public CompraSele(int id_cliente) {
 		jtf_se = new JTextField(15);
-		bt_editar = new JButton("Editar");
+		bt_remover = new JButton("Remover Item");
 		bt_finalizar=new JButton("Finalizar");
 		jp=new JPanel();
 		jp_produto=new JPanel();
@@ -62,7 +63,7 @@ public class CompraSele extends JFrame implements ActionListener {
 		tb_listagem = new JTable(tm_listagemModel);
 		
 		
-		bt_editar.addActionListener(this);
+		bt_remover.addActionListener(this);
 		bt_finalizar.addActionListener(this);
 		// -----DEFINIÇÕES DA JANELA*INICIO-------
 		this.setTitle("Escolha");// O tittulo da janela.
@@ -96,9 +97,14 @@ public class CompraSele extends JFrame implements ActionListener {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	                // Your action code here
-	            	int quantidade=Integer.parseInt(JOptionPane.showInputDialog("Quanttidade de "+nomeProd));
-	            	carrinho.add(new Carritxo(prod.getId(),prod.getNome(),quantidade,prod.getPreco(),prod.getPreco()*quantidade));
-	            	tm_listagemModel.addRow(new Object[] {prod.getId(),prod.getNome(),quantidade,prod.getPreco(),prod.getPreco()*quantidade});
+	            	
+	            	int quantidade=Integer.parseInt(JOptionPane.showInputDialog("Quantidade de "+nomeProd));
+//	            	carrinho.add(new Carritxo(prod.getId(),prod.getNome(),quantidade,prod.getPreco(),prod.getPreco()*quantidade));
+	            	carrinho=op_Carrinho.adicionarProduto(prod.getId(), carrinho, temp, quantidade);
+	            	tm_listagemModel.setRowCount(0);
+	            	for(int i=0;i<carrinho.size();i++) {
+	            		tm_listagemModel.addRow(new Object[] {((Carritxo)carrinho.get(i)).getId(),((Carritxo)carrinho.get(i)).getNome(),((Carritxo)carrinho.get(i)).getQtd(),((Carritxo)carrinho.get(i)).getPreco(),prod.getPreco()*quantidade});
+	            	}
 	            	System.out.println(carrinho.toString());
 	            }
 	        });
@@ -120,7 +126,7 @@ public class CompraSele extends JFrame implements ActionListener {
 		
 		JScrollPane sp = new JScrollPane(jp_produtos);
 		jp_carrinho.add(sp);
-		jp_carrinho_butoes.add(bt_editar);
+		jp_carrinho_butoes.add(bt_remover);
 		jp_carrinho_butoes.add(bt_finalizar);
 		jp_carrinho.add(new JScrollPane(tb_listagem));
 		jp_carrinho.add(jp_carrinho_butoes, BorderLayout.SOUTH);
@@ -131,23 +137,7 @@ public class CompraSele extends JFrame implements ActionListener {
 		this.setVisible(true);
 	}
 
-//	private String[][] listaClientes(Vector temp) {
-//		// ESTA IMPLEMENTAÇÃO COLOCA TODOS OS DADOS DO VECTOR NUMA LISTA
-//		// MULTIDIMENSIONAL PARA A TABELA
-//
-//		String[][] dados = new String[temp.size()][6];
-//		for (int i = 0; i < temp.size(); i++) {
-//				dados[i][0] = (((Cliente) temp.get(i)).getId()) + "";
-//				dados[i][1] = (((Cliente) temp.get(i)).getNome()) + "";
-//				dados[i][2] = (((Cliente) temp.get(i)).getBI()) + "";
-//				dados[i][3] = (((Cliente) temp.get(i)).getCell()) + "";
-//				dados[i][4] = (((Cliente) temp.get(i)).getSaldo()) + "";
-//				System.out.println(((Cliente) temp.get(i)).toString());
-//		}
-//		return dados;// O CONSTRUTOR RETORNA A LISTA MULTIDIMENSIONAL
-//
-//	}
-//
+
 //	@Override
 	public static void main(String[] args) {
 		new CompraSele(1);
@@ -157,6 +147,16 @@ public class CompraSele extends JFrame implements ActionListener {
 		if (e.getSource() == bt_finalizar) {
 
 			new Compra_Sucesso(crudCliente.procuraClienteID(1,clientes),carrinho);
+		}
+		if(e.getSource()==bt_remover) {
+			int id=Integer.parseInt(JOptionPane.showInputDialog("ID do Produto que pretende remover do carrinho?"));
+//        
+		carrinho=op_Carrinho.removerProduto(id, carrinho, temp);
+		tm_listagemModel.setRowCount(0);
+		for(int i=0;i<carrinho.size();i++) {
+			tm_listagemModel.addRow(new Object[] {((Carritxo)carrinho.get(i)).getId(),((Carritxo)carrinho.get(i)).getNome(),((Carritxo)carrinho.get(i)).getQtd(),((Carritxo)carrinho.get(i)).getPreco(),((Carritxo)carrinho.get(i)).getPreco()*((Carritxo)carrinho.get(i)).getQtd()});
+		}
+		System.out.println(carrinho.toString());
 		}
 	}
 

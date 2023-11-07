@@ -100,5 +100,39 @@ public class OperacoesProduto implements Operacoes {
 		}
 		return vectorNomes;
 	}
+	
+	//Mostra todos os produtos, abaixo de 5
+		public void abaixoDe5(Vector lista) {
+			for (int i = 0; i < lista.size(); i++) {
+				if (((Produto) lista.get(i)).getQtd() < 5) {
+					System.out.println("\n!!!!" + ((Produto) lista.get(i)).getNome()
+							+ "- não esta disponível, apenas TEM " + ((Produto) lista.get(i)).getQtd() + " unidades\nENCOMENDE DO FORNECEDOR\n");
+				}
+			}
+		}
 
+		//Lista todos os produtos mais vendidos de forma crescente. Isto usa o algoritmo de ordenação 
+		//
+		public void maisVendidos(Vector lista) {
+
+			Vector vendaDecrescente = lista;
+			boolean troca = true;
+			while (troca) {
+				troca = false;
+				for (int i = 0; i < lista.size() - 1; i++) {
+					if (((Produto) lista.get(i)).getVendas() > ((Produto) lista.get(i + 1)).getVendas()) {
+						Produto temp = (Produto) lista.get(i);
+						lista.set(i, lista.get(i + 1));
+						lista.set(i + 1, temp);
+						troca = true;
+					}
+				}
+			}
+			for (int i = 0; i < lista.size(); i++) {
+
+//				System.out.println(((Produto) vendaDecrescente.get(i)).imprimiVendas());
+
+			}
+
+		}
 }
