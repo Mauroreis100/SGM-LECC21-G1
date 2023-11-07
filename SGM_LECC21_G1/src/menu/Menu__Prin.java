@@ -29,8 +29,8 @@ public class Menu__Prin extends JFrame implements ActionListener {
 	public Menu__Prin () {
 		timeLabel = new JLabel();
 		jb1=new JButton("Armazém");
-		jb2=new JButton("Forecedor");
-		jb3=new JButton("Produto");
+		jb2=new JButton("Fornecedor");
+		jb3=new JButton("Produtos");
 		jb4=new JButton("Cliente");
 		jb5=new JButton("Sair");
 		jb6=new JButton("Compra");
