@@ -26,6 +26,7 @@ import clientes.ClienteOperacoes;
 import menu.Menu__Prin;
 import produto.OperacoesProduto;
 import produto.Produto;
+import telas.ListaProdutos;
 import vendas_telas.Compra_Sucesso;
 
 public class CompraSele extends JFrame implements ActionListener {
@@ -65,7 +66,7 @@ public class CompraSele extends JFrame implements ActionListener {
 		tb_listagem = new JTable(tm_listagemModel);
 
 		bt_remover.addActionListener(this);
-		bt_finalizar.addActionListener(this);
+
 		// -----DEFINIÇÕES DA JANELA*INICIO-------
 		this.setTitle("Escolha");// O tittulo da janela.
 		this.setSize(950, 500);// Width and Height em pixels.[Comprimento, Largura]
@@ -110,6 +111,16 @@ public class CompraSele extends JFrame implements ActionListener {
 					System.out.println(carrinho.toString());
 				}
 			});
+			bt_finalizar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (crudProduto.gravarObjecto(temp)) {//
+						fecharJanela();
+						new Compra_Sucesso(crudCliente.procuraClienteID(id_cliente, clientes), carrinho);
+						
+					}
+				}
+			});
 
 		}
 
@@ -133,13 +144,11 @@ public class CompraSele extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		new CompraSele(1);
 	}
-
+public void fecharJanela() {
+	this.setVisible(false);
+}
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		if (e.getSource() == bt_finalizar) {
 
-			new Compra_Sucesso(crudCliente.procuraClienteID(1, clientes), carrinho);
-		}
 		if (e.getSource() == bt_remover) {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("ID do Produto que pretende remover do carrinho?"));
 			temp=op_Carrinho.devolverQuantidade(id, temp, carrinho);
