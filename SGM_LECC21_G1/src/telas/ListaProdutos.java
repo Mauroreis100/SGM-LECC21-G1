@@ -8,7 +8,6 @@ import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-
 import armazem.*;
 import produto.OperacoesProduto;
 import produto.Produto;
@@ -38,7 +37,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	private JPanel jp_armazem;
 	private JPanel jp_fornecedor;
 	private JPanel jp_form;
-	private JPanel jp_foto,jp_validade;
+	private JPanel jp_foto, jp_validade;
 	private JLabel jb_titulo;
 	private ImageIcon img_icon = new ImageIcon("assets/icons/Camera.png"); // Substitua pelo caminho do arquivo da
 																			// imagem
@@ -49,14 +48,14 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	private JLabel jb_preco;
 	private JLabel jb_qtdInicial;
 	private JLabel jb_armazem;
-	private JLabel jb_fornecedor,lb_validade,lb_dia,lb_mes,lb_ano;
+	private JLabel jb_fornecedor, lb_validade, lb_dia, lb_mes, lb_ano;
 
 	private JTextField tf_codigo;
 	private JTextField tf_nome;
 	private JTextField tf_preco;
-	private JTextField tf_qtdInicial,tf_dia,tf_mes,tf_ano;
+	private JTextField tf_qtdInicial, tf_dia, tf_mes, tf_ano;
 	private JComboBox cb_armazem;
-	private JComboBox cb_fornecedor;
+	private JComboBox cb_fornecedor,cb_dia,cb_mes;
 
 	private JButton bt_Criar;
 	private JButton bt_Eliminar;
@@ -97,7 +96,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 //		UtilDateModel model = new UtilDateModel();
 //		datePanel=new JDatePanelImpl(model,p);
 //		datePicker=new JDatePickerImpl(datePanel,null);
-		
+
 		jb_titulo = new JLabel("REGISTRE O PRODUTO");
 		jb_titulo = new JLabel("REGISTRE O PRODUTO");
 		jb_codigo = new JLabel("Código");
@@ -106,19 +105,22 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		jb_qtdInicial = new JLabel("Quantidade Inicial");
 		jb_armazem = new JLabel("Armazém");
 		jb_fornecedor = new JLabel("Fornecedor:");
-		lb_validade=new JLabel("Prazo de Validade:");
-		lb_dia=new JLabel("Dia:");
-		lb_mes=new JLabel("Mês:");
-		lb_ano=new JLabel("Ano:");
+		lb_validade = new JLabel("Prazo de Validade:");
+		lb_dia = new JLabel("Validade -> Dia:");
+		lb_mes = new JLabel("Mês:");
+		lb_ano = new JLabel("Ano:");
 //		jt_produtos.setEnabled(false);
 		tf_codigo = new JTextField(5);
 		tf_codigo.setEnabled(false);
-		tf_nome = new JTextField(10);
-		tf_qtdInicial = new JTextField(10);
-		tf_preco = new JTextField(10);
+		tf_nome = new JTextField(8);
+		tf_qtdInicial = new JTextField(8);
+		tf_preco = new JTextField(8);
 		tf_dia = new JTextField(3);
 		tf_mes = new JTextField(3);
 		tf_ano = new JTextField(3);
+		String dia[] = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16",
+				"17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
+		String mes[] = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
 
 		String fornecedores[] = { "1-A", "2-B", "Manga", "Milho" };
 		cb_fornecedor = new JComboBox(fornecedores);// Só deixa escolher 1 item
@@ -143,7 +145,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		jp_armazem = new JPanel();
 		jp_foto = new JPanel();
 		jp_butoes_norte = new JPanel();
-		jp_validade=new JPanel();
+		jp_validade = new JPanel();
 		bt_Criar = new JButton("REGISTRAR NOVO PRODUTO");
 		bt_Editar = new JButton("EDITAR PRODUTO");
 		bt_Eliminar = new JButton("ELIMINAR PRODUTO");
@@ -191,7 +193,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		jp_foto.addMouseListener(this);
 		// ----MOUSE LISTENERS*FIM----------
 		jp_butoes.setLayout(new FlowLayout());
-		jp_form.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 30));
+		jp_form.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 30));
 
 //		jf_registrar.add(jb_titulo);
 		jp_foto.add(lb_foto);
@@ -229,17 +231,16 @@ public class ListaProdutos implements ActionListener, MouseListener {
 
 		jp_form.add(jp_preco);
 
-
-		jp_validade.add(lb_validade);
+//		jp_validade.add(lb_validade);
 		jp_validade.add(lb_dia);
 		jp_validade.add(tf_dia);
 		jp_validade.add(lb_mes);
 		jp_validade.add(tf_mes);
 		jp_validade.add(lb_ano);
 		jp_validade.add(tf_ano);
-		
+
 		jp_form.add(jp_validade);
-		
+
 		jp_butoes_norte.add(bt_Criar);
 		jp_butoes.add(bt_Criar);
 		jp_butoes.add(bt_Editar);
@@ -285,6 +286,10 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if ((e.getSource() == bt_Criar)) {
+			String data = tf_dia.getText() + "-" + tf_mes.getText() + "-" + tf_ano.getText();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy"); // Define your date format
+			LocalDate myDate = LocalDate.parse(data, formatter);
+
 			if (!(tf_nome.getText().equals("") && tf_preco.getText().equals("")
 					&& tf_qtdInicial.getText().equals(""))) {
 
@@ -399,7 +404,6 @@ public class ListaProdutos implements ActionListener, MouseListener {
 
 	}
 
-	
 	@Override
 	public void mouseExited(MouseEvent e) {
 		if (tf_nome.getText().equals("") && tf_preco.getText().equals("") && tf_qtdInicial.getText().equals("")) {
