@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.Vector;
 
 import leitura_escrita.Leitura_Escrita;
+import produto.Produto;
 import interfaces.Operacoes;
 
 public class ArmazemOperacoes implements Operacoes {
@@ -113,6 +114,21 @@ public class ArmazemOperacoes implements Operacoes {
 		return null;
 
 	}
+	
+	public Vector filtrarNomes(String nome, Vector vec) {
+		nome = nome.replace(" ", "");
+		nome=nome.toLowerCase();
+		Vector vectorNomes = new Vector();
+		for (int i = 0; i < vec.size(); i++) {
+			if ((((Armazem) vec.get(i)).getNome()).toLowerCase().startsWith(nome)) {
+				vectorNomes.add((Armazem)vec.get(i));
+			}
+		}
+		return vectorNomes;
+	}
+	
+	
+	
 
 
 

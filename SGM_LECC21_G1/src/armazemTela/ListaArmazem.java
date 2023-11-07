@@ -5,12 +5,14 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 import javax.swing.*;
 import armazem.*;
+import menu.*;
 import clientes.Cliente;
 import produto.*;
 import excepcoes.CampoVazioException;
@@ -160,8 +162,9 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		Vector recuperarProd = crudProduto.recuperarBD();
 		
 		String[][] dados = new String[temp.size()][6];
+		int qtd= 0;
 		for (int i = 0; i < temp.size(); i++) {
-			int qtd= 0;
+			qtd = 0;
 			dados[i][0] = (((Armazem) temp.get(i)).getId()) + "";
 			dados[i][1] = (((Armazem) temp.get(i)).getNome()) + "";
 			
@@ -183,9 +186,9 @@ public class ListaArmazem extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if ((e.getSource() == bt_Criar)) {
 			if (!(jt_nome.getText().equals("") && jt_cell.getText().equals(""))) {
-				// SE O Tipo de Produto FOR IGUAL A UM CLIENTE JA EXISTENTE
+				// SE O armazem FOR IGUAL A UM JA EXISTENTE
 				if (crudArmazem.existe(jt_nome.getText(), temp)) {
-					JOptionPane.showMessageDialog(null, "O produto com nome existe" + jt_nome.getText() + " já existe", "ATENÇÃO",
+					JOptionPane.showMessageDialog(null, "O armazém com nome " + jt_nome.getText() + " já existe", "ATENÇÃO",
 							JOptionPane.WARNING_MESSAGE); // OK
 				}
 
@@ -233,7 +236,7 @@ public class ListaArmazem extends JFrame implements ActionListener {
 			if (a!=-1) {
 				if (armazemC != null) {
 					int opcao = JOptionPane.showConfirmDialog(null,
-							"Confirma que pretende apagar o arm  " + armazemC.getNome() + " do sistema?", "ELIMINAR",
+							"Confirma que pretende apagar o armazem  " + armazemC.getNome() + " do sistema?", "ELIMINAR",
 							JOptionPane.YES_NO_OPTION);// YES apaga mesmo e NO não faz nada,
 					if (opcao == 0) {
 						crudArmazem.gravarObjecto(crudArmazem.removerObjecto(temp, codigo));// GRAVA UMA REMOÇÃO FEITA
@@ -248,11 +251,11 @@ public class ListaArmazem extends JFrame implements ActionListener {
 			}
 
 		}
-		//		if(e.getSource()==bt_filtrar) {
-		//			new FiltrarArmazems();
-		//		}
-		//		if(e.getSource()==bt_Voltar) {
-		//			//new Menu();
-		//		}
+				if(e.getSource()==bt_filtrar) {
+					new FiltrarArmazem(new Vector());
+				}
+				if(e.getSource()==bt_Voltar) {
+					new Menu__Prin();
+				}
 	}
 }
