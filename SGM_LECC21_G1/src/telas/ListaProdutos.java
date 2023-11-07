@@ -55,7 +55,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	private JTextField tf_preco;
 	private JTextField tf_qtdInicial, tf_dia, tf_mes, tf_ano;
 	private JComboBox cb_armazem;
-	private JComboBox cb_fornecedor,cb_dia,cb_mes;
+	private JComboBox cb_fornecedor,cb_dia,cb_mes,cb_ano;
 
 	private JButton bt_Criar;
 	private JButton bt_Eliminar;
@@ -121,7 +121,15 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		String dia[] = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16",
 				"17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
 		String mes[] = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
-
+		String ano[]=new String[50];
+		int anoActual=2023;
+		for(int i=0;i<ano.length;i++) {
+			
+			ano[i]=(anoActual+i)+"";
+		}
+		cb_dia=new JComboBox(dia);
+		cb_mes=new JComboBox(mes);
+		cb_ano=new JComboBox(ano);
 		String fornecedores[] = { "1-A", "2-B", "Manga", "Milho" };
 		cb_fornecedor = new JComboBox(fornecedores);// Só deixa escolher 1 item
 
@@ -233,11 +241,11 @@ public class ListaProdutos implements ActionListener, MouseListener {
 
 //		jp_validade.add(lb_validade);
 		jp_validade.add(lb_dia);
-		jp_validade.add(tf_dia);
+		jp_validade.add(cb_dia);
 		jp_validade.add(lb_mes);
-		jp_validade.add(tf_mes);
+		jp_validade.add(cb_mes);
 		jp_validade.add(lb_ano);
-		jp_validade.add(tf_ano);
+		jp_validade.add(cb_ano);
 
 		jp_form.add(jp_validade);
 
