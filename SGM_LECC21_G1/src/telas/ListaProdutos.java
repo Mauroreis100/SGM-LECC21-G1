@@ -31,8 +31,12 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	private JPanel jp_armazem;
 	private JPanel jp_fornecedor;
 	private JPanel jp_form;
+	private JPanel jp_foto;
 	private JLabel jb_titulo;
+	private ImageIcon img_icon = new ImageIcon("assets/icons/Camera.png"); // Substitua pelo caminho do arquivo da
+																			// imagem
 
+	private JLabel lb_foto;;
 	private JLabel jb_codigo;
 	private JLabel jb_nome;
 	private JLabel jb_preco;
@@ -60,7 +64,15 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	private String[] coluna = { "Código", "Armazem", "Nome", "Stock Minímo", "Quantidade", "Preço", "Nº Vendas",
 			"Fornecedor" };
 
+	private JFileChooser jf;
+
 	public ListaProdutos() {
+		int larguraDesejada = 50;
+		int alturaDesejada = 50;
+		Image imagemRedimensionada = img_icon.getImage().getScaledInstance(larguraDesejada, alturaDesejada,
+				Image.SCALE_SMOOTH);
+		ImageIcon novoIcon = new ImageIcon(imagemRedimensionada);
+		lb_foto = new JLabel(novoIcon);
 		jf_registrar = new JFrame();
 		jb_titulo = new JLabel("REGISTRE O PRODUTO");
 		jb_titulo = new JLabel("REGISTRE O PRODUTO");
@@ -81,9 +93,10 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		cb_fornecedor = new JComboBox(fornecedores);// Só deixa escolher 1 item
 
 		String armazem[] = new String[opArmazens.recuperarBD().size()];
-		
-		for(int i=0;i<opArmazens.recuperarBD().size();i++) {
-			armazem[i]=((Armazem)opArmazens.recuperarBD().get(i)).getId()+"-"+((Armazem)opArmazens.recuperarBD().get(i)).getNome();
+
+		for (int i = 0; i < opArmazens.recuperarBD().size(); i++) {
+			armazem[i] = ((Armazem) opArmazens.recuperarBD().get(i)).getId() + "-"
+					+ ((Armazem) opArmazens.recuperarBD().get(i)).getNome();
 		}
 		cb_armazem = new JComboBox(armazem);// Só deixa escolher 1 item
 
@@ -97,7 +110,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		jp_nome = new JPanel();
 		jp_fornecedor = new JPanel();
 		jp_armazem = new JPanel();
-
+		jp_foto = new JPanel();
 		jp_butoes_norte = new JPanel();
 		bt_Criar = new JButton("REGISTRAR NOVO PRODUTO");
 		bt_Editar = new JButton("EDITAR PRODUTO");
@@ -107,7 +120,8 @@ public class ListaProdutos implements ActionListener, MouseListener {
 
 		jp_tabela = new JPanel();
 		jp_butoes = new JPanel();
-
+		
+		jf = new JFileChooser();
 		jf_registrar.setLayout(new BorderLayout());
 		// ------------POPULAR ARRAY COM O VECTOR DE OBJECTOS----------
 		if (temp != null) {
@@ -135,18 +149,22 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		bt_Editar.addActionListener(this);
 		bt_Eliminar.addActionListener(this);
 		bt_filtrar.addActionListener(this);
+
 		// ----ACTION LISTENERS*FIM-------------------
 
 		// -----MOUSE LISNETERS*INICIO--------
 		tf_nome.addMouseListener(this);
 		tf_preco.addMouseListener(this);
 		tf_qtdInicial.addMouseListener(this);
+		jp_foto.addMouseListener(this);
 		// ----MOUSE LISTENERS*FIM----------
 		jp_butoes.setLayout(new FlowLayout());
 		jp_form.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 30));
 
 //		jf_registrar.add(jb_titulo);
-
+		jp_foto.add(lb_foto);
+		
+		jp_form.add(jp_foto);
 		jp_codigo.add(jb_codigo);
 		jp_codigo.add(tf_codigo);
 
@@ -308,7 +326,12 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		if (e.getSource() == jp_foto) {
+			jf.showOpenDialog(null);
+			jf_registrar.remove(jp_foto);
+//			jf_registrar.add()
+			lb_foto.setText(jf.getSelectedFile().getAbsolutePath());
+		}
 	}
 
 	@Override

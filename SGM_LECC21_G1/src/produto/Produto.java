@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Produto implements Serializable {
 	private int codigoProd, armazen_nr;
 	private String nome;
-	private String foto;
+	private String foto="assets/icons/Camera.png";
 	private int stockMinimo=5;
 	private String fornecedor;
 	private int qtd;
@@ -53,7 +53,7 @@ public Produto() {}
 		return foto;
 	}
 	public void setFoto(String foto) {
-		this.foto = foto;
+		this.foto = "assets/icons/Camera.png";
 	}
 	public int getStockMinimo() {
 		return stockMinimo;
