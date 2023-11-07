@@ -1,6 +1,5 @@
 package carrinho;
 
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,17 +12,16 @@ import javax.swing.JOptionPane;
 import produto.OperacoesProduto;
 import produto.Produto;
 
-public class OperacoesCarrinho  {
-	OperacoesProduto op_Prod= new OperacoesProduto(); // Instância da classe de operações dos produtos=armazém=stock
+public class OperacoesCarrinho {
+	OperacoesProduto op_Prod = new OperacoesProduto(); // Instância da classe de operações dos produtos=armazém=stock
 	static final double iva = 0.17;
 
 	// Este é o método que adiciona o produto
 	/*
-	 * Ele recebe: 
-	 * -- id - do produto que quer adicionar carrinho 
-	 * --- Vector do carrinho (que quero adicionar os produtos) e
-	 * ---- lista - a lista de todos os produtos existentes no stock e
-	 * -----quantidade - e a quantos produtos quero adicionar ao carrinho
+	 * Ele recebe: -- id - do produto que quer adicionar carrinho --- Vector do
+	 * carrinho (que quero adicionar os produtos) e ---- lista - a lista de todos os
+	 * produtos existentes no stock e -----quantidade - e a quantos produtos quero
+	 * adicionar ao carrinho
 	 */
 	public Vector adicionarProduto(int id, Vector carrinho, Vector lista, int quantidade) {
 
@@ -39,7 +37,7 @@ public class OperacoesCarrinho  {
 		 */
 		if (situacaoStock) {// Verifica se o produto )que pretende adicionar tem no stock
 
-			// Várivel que recebe o objecto produto que foi encontrado ou não no stock. 
+			// Várivel que recebe o objecto produto que foi encontrado ou não no stock.
 			Produto encontrado = produtoStock(id, lista);
 
 			// Caso o produto já esteja inserido no carrinho:
@@ -50,7 +48,8 @@ public class OperacoesCarrinho  {
 
 				// E para o produto que já existe está no carrinho, só mudamos a quantidade
 				// A verificação de se a quantidade no stock permite, já foi feita
-				((Carritxo) carrinho.get(indexExiste)).setQtd((((Carritxo) carrinho.get(indexExiste))).getQtd() + quantidade);
+				((Carritxo) carrinho.get(indexExiste))
+						.setQtd((((Carritxo) carrinho.get(indexExiste))).getQtd() + quantidade);
 				(((Carritxo) carrinho.get(indexExiste)))
 						.setTotal(encontrado.getPreco() * (((Carritxo) carrinho.get(indexExiste))).getQtd());
 			} else {// Caso não encontre no carrinho, simplesmente:
@@ -79,13 +78,13 @@ public class OperacoesCarrinho  {
 		if (posicao != -1) {
 			Produto encontrado = ((Produto) lista.get(posicao));
 			if (quantidade > encontrado.getQtd()) { // Quantidade pretendida acima da que está no stock
-				JOptionPane.showConfirmDialog(null,"Tente um valor mais baixo");
+				JOptionPane.showConfirmDialog(null, "Tente um valor mais baixo");
 				return false;
 			} else if (encontrado.getQtd() < 0) {// ...
-				JOptionPane.showConfirmDialog(null,"STOCK 0");
+				JOptionPane.showConfirmDialog(null, "STOCK 0");
 				return false;
 			} else if (quantidade < 0) {// Quantidade menor que 0
-				JOptionPane.showConfirmDialog(null,"INSIRA UMA QUANTIDADE VÁLIDA");
+				JOptionPane.showConfirmDialog(null, "INSIRA UMA QUANTIDADE VÁLIDA");
 				return false;
 			} else {
 				return true;// Produto existe e tem a quantidade pretendida
@@ -100,6 +99,16 @@ public class OperacoesCarrinho  {
 		for (int i = 0; i < lista.size(); i++) {
 			if (((Produto) lista.get(i)).getId() == id) {
 				return (Produto) lista.get(i);
+			}
+		}
+		return null;
+	}
+
+	// Método que devolve o objecto Produto, do stock
+	public Carritxo produtoCarrinho(int id, Vector lista) {
+		for (int i = 0; i < lista.size(); i++) {
+			if (((Carritxo) lista.get(i)).getId() == id) {
+				return (Carritxo) lista.get(i);
 			}
 		}
 		return null;
@@ -142,7 +151,7 @@ public class OperacoesCarrinho  {
 //Manipulação do stock antes de actualizar o stock no fim
 	public Vector removerProdutoQuantidade(int id, Vector carrinho, Vector temporario, int quantidade) {
 		int index = procuraProdutoCarrinho(id, carrinho);
-		
+
 		int indexStock = op_Prod.procurarCodigo(temporario, id);// Procura stock o produto
 
 		if (index != -1) {// Caso encontre no stock
@@ -189,7 +198,19 @@ public class OperacoesCarrinho  {
 		return -1;
 	}
 
-
+	public Vector devolverQuantidade(int id, Vector produtos, Vector carrinho) {
+		int id_produto_carrinho = procuraProdutoCarrinho(id, carrinho);
+		if (id_produto_carrinho != -1) {
+			Carritxo produto_Carrinho = produtoCarrinho(id, carrinho);
+			Produto prod_QTD_anterior = op_Prod.produtoStock(id, produtos);
+			prod_QTD_anterior.setQtd(prod_QTD_anterior.getQtd() + produto_Carrinho.getQtd());
+			int id_QTD_nova = op_Prod.procurarCodigo(produtos, id);
+			produtos.setElementAt(prod_QTD_anterior, id_QTD_nova);
+			return produtos;
+		} else {
+			return produtos;
+		}
+	}
 
 	// Método para ver se o carrinhi está vazio
 	public boolean estaVazio(Vector carrinho) {
@@ -213,7 +234,6 @@ public class OperacoesCarrinho  {
 		}
 		return produtos;
 	}
-
 
 //Faz a adição do carrinho todo ao vector de compras Cliente
 //	public boolean vendaDinheiro(int id, Vector carrinho, Cliente cl) {
@@ -249,4 +269,3 @@ public class OperacoesCarrinho  {
 //	}
 
 }
-
