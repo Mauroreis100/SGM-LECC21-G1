@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Produto implements Serializable {
-	private int codigoProd, armazen_nr;
+	private int id, armazen_nr;
 	private String nome;
 	private String foto = "assets/icons/Camera.png";
 	private int stockMinimo = 5;
@@ -16,7 +16,7 @@ public class Produto implements Serializable {
 	private int vendas = 0;// Váriavel que conta, quantas vezes o produto foi vendido
 //	private String ou int de Fornecedor
 	private double preco;
-	private Date validade;
+	private java.util.Date validade;
 
 	/*
 	 * No momento que lês para inserir um produto no vector Decidi não lidar com a
@@ -27,9 +27,8 @@ public class Produto implements Serializable {
 	public Produto() {
 	}
 
-	public Produto(int codigoProd, int armazen_nr, String nome, int qtd, double preco, int vendas, String fornecedor,
-			Date validade) {
-		this.codigoProd = codigoProd;
+	public Produto(int id, int armazen_nr, String nome, int qtd, double preco, int vendas, String fornecedor) {
+		this.id = id;
 		this.nome = nome;
 		this.armazen_nr = armazen_nr;
 		this.qtd = qtd;
@@ -50,12 +49,12 @@ public class Produto implements Serializable {
 		return nome + "\t\t" + preco + "\t" + qtd + "\t" + preco + "\t\t" + (preco * qtd) + "\n";
 	}
 
-	public int getCodigoProd() {
-		return codigoProd;
+	public int getId() {
+		return id;
 	}
 
-	public void setCodigoProd(int codigoProd) {
-		this.codigoProd = codigoProd;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getArmazen_nr() {
@@ -122,19 +121,19 @@ public class Produto implements Serializable {
 		this.preco = preco;
 	}
 
-	public Date getValidade() {
-		return validade;
-	}
+//	public Date getValidade() {
+//		return validade;
+//	}
 
 	public void setValidade(String validadeString){
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy"); // Define your date format
-		this.validade = dateFormat.parse(validadeString);
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy"); // Define your date format
+//		this.validade = dateFormat.parse(validadeString);
 
 	}
 
 	public String printProduto() {
 
-		return "Produto [codigoProd=" + codigoProd + ", armazen_nr=" + armazen_nr + ", nome=" + nome + ", foto=" + foto
+		return "Produto [id=" + id + ", armazen_nr=" + armazen_nr + ", nome=" + nome + ", foto=" + foto
 				+ ", stockMinimo=" + stockMinimo + ", fornecedor=" + fornecedor + ", qtd=" + qtd + ", vendas=" + vendas
 				+ ", preco=" + preco + "]";
 	}

@@ -9,13 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
-
 import javax.swing.*;
-import produto.Produto;
-import armazem.Armazem;
-import armazem.ArmazemOperacoes;
+import armazem.*;
 import clientes.Cliente;
-import armazem.ArmazemOperacoes;
+import produto.*;
 import excepcoes.CampoVazioException;
 
 public class ListaArmazem extends JFrame implements ActionListener {
@@ -151,7 +148,7 @@ public class ListaArmazem extends JFrame implements ActionListener {
 
 	public static void main(String args[]) {
 		new ListaArmazem();
-	}
+	}	
 
 	public void FecharListarArmazem() {
 		this.setVisible(false);
@@ -159,13 +156,22 @@ public class ListaArmazem extends JFrame implements ActionListener {
 
 	private String[][] listaArmazems(Vector temp) {
 		//ESTA IMPLEMENTAÇÃO COLOCA TODOS OS DADOS DO VECTOR NUMA LISTA MULTIDIMENSIONAL PARA A TABELA
-
+		OperacoesProduto crudProduto = new OperacoesProduto();
+		Vector recuperarProd = crudProduto.recuperarBD();
+		
 		String[][] dados = new String[temp.size()][6];
 		for (int i = 0; i < temp.size(); i++) {
+			int qtd= 0;
 			dados[i][0] = (((Armazem) temp.get(i)).getId()) + "";
 			dados[i][1] = (((Armazem) temp.get(i)).getNome()) + "";
 			
-			dados[i][2] = (((Armazem) temp.get(i)).getQuantidade()) + "";
+			for (int j = 0; j <recuperarProd.size(); j++) {
+				
+				if(((Armazem) temp.get(i)).getId() == ((Produto)recuperarProd.get(j)).getArmazen_nr()) {
+					qtd += ((Produto)recuperarProd.get(j)).getQtd() ;
+				}
+			}
+			dados[i][2] = qtd + "";
 			System.out.println(((Armazem) temp.get(i)).toString());
 
 		}
@@ -185,10 +191,10 @@ public class ListaArmazem extends JFrame implements ActionListener {
 
 				else {
 					// Inserção do ID de forma dinamico
-					jt_id.setText((temp.size() + 1) + "");
-
+					
+					jt_id.setText((temp.size() ) + "");
 					arm = new Armazem(Integer.parseInt(jt_id.getText()), jt_nome.getText()); // Preenchendo
-
+					jt_id.setText((temp.size() + 1) + "");
 					temp.add(arm);// Actualização do vector temporário com o novo objecto
 					if (crudArmazem.gravarObjecto(temp)) {//
 						JOptionPane.showMessageDialog(null, "Armazem Registrado com sucesso", "SUCESSO",
