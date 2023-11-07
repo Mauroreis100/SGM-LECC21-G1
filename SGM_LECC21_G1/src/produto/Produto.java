@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class Produto implements Serializable {
 	private int id, armazen_nr;
@@ -16,7 +17,11 @@ public class Produto implements Serializable {
 	private int vendas = 0;// Váriavel que conta, quantas vezes o produto foi vendido
 //	private String ou int de Fornecedor
 	private double preco;
-	private Date validade;
+	private LocalDate validade;
+
+	public void setValidade(LocalDate validade) {
+		this.validade = validade;
+	}
 
 	/*
 	 * No momento que lês para inserir um produto no vector Decidi não lidar com a
@@ -27,7 +32,7 @@ public class Produto implements Serializable {
 	public Produto() {
 	}
 
-	public Produto(int id, int armazen_nr, String nome, int qtd, double preco, int vendas, String fornecedor) {
+	public Produto(int id, int armazen_nr, String nome, int qtd, double preco, int vendas, String fornecedor, LocalDate validade) {
 		this.id = id;
 		this.nome = nome;
 		this.armazen_nr = armazen_nr;
@@ -121,13 +126,13 @@ public class Produto implements Serializable {
 		this.preco = preco;
 	}
 
-	public Date getValidade() {
+	public LocalDate getValidade() {
 		return validade;
 	}
 
 	public void setValidade(String validadeString){
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy"); // Define your date format
-//		this.validade = dateFormat.parse(validadeString);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy", Locale.ENGLISH);
+		LocalDate date = LocalDate.parse(validadeString, formatter);
 
 	}
 

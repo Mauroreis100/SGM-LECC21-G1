@@ -15,6 +15,7 @@ import excepcoes.CampoVazioException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Properties;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -55,7 +56,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	private JTextField tf_preco;
 	private JTextField tf_qtdInicial, tf_dia, tf_mes, tf_ano;
 	private JComboBox cb_armazem;
-	private JComboBox cb_fornecedor,cb_dia,cb_mes,cb_ano;
+	private JComboBox cb_fornecedor, cb_dia, cb_mes, cb_ano;
 
 	private JButton bt_Criar;
 	private JButton bt_Eliminar;
@@ -73,8 +74,8 @@ public class ListaProdutos implements ActionListener, MouseListener {
 //	private JDatePickerImpl datePicker;
 
 	// Column Names
-	private String[] coluna = { "Código", "Armazem", "Nome", "Stock Minímo", "Quantidade", "Preço", "Nº Vendas",
-			"Fornecedor" };
+	private String[] coluna = { "Código", "Armazem", "Nome", "Stock Minímo", "Quantidade", "Preço", "Validade",
+			"Nº Vendas", "Fornecedor" };
 
 	private JFileChooser jf;
 
@@ -121,15 +122,15 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		String dia[] = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16",
 				"17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
 		String mes[] = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
-		String ano[]=new String[50];
-		int anoActual=2023;
-		for(int i=0;i<ano.length;i++) {
-			
-			ano[i]=(anoActual+i)+"";
+		String ano[] = new String[50];
+		int anoActual = 2023;
+		for (int i = 0; i < ano.length; i++) {
+
+			ano[i] = (anoActual + i) + "";
 		}
-		cb_dia=new JComboBox(dia);
-		cb_mes=new JComboBox(mes);
-		cb_ano=new JComboBox(ano);
+		cb_dia = new JComboBox(dia);
+		cb_mes = new JComboBox(mes);
+		cb_ano = new JComboBox(ano);
 		String fornecedores[] = { "1-A", "2-B", "Manga", "Milho" };
 		cb_fornecedor = new JComboBox(fornecedores);// Só deixa escolher 1 item
 
@@ -275,7 +276,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	private String[][] listarProdutos(Vector temp) {
 		// ESTA IMPLEMENTAÇÃO COLOCA TODOS OS DADOS DO VECTOR NUMA LISTA
 		// MULTIDIMENSIONAL PARA A TABELA
-		String[][] dados = new String[temp.size()][8];
+		String[][] dados = new String[temp.size()][9];
 		for (int i = 0; i < temp.size(); i++) {
 			dados[i][0] = (((Produto) temp.get(i)).getId()) + "";
 			dados[i][1] = (((Produto) temp.get(i)).getArmazen_nr()) + "";
@@ -283,8 +284,10 @@ public class ListaProdutos implements ActionListener, MouseListener {
 			dados[i][3] = (((Produto) temp.get(i)).getStockMinimo()) + "";
 			dados[i][4] = (((Produto) temp.get(i)).getQtd()) + "";
 			dados[i][5] = (((Produto) temp.get(i)).getPreco()) + "";
-			dados[i][6] = (((Produto) temp.get(i)).getVendas()) + "";
-			dados[i][7] = (((Produto) temp.get(i)).getFornecedor()) + "";
+//			dados[i][6] = (((Produto) temp.get(i)).getValidade()).toLocaleString() + "";
+			dados[i][6] = (((Produto) temp.get(i)).getValidade()) + "";
+			dados[i][7] = (((Produto) temp.get(i)).getVendas()) + "";
+			dados[i][8] = (((Produto) temp.get(i)).getFornecedor()) + "";
 			System.out.println(((Produto) temp.get(i)).toString());
 
 		}
@@ -294,10 +297,13 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if ((e.getSource() == bt_Criar)) {
-			String data = tf_dia.getText() + "-" + tf_mes.getText() + "-" + tf_ano.getText();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy"); // Define your date format
-			LocalDate myDate = LocalDate.parse(data, formatter);
+//			String validade1 = tf_dia.getText().toString() + "/" + tf_mes.getText().toString() + "/" + tf_ano.getText().toString();
+			String validade2 = "01/01/2023";
 
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+			LocalDate date = LocalDate.parse(validade2, formatter);
+			System.out.println(date); // 2010-01-02
+			System.out.println();
 			if (!(tf_nome.getText().equals("") && tf_preco.getText().equals("")
 					&& tf_qtdInicial.getText().equals(""))) {
 
@@ -307,7 +313,8 @@ public class ListaProdutos implements ActionListener, MouseListener {
 				} else {
 					produto = new Produto(Integer.parseInt(tf_codigo.getText()), (cb_armazem.getSelectedIndex()),
 							tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
-							Double.parseDouble(tf_preco.getText()), 0, cb_fornecedor.getSelectedItem().toString()); // Preenchendo
+							Double.parseDouble(tf_preco.getText()), 0, cb_fornecedor.getSelectedItem().toString(),
+							date); // Preenchendo
 					// objecto
 					// com o
 					// formulário
