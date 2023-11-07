@@ -9,6 +9,7 @@ import javax.swing.*;
 
 import carrinho.Carritxo;
 import clientes.Cliente;
+import menu.Menu__Prin;
 import produto.Produto;
 import vendas.OperacoesVenda_Dinheiro;
 import vendas.Venda_Dinheiro;
@@ -60,11 +61,11 @@ public class Compra_Sucesso extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getSource() == bt_fechar) {
 			opVendas.gravarVendas(vendas_Vector);
 			//fazer operações disto onde podes ler too
-			System.exit(0);
+			this.setVisible(false);
+			new Menu__Prin();
 		}
 	}
 

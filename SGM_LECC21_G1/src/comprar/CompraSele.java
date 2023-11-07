@@ -111,18 +111,18 @@ public class CompraSele extends JFrame implements ActionListener {
 					System.out.println(carrinho.toString());
 				}
 			});
-			bt_finalizar.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if (crudProduto.gravarObjecto(temp)) {//
-						fecharJanela();
-						new Compra_Sucesso(crudCliente.procuraClienteID(id_cliente, clientes), carrinho);
-						
-					}
-				}
-			});
 
 		}
+		bt_finalizar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (crudProduto.gravarObjecto(temp)) {//
+					fecharJanela();
+					new Compra_Sucesso(crudCliente.procuraClienteID(id_cliente, clientes), carrinho);
+					
+				}
+			}
+		});
 
 		jp_produtos.setLayout(new FlowLayout(FlowLayout.LEFT));
 
