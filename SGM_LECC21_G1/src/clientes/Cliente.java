@@ -46,7 +46,7 @@ public class Cliente implements Serializable{
 
 
 	public void setBI(String BI) {
-		BI = BI;
+		this.BI = BI;
 	}
 
 

@@ -93,6 +93,7 @@ public class ListaClientes extends JFrame implements ActionListener {
 			temp = new Vector<>();
 			jt_Clientes = new JTable(null);
 		}
+		jt_Clientes.setEnabled(false);
 		JScrollPane sp = new JScrollPane(jt_Clientes);
 		this.add(sp, BorderLayout.CENTER);
 
@@ -195,7 +196,7 @@ public class ListaClientes extends JFrame implements ActionListener {
 		}
 		if (e.getSource() == bt_Editar) {
 			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Cliente que pretende editar"));
-			Cliente cli = crudCliente.produtoStock(codigo, temp);
+			Cliente cli = crudCliente.procuraClienteID(codigo, temp);
 			//PROCURA /VERIFICA SE O CODIGO EXISTE
 			if (codigo <= temp.size()) {
 				if (cli != null) {
@@ -210,7 +211,7 @@ public class ListaClientes extends JFrame implements ActionListener {
 		if (e.getSource() == bt_Eliminar) {
 			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Cliente que pretende eliminar"));
 			// VERIFICAÇÃO DE EXISTÊNCIA
-			Cliente cli = crudCliente.produtoStock(codigo, temp);
+			Cliente cli = crudCliente.procuraClienteID(codigo, temp);
 			
 			int a=crudCliente.procurarCodigo(temp,codigo);
 			if (a!=-1) {

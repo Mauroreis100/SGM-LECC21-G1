@@ -7,24 +7,30 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.*;
-import javax.swing.JFrame;
 
+import armazemTela.ListaArmazem;
 import clientes_tela.ListaClientes;
+import comprar.CompraSele;
+import telas.ListaProdutos;
 
 public class Menu__Prin extends JFrame implements ActionListener {
 	private JButton jb1,jb2,jb3,jb4,jb5,jb6,jb7;
 	private JPanel jp,jp1,jp3,jp4;
-	private JLabel jl,jlemp,jl_img1,jl_img2,jlemp1,jl_img3;
-	private JPanel jp5,jp6;
+	private JLabel jl,jl_img1;
+	private JLabel timeLabel;
+
 	//IMAGENS
-	private ImageIcon img1,img2,img3,img4;
+	private ImageIcon img1;
 	
 	public Menu__Prin () {
+		timeLabel = new JLabel();
 		jb1=new JButton("Armazém");
-		jb2=new JButton("Forecedor");
-		jb3=new JButton("Produto");
+		jb2=new JButton("Fornecedor");
+		jb3=new JButton("Produtos");
 		jb4=new JButton("Cliente");
 		jb5=new JButton("Sair");
 		jb6=new JButton("Compra");
@@ -33,22 +39,28 @@ public class Menu__Prin extends JFrame implements ActionListener {
 		jl=new JLabel("MENU PRINCIPAL");
 		jl.setForeground(Color.GRAY);
 		jl.setFont(new Font("Times New Roman",Font.BOLD,40));
-		jlemp=new JLabel("We offer you the best and qulaity shooping expirience and help \r\n"
-				+ "Money can buy because we are legit the best and only formost");
-		jlemp1=new JLabel("We offer you the best and qulaity shooping expirience and help \r\n"
-				+ "Money can buy because we are legit the best and only formost");
-		jlemp.setFont(new Font("Times New Roman",getFont().PLAIN,12));
-		jlemp1.setFont(new Font("Times New Roman",getFont().PLAIN,12));
 		
 		jp=new JPanel();
 		jp1=new JPanel();
 		jp3=new JPanel();
 		jp4=new JPanel();
+		 timeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+	        // Create a Timer to update the time label every second
+	        Timer timer = new Timer(1000, new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                updateTimeLabel(timeLabel);
+	            }
+	        });
+	        timer.start();
+
+	        // Initialize the time label
+	        updateTimeLabel(timeLabel);
 		
 		this.setTitle("Menu");
-		this.setSize(600,750);
-		this.setLocation(350,50);
+		this.setSize(this.getMaximumSize());
+		this.setLocation(0,0);
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 		
@@ -59,6 +71,7 @@ public class Menu__Prin extends JFrame implements ActionListener {
 		jp.add(jb6);
 		jp.add(jb5);
 		jp.setBackground(Color.lightGray);
+		
 		
 		jp1.add(jl);
 		jp1.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -83,19 +96,24 @@ public class Menu__Prin extends JFrame implements ActionListener {
 		
 		this.add(jp1,"North");
 		this.add(jp3,"Center");
-		
+		this.add(timeLabel,BorderLayout.SOUTH);
 		
 		this.setVisible(true);
 	}
 	public static void main(String args[]) {
 		new Menu__Prin();
 	}
+    private static void updateTimeLabel(JLabel label) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String currentTime = sdf.format(new Date());
+        label.setText(currentTime);
+    }
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource()==jb1) {
 			this.setVisible(false);
-			//new ListaClientes();
+			new ListaArmazem();
 		}
 		if(e.getSource()==jb2) {
 			this.setVisible(false);
@@ -103,16 +121,23 @@ public class Menu__Prin extends JFrame implements ActionListener {
 		}
 		if(e.getSource()==jb3) {
 			this.setVisible(false);
-			//new ListaClientes();
+			new ListaProdutos();
 		}
 		if(e.getSource()==jb4) {
 			this.setVisible(false);
 			new ListaClientes();
 		}
 		if(e.getSource()==jb6) {
-			this.setVisible(false);
-			//new ListaClientes();
-		}
+			String[] options = { "Compra", "Histórico" };
+			int x = JOptionPane.showOptionDialog(null, "Selecione o que fazer", "PICK...",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			if (x == 0) {
+				this.setVisible(false);
+				new CompraSele(1);
+				} else {
+					//HISTÓRICO
+				}
+			}
 		if(e.getSource()==jb5) {
 			System.exit(0);
 		}

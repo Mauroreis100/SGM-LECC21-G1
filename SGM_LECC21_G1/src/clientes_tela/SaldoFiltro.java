@@ -76,6 +76,7 @@ public class SaldoFiltro extends JFrame implements ActionListener {
 			temp = new Vector<>();
 			jt_Clientes = new JTable(null);
 		}
+		jt_Clientes.setEnabled(false);
 		this.add(jp, "North");
 		this.add(jp2, "South");
 		JScrollPane sp = new JScrollPane(jt_Clientes);

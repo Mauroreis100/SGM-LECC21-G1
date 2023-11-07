@@ -61,6 +61,7 @@ public class NomeFiltro extends JFrame implements ActionListener {
 			temp = new Vector<>();
 			jt_Clientes = new JTable(null);
 		}
+		jt_Clientes.setEnabled(false);
 		this.add(jp, "North");
 		JScrollPane sp = new JScrollPane(jt_Clientes);
 		this.add(sp, BorderLayout.CENTER);
