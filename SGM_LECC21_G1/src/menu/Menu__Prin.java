@@ -7,9 +7,10 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.*;
-import javax.swing.JFrame;
 
 import armazemTela.ListaArmazem;
 import clientes_tela.ListaClientes;
@@ -20,11 +21,13 @@ public class Menu__Prin extends JFrame implements ActionListener {
 	private JButton jb1,jb2,jb3,jb4,jb5,jb6,jb7;
 	private JPanel jp,jp1,jp3,jp4;
 	private JLabel jl,jl_img1;
+	private JLabel timeLabel;
 
 	//IMAGENS
 	private ImageIcon img1;
 	
 	public Menu__Prin () {
+		timeLabel = new JLabel();
 		jb1=new JButton("Armazém");
 		jb2=new JButton("Forecedor");
 		jb3=new JButton("Produto");
@@ -41,7 +44,19 @@ public class Menu__Prin extends JFrame implements ActionListener {
 		jp1=new JPanel();
 		jp3=new JPanel();
 		jp4=new JPanel();
+		 timeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+	        // Create a Timer to update the time label every second
+	        Timer timer = new Timer(1000, new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                updateTimeLabel(timeLabel);
+	            }
+	        });
+	        timer.start();
+
+	        // Initialize the time label
+	        updateTimeLabel(timeLabel);
 		
 		this.setTitle("Menu");
 		this.setSize(this.getMaximumSize());
@@ -56,6 +71,7 @@ public class Menu__Prin extends JFrame implements ActionListener {
 		jp.add(jb6);
 		jp.add(jb5);
 		jp.setBackground(Color.lightGray);
+		
 		
 		jp1.add(jl);
 		jp1.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -80,14 +96,18 @@ public class Menu__Prin extends JFrame implements ActionListener {
 		
 		this.add(jp1,"North");
 		this.add(jp3,"Center");
-		
+		this.add(timeLabel,BorderLayout.SOUTH);
 		
 		this.setVisible(true);
 	}
 	public static void main(String args[]) {
 		new Menu__Prin();
 	}
-	
+    private static void updateTimeLabel(JLabel label) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String currentTime = sdf.format(new Date());
+        label.setText(currentTime);
+    }
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub

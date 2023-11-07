@@ -5,6 +5,8 @@ import telas.ListaProdutos;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.*;
 
@@ -15,6 +17,7 @@ public class Autenticar extends JFrame implements ActionListener{
 	private JTextField jt_user;
 	private JPasswordField jp_pass;
 	private JButton jb_acess,jb_sair;
+	private JLabel timeLabel;
 
 	
 	public Autenticar() {
@@ -24,7 +27,7 @@ public class Autenticar extends JFrame implements ActionListener{
 		jp_pass=new JPasswordField(15);
 		jb_acess=new JButton("Entrar");
 		jb_sair=new JButton("Sair");
-
+		timeLabel = new JLabel();
 		
 		jb_acess.addActionListener(this);
 		jb_sair.addActionListener(this);
@@ -35,16 +38,35 @@ public class Autenticar extends JFrame implements ActionListener{
 		this.add(jp_pass);
 		this.add(jb_sair);
 		this.add(jb_acess);
-		
-		
-		this.setLayout(new GridLayout(3,2,10,10));
+
+		        timeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+		        // Create a Timer to update the time label every second
+		        Timer timer = new Timer(1000, new ActionListener() {
+		            @Override
+		            public void actionPerformed(ActionEvent e) {
+		                updateTimeLabel(timeLabel);
+		            }
+		        });
+		        timer.start();
+
+		        // Initialize the time label
+		        updateTimeLabel(timeLabel);
+	
+
+		this.setLayout(new GridLayout(4,2,10,10));
 		this.setTitle("Autenticação");
 		this.setSize(500,150);
 		this.setLocation(500,150);
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		this.add(timeLabel);
 		this.setVisible(true);
 	}
-	
+    private static void updateTimeLabel(JLabel label) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String currentTime = sdf.format(new Date());
+        label.setText(currentTime);
+    }
 	public static void main(String args[]) {
 		new Autenticar();
 	}
