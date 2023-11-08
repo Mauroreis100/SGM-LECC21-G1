@@ -42,7 +42,7 @@ public class CompraSele extends JFrame implements ActionListener {
 	private JLabel jl_f;
 	private JTextField jtf_se;
 
-	private JButton bt_remover, bt_finalizar, bt_cancelar;
+	private JButton bt_remover, bt_finalizar, bt_Voltar;
 
 	private String[] coluna = { "Código", "Nome", "BI", "Telefone", "Saldo" };
 	private JTable tb_listagem;
@@ -52,6 +52,7 @@ public class CompraSele extends JFrame implements ActionListener {
 		jtf_se = new JTextField(15);
 		bt_remover = new JButton("Remover Item");
 		bt_finalizar = new JButton("Finalizar");
+		bt_Voltar=new JButton("Voltar");
 		jp = new JPanel();
 		jp_produto = new JPanel();
 		jp_produtos = new JPanel();
@@ -66,7 +67,7 @@ public class CompraSele extends JFrame implements ActionListener {
 		tb_listagem = new JTable(tm_listagemModel);
 
 		bt_remover.addActionListener(this);
-
+		bt_Voltar.addActionListener(this);
 		// -----DEFINIÇÕES DA JANELA*INICIO-------
 		this.setTitle("Escolha");// O tittulo da janela.
 		this.setSize(950, 500);// Width and Height em pixels.[Comprimento, Largura]
@@ -106,7 +107,7 @@ public class CompraSele extends JFrame implements ActionListener {
 					for (int i = 0; i < carrinho.size(); i++) {
 						tm_listagemModel.addRow(new Object[] { ((Carritxo) carrinho.get(i)).getId(),
 								((Carritxo) carrinho.get(i)).getNome(), ((Carritxo) carrinho.get(i)).getQtd(),
-								((Carritxo) carrinho.get(i)).getPreco(), prod.getPreco() * quantidade });
+								((Carritxo) carrinho.get(i)).getPreco(), prod.getPreco() * ((Carritxo) carrinho.get(i)).getQtd() });
 					}
 					System.out.println(carrinho.toString());
 				}
@@ -116,10 +117,19 @@ public class CompraSele extends JFrame implements ActionListener {
 		bt_finalizar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (crudProduto.gravarObjecto(temp)) {//
-					fecharJanela();
-					new Compra_Sucesso(crudCliente.procuraClienteID(id_cliente, clientes), carrinho);
-					
+				Object[] options = { "Sim", "Continuar a comprar" };
+				int n = JOptionPane.showOptionDialog(null, "Deseja finalizar a compra?", "Confirme",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, // do not use a custom Icon
+						options, // the titles of buttons
+						options[0]); // default button title int choice = JOptionPane.showConfirmDialog(null, "Deseja
+										// finalizar a compra?", "Confirme", JOptionPane.YES_NO_OPTION);
+				if (n == 0) {
+					if (crudProduto.gravarObjecto(temp)) {
+						//VENDA DEVE AUMENTAR
+						fecharJanela();
+						new Compra_Sucesso(crudCliente.procuraClienteID(id_cliente, clientes), carrinho);
+
+					}
 				}
 			}
 		});
@@ -130,6 +140,7 @@ public class CompraSele extends JFrame implements ActionListener {
 
 		JScrollPane sp = new JScrollPane(jp_produtos);
 		jp_carrinho.add(sp);
+		jp_carrinho_butoes.add(bt_Voltar);
 		jp_carrinho_butoes.add(bt_remover);
 		jp_carrinho_butoes.add(bt_finalizar);
 		jp_carrinho.add(new JScrollPane(tb_listagem));
@@ -144,14 +155,19 @@ public class CompraSele extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		new CompraSele(1);
 	}
-public void fecharJanela() {
-	this.setVisible(false);
-}
-	public void actionPerformed(ActionEvent e) {
 
+	public void fecharJanela() {
+		this.setVisible(false);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == bt_Voltar) {
+			fecharJanela();
+			new Menu__Prin();
+		}
 		if (e.getSource() == bt_remover) {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("ID do Produto que pretende remover do carrinho?"));
-			temp=op_Carrinho.devolverQuantidade(id, temp, carrinho);
+			temp = op_Carrinho.devolverQuantidade(id, temp, carrinho);
 			carrinho = op_Carrinho.removerProduto(id, carrinho, temp);
 
 			tm_listagemModel.setRowCount(0);

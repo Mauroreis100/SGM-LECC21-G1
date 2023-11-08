@@ -62,8 +62,8 @@ public class Compra_Sucesso extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == bt_fechar) {
+			
 			opVendas.gravarVendas(vendas_Vector);
-			//fazer operações disto onde podes ler too
 			this.setVisible(false);
 			new Menu__Prin();
 		}

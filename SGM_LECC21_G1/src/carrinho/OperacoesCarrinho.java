@@ -78,13 +78,13 @@ public class OperacoesCarrinho {
 		if (posicao != -1) {
 			Produto encontrado = ((Produto) lista.get(posicao));
 			if (quantidade > encontrado.getQtd()) { // Quantidade pretendida acima da que está no stock
-				JOptionPane.showConfirmDialog(null, "Tente um valor mais baixo");
+				JOptionPane.showMessageDialog(null, "Quantidade maior que Stock","", JOptionPane.WARNING_MESSAGE);
 				return false;
-			} else if (encontrado.getQtd() < 0) {// ...
-				JOptionPane.showConfirmDialog(null, "STOCK 0");
+			} else if (encontrado.getQtd() == 0) {// ...
+				JOptionPane.showMessageDialog(null, "Fora de Stock","", JOptionPane.WARNING_MESSAGE);
 				return false;
 			} else if (quantidade < 0) {// Quantidade menor que 0
-				JOptionPane.showConfirmDialog(null, "INSIRA UMA QUANTIDADE VÁLIDA");
+				JOptionPane.showMessageDialog(null, "INSIRA UMA QUANTIDADE VÁLIDA","", JOptionPane.WARNING_MESSAGE);
 				return false;
 			} else {
 				return true;// Produto existe e tem a quantidade pretendida
@@ -138,11 +138,11 @@ public class OperacoesCarrinho {
 		for (int i = 0; i < carrinho.size(); i++) {
 			if (((Carritxo) carrinho.get(i)).getId() == id) {
 				carrinho.remove(i); // Remoção do produto no carrinho
-				JOptionPane.showConfirmDialog(null, "REMOVIDO COM SUCESSO");
+				JOptionPane.showMessageDialog(null, "REMOVIDO COM SUCESSO");
 				return carrinho;
 			}
 		}
-		JOptionPane.showConfirmDialog(null, "Produto não está no Carrinho");
+		JOptionPane.showMessageDialog(null, "Produto não está no Carrinho");
 
 		return carrinho;
 	}

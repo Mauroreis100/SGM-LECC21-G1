@@ -23,11 +23,10 @@ public String toString() {
 	return "\t RECIBO SGM \n\n\nNUIT: 1230120 \nLOCAL: Maputo \nVenda Número: " + id_venda + "\n------------------------------\nCliente: " + cliente.getNome() + "\nDATA: "
 			+ data +"\nNOME \t\t PREÇO \t Qty \t Valor Unit\tTotal\n------------------------------------------------------\n"+itens.toString();
 }
-public Venda_Dinheiro(int id_venda, Cliente cliente, Vector itens, double total_IVA) {
+public Venda_Dinheiro(int id_venda, Cliente cliente, Vector itens,double total_IVA) {
 	this.id_venda=id_venda;
 	this.cliente = cliente;
 	this.itens = itens;
-	this.data = data;
 	this.total_IVA = total_IVA*IVA;
 }
 public Cliente getCliente() {
@@ -41,6 +40,18 @@ public Vector getItens() {
 }
 public void setItens(Vector itens) {
 	this.itens = itens;
+}
+public int getId_venda() {
+	return id_venda;
+}
+public void setId_venda(int id_venda) {
+	this.id_venda = id_venda;
+}
+public String getData() {
+	return data;
+}
+public void setData(String data) {
+	this.data = data;
 }
 
 public double getTotal() {
