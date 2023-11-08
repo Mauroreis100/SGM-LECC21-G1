@@ -134,6 +134,7 @@ public class FiltrarProdutos extends JFrame implements ActionListener, MouseList
 					closeJanela();
 					new FiltrarProdutos(idProds);
 				}else {
+					closeJanela();
 					new FiltrarProdutos(idProds);
 				}
 			}else {
@@ -145,10 +146,10 @@ public class FiltrarProdutos extends JFrame implements ActionListener, MouseList
 			Vector minimo = new Vector();
 			for (int i = 0; i < temp.size(); i++) {
 				if (((Produto) temp.get(i)).getQtd() < ((Produto) temp.get(i)).getStockMinimo()) {
-					closeJanela();
 					minimo.add((Produto) temp.get(i));
 				}
 			}
+			closeJanela();
 			new FiltrarProdutos(minimo);
 		}
 	}

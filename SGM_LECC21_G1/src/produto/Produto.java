@@ -32,8 +32,9 @@ public class Produto implements Serializable {
 	public Produto() {
 	}
 
-	public Produto(int id, int armazen_nr, String nome, int qtd, double preco, int vendas, String fornecedor, LocalDate validade) {
+	public Produto(int id,String foto, int armazen_nr, String nome, int qtd, double preco, int vendas, String fornecedor, LocalDate validade) {
 		this.id = id;
+		this.foto=foto;
 		this.nome = nome;
 		this.armazen_nr = armazen_nr;
 		this.qtd = qtd;

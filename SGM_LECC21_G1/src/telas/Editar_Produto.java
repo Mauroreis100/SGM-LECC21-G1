@@ -2,12 +2,18 @@ package telas;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,6 +22,7 @@ import javax.swing.JTextField;
 
 import armazem.Armazem;
 import armazem.ArmazemOperacoes;
+import carrinho.Carritxo;
 import excepcoes.CampoVazioException;
 import produto.OperacoesProduto;
 import produto.Produto;
@@ -37,14 +44,14 @@ public class Editar_Produto extends JFrame implements ActionListener {
 
 	private JLabel jb_titulo;
 	private JPanel jp_armazem;
-	private JPanel jp_fornecedor,jp_validade;
+	private JPanel jp_fornecedor, jp_validade;
 
 	private JLabel jb_codigo;
 	private JLabel jb_nome;
 	private JLabel jb_preco;
 	private JLabel jb_qtdInicial;
 	private JLabel jb_armazem;
-	private JLabel jb_fornecedor, lb_validade;
+	private JLabel jb_fornecedor, lb_validade, lb_foto;
 	private JLabel jb_stock;
 
 	private JTextField tf_codigo;
@@ -54,8 +61,7 @@ public class Editar_Produto extends JFrame implements ActionListener {
 	private JComboBox cb_armazem;
 	private JComboBox cb_fornecedor, cb_dia, cb_mes, cb_ano;
 
-
-	private JButton bt_Editar;
+	private JButton bt_Editar, bt_foto;
 	private JButton bt_Cancelar;
 
 	public Editar_Produto(Produto prod) {
@@ -64,11 +70,12 @@ public class Editar_Produto extends JFrame implements ActionListener {
 		jb_codigo = new JLabel("Código");
 		jb_nome = new JLabel("Nome");
 		jb_preco = new JLabel("Preco");
-		jb_stock=new JLabel("Stock Minimo");
+		jb_stock = new JLabel("Stock Minimo");
 		jb_qtdInicial = new JLabel("Quantidade");
-		jb_armazem=new JLabel("ARMAZÉM");
-		jb_fornecedor=new JLabel("Fornecedor");
-		lb_validade=new JLabel("Valido até:");
+		jb_armazem = new JLabel("ARMAZÉM");
+		lb_foto = new JLabel("Editar Foto");
+		jb_fornecedor = new JLabel("Fornecedor");
+		lb_validade = new JLabel("Valido até:");
 
 		tf_codigo = new JTextField(20);
 		tf_codigo.setText(prod.getId() + "");
@@ -105,16 +112,22 @@ public class Editar_Produto extends JFrame implements ActionListener {
 
 		bt_Editar = new JButton("CONFIRMAR EDIÇÕES");
 		bt_Cancelar = new JButton("CANCELAR EDIÇÕES");
-
+		ImageIcon icon = new ImageIcon(prod.getFoto());
+		int larguraDesejada = 150;
+		int alturaDesejada = 150;
+		Image imagemRedimensionada = icon.getImage().getScaledInstance(larguraDesejada, alturaDesejada,
+				Image.SCALE_SMOOTH);
+		ImageIcon novoIcon = new ImageIcon(imagemRedimensionada);
+		bt_foto = new JButton("FOTO", novoIcon);
 		jp_form = new JPanel();
-		jp_armazem=new JPanel();
+		jp_armazem = new JPanel();
 		jp_preco = new JPanel();
 		jp_codigo = new JPanel();
 		jp_qtdInicial = new JPanel();
 		jp_nome = new JPanel();
-		jp_fornecedor=new JPanel();
+		jp_fornecedor = new JPanel();
 		jp_buttons = new JPanel();
-		jp_validade=new JPanel();
+		jp_validade = new JPanel();
 		// -----DEFINIÇÕES DA JANELA*INICIO---------------------------------------
 		this.setTitle("EDITAR PREÇO");// O tittulo da janela.
 		this.setSize(720, 720);// Width and Height em pixels.[Comprimento, Largura]
@@ -125,6 +138,7 @@ public class Editar_Produto extends JFrame implements ActionListener {
 		// ------DEFINIÇÕES DA JANELA*FIM----------------------------------------
 
 		// -----ACTION LISNETERS*INICIO-------------------------------
+//		bt_foto.addActionListener(this);
 		bt_Cancelar.addActionListener(this);
 		bt_Editar.addActionListener(this);
 		// ----ACTION LISTENERS*FIM----------------------------------
@@ -152,12 +166,12 @@ public class Editar_Produto extends JFrame implements ActionListener {
 		jp_preco.add(tf_preco);
 
 		jp_form.add(jp_preco);
-		
+
 		jp_armazem.add(jb_armazem);
 		jp_armazem.add(cb_armazem);
 
 		jp_form.add(jp_armazem);
-		
+
 		jp_fornecedor.add(jb_fornecedor);
 		jp_fornecedor.add(cb_fornecedor);
 
@@ -167,8 +181,9 @@ public class Editar_Produto extends JFrame implements ActionListener {
 		jp_validade.add(cb_dia);
 		jp_validade.add(cb_mes);
 		jp_validade.add(cb_ano);
-		
+
 		jp_form.add(jp_validade);
+		this.add(bt_foto, BorderLayout.NORTH);
 		jp_buttons.add(bt_Cancelar);
 		jp_buttons.add(bt_Editar);
 		this.add(jp_form, BorderLayout.CENTER);
@@ -177,28 +192,68 @@ public class Editar_Produto extends JFrame implements ActionListener {
 		this.setVisible(true);
 	}
 
+	public void fechaTela() {
+		this.setVisible(false);
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == bt_Cancelar) {
-			System.exit(0);
+			fechaTela();
+			new ListaProdutos();
 		}
+//		if(e.getSource()==bt_foto) {
+//	
+//		}
 		if ((e.getSource() == bt_Editar)) {
 			if (!(tf_nome.getText().isBlank() && tf_preco.getText().isBlank() && tf_qtdInicial.getText().isBlank())) {
 
 				int posicaoProdutoVector = crudProduto.procurarCodigo(temp, Integer.parseInt(tf_codigo.getText()));
 				if (posicaoProdutoVector != -1) {
 					Produto prod = (Produto) temp.get(posicaoProdutoVector);
-						prod.setNome(tf_nome.getText());
-						prod.setPreco(Double.parseDouble(tf_preco.getText()));
-						prod.setQtd(Integer.parseInt(tf_qtdInicial.getText()));
-						prod.setFornecedor(cb_fornecedor.getSelectedItem().toString());
+					prod.setNome(tf_nome.getText());
+					// EDITAR FOTO
+//					bt_foto.addActionListener(new ActionListener() {
+//						@Override
+//						public void actionPerformed(ActionEvent e) {
+//							System.out.println("FUNCIONA?");
+//							fechaTela();
+//							new Editar_Produto(prod);
+//								
+//							JFileChooser fileChooser = new JFileChooser();
+//							int result = fileChooser.showOpenDialog(null);
+//							if (result == JFileChooser.APPROVE_OPTION) {
+//								File selectedFile = fileChooser.getSelectedFile();
+//								try {
+//									BufferedImage image = ImageIO.read(selectedFile);
+//									ImageIcon icon = new ImageIcon(image);
+//									int larguraDesejada = 50;
+//									int alturaDesejada = 50;
+//									Image imagemRedimensionada = icon.getImage().getScaledInstance(larguraDesejada,
+//											alturaDesejada, Image.SCALE_SMOOTH);
+//									ImageIcon novoIcon = new ImageIcon(imagemRedimensionada);
+//									String pathFoto = selectedFile.getAbsolutePath();
+//									prod.setFoto(pathFoto);
+//									
+//								} catch (Exception ex) {
+//									ex.printStackTrace();
+//									JOptionPane.showMessageDialog(null, "Error loading image", "Error",
+//											JOptionPane.ERROR_MESSAGE);
+//								}
+//							}
+//						}
+//					});
+//					
+					prod.setPreco(Double.parseDouble(tf_preco.getText()));
+					prod.setQtd(Integer.parseInt(tf_qtdInicial.getText()));
+					prod.setFornecedor(cb_fornecedor.getSelectedItem().toString());
 //						prod.setArmazen_nr(posicaoProdutoVector);ARMAZEM PELO ID OU PELO NOME AFFF
-						temp.set(posicaoProdutoVector, prod);
-						crudProduto.gravarObjecto(temp);
-						JOptionPane.showMessageDialog(null, "PRODUTO EDITADO COM SUCESSO!", "",
-								JOptionPane.INFORMATION_MESSAGE); // OK
-						this.setVisible(false);
-						new ListaProdutos();
+					temp.set(posicaoProdutoVector, prod);
+					crudProduto.gravarObjecto(temp);
+					JOptionPane.showMessageDialog(null, "PRODUTO EDITADO COM SUCESSO!", "",
+							JOptionPane.INFORMATION_MESSAGE); // OK
+					this.setVisible(false);
+					new ListaProdutos();
 				} else {
 					JOptionPane.showMessageDialog(null, "PRODUTO NÃO FOI ENCONTRADO", "", JOptionPane.ERROR_MESSAGE); // OK
 

@@ -2,9 +2,11 @@ package telas;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,6 +29,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	Vector temp = crudProduto.recuperarBD();// Preenchumento do vector de objectos do ficheiro na lista
 	ArmazemOperacoes opArmazens = new ArmazemOperacoes(); // temporaria no progra
 	Produto produto = new Produto();
+	String pathFoto="assets/icons/Camera.png";
 	private JFrame jf_registrar;
 
 	private JPanel jp_tabela;
@@ -44,14 +47,13 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	private JLabel jb_titulo;
 	private ImageIcon img_icon = new ImageIcon("assets/icons/Camera.png"); // Substitua pelo caminho do arquivo da
 																			// imagem
-
 	private JLabel lb_foto;;
 	private JLabel jb_codigo;
 	private JLabel jb_nome;
 	private JLabel jb_preco;
 	private JLabel jb_qtdInicial;
 	private JLabel jb_armazem;
-	private JLabel jb_fornecedor, lb_validade, lb_dia, lb_mes, lb_ano;
+	private JLabel jb_fornecedor, lb_validade, lb_dia, lb_mes, lb_ano,lb_directorio;
 
 	private JTextField tf_codigo;
 	private JTextField tf_nome;
@@ -89,17 +91,6 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		ImageIcon novoIcon = new ImageIcon(imagemRedimensionada);
 		lb_foto = new JLabel(novoIcon);
 		jf_registrar = new JFrame();
-//		UtilDateModel model = new UtilDateModel();
-//		JDatePanelImpl datePanel = new JDatePanelImpl(model, null);
-//		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, null);
-//		Properties p=new Properties();
-//		p.put("text.day","Day");
-//		p.put("text.month","Month");
-//		p.put("text.year","Year");
-//		UtilDateModel model = new UtilDateModel();
-//		datePanel=new JDatePanelImpl(model,p);
-//		datePicker=new JDatePickerImpl(datePanel,null);
-
 		jb_titulo = new JLabel("REGISTRE O PRODUTO");
 		jb_titulo = new JLabel("REGISTRE O PRODUTO");
 		jb_codigo = new JLabel("Código");
@@ -112,6 +103,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		lb_dia = new JLabel("Validade -> Dia:");
 		lb_mes = new JLabel("Mês:");
 		lb_ano = new JLabel("Ano:");
+		lb_directorio=new JLabel("");
 //		jt_produtos.setEnabled(false);
 		tf_codigo = new JTextField(5);
 		tf_codigo.setEnabled(false);
@@ -161,7 +153,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		bt_Editar = new JButton("EDITAR PRODUTO");
 		bt_Eliminar = new JButton("ELIMINAR PRODUTO");
 		bt_filtrar = new JButton("FILTRO");
-		bt_Voltar=new JButton("VOLTAR");
+		bt_Voltar = new JButton("VOLTAR");
 		bt_Relatorio = new JButton("RELATÓRIO");
 
 		jp_tabela = new JPanel();
@@ -312,7 +304,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 					JOptionPane.showMessageDialog(null, "ATENÇÃO",
 							"PRODUTO COM NOME " + tf_nome.getText() + " JÁ EXISTE", JOptionPane.WARNING_MESSAGE); // OK
 				} else {
-					produto = new Produto(Integer.parseInt(tf_codigo.getText()), (cb_armazem.getSelectedIndex()),
+					produto = new Produto(Integer.parseInt(tf_codigo.getText()),pathFoto,(cb_armazem.getSelectedIndex()),
 							tf_nome.getText(), Integer.parseInt(tf_qtdInicial.getText()),
 							Double.parseDouble(tf_preco.getText()), 0, cb_fornecedor.getSelectedItem().toString(),
 							date); // Preenchendo
@@ -372,7 +364,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		if (e.getSource() == bt_filtrar) {
 			new FiltrarProdutos(new Vector());
 		}
-		if(e.getSource()==bt_Voltar) {
+		if (e.getSource() == bt_Voltar) {
 			FecharListarProdutos();
 			new Menu__Prin();
 		}
@@ -383,9 +375,29 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == jp_foto) {
-			jf.showOpenDialog(null);
-			jf_registrar.remove(jp_foto);
-			lb_foto.setText(jf.getSelectedFile().getAbsolutePath());
+//			jf.showOpenDialog(null);
+//			jf_registrar.remove(jp_foto);
+//			lb_foto.setText(jf.getSelectedFile().getAbsolutePath());
+//			lb_foto.setText(jf.getSelectedFile().getAbsolutePath());
+			JFileChooser fileChooser = new JFileChooser();
+			int result = fileChooser.showOpenDialog(null);
+			if (result == JFileChooser.APPROVE_OPTION) {
+				File selectedFile = fileChooser.getSelectedFile();
+				try {
+					BufferedImage image = ImageIO.read(selectedFile);
+					ImageIcon icon = new ImageIcon(image);
+					int larguraDesejada = 50;
+					int alturaDesejada = 50;
+					Image imagemRedimensionada = icon.getImage().getScaledInstance(larguraDesejada, alturaDesejada,
+							Image.SCALE_SMOOTH);
+					ImageIcon novoIcon = new ImageIcon(imagemRedimensionada);
+					lb_foto.setIcon(novoIcon);
+					pathFoto=selectedFile.getAbsolutePath();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Error loading image", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		}
 	}
 
