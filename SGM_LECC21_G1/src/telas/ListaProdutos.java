@@ -14,6 +14,7 @@ import armazem.*;
 import produto.OperacoesProduto;
 import produto.Produto;
 import excepcoes.CampoVazioException;
+import fornecedor.GerenciadorDeFornecedores;
 import menu.Menu__Prin;
 
 import java.text.ParseException;
@@ -29,6 +30,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 	Vector temp = crudProduto.recuperarBD();// Preenchumento do vector de objectos do ficheiro na lista
 	ArmazemOperacoes opArmazens = new ArmazemOperacoes(); // temporaria no progra
 	Produto produto = new Produto();
+	GerenciadorDeFornecedores fornecedor=new GerenciadorDeFornecedores();
 	String pathFoto="assets/icons/Camera.png";
 	private JFrame jf_registrar;
 
