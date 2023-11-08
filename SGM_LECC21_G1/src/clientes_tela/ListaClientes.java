@@ -3,7 +3,6 @@ package clientes_tela;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -48,15 +47,6 @@ public class ListaClientes extends JFrame implements ActionListener {
 	private String[] coluna = { "Código", "Nome", "BI", "Telefone", "Saldo" };
 
 	public ListaClientes() {
-		ImageIcon icon = new ImageIcon("assets/icons/delete_garbage.png");
-		int larguraDesejada = 10;
-        int alturaDesejada = 10;
-        
-        Image imagemRedimensionada = icon.getImage().getScaledInstance(
-        larguraDesejada, alturaDesejada, Image.SCALE_SMOOTH);
-        
-        ImageIcon novoIcon = new ImageIcon(imagemRedimensionada);
-        
 		jl_nome = new JLabel("Nome :");
 		jt_nome = new JTextField(15);
 		jl_id = new JLabel("codigo :");
@@ -70,8 +60,7 @@ public class ListaClientes extends JFrame implements ActionListener {
 		jt_saldo = new JTextField(15);
 
 		bt_Criar = new JButton("Registra");
-		bt_Eliminar = new JButton(novoIcon);
-		bt_Eliminar.setText("Remover");
+		bt_Eliminar = new JButton("Remover");
 		bt_Editar = new JButton("Edita");
 		bt_filtrar = new JButton("Filtrar");
 		bt_Voltar = new JButton("Voltar");
@@ -196,7 +185,7 @@ public class ListaClientes extends JFrame implements ActionListener {
 		}
 		if (e.getSource() == bt_Editar) {
 			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Cliente que pretende editar"));
-			Cliente cli = crudCliente.procuraClienteID(codigo, temp);
+			Cliente cli = crudCliente.produtoStock(codigo, temp);
 			//PROCURA /VERIFICA SE O CODIGO EXISTE
 			if (codigo <= temp.size()) {
 				if (cli != null) {
@@ -211,7 +200,7 @@ public class ListaClientes extends JFrame implements ActionListener {
 		if (e.getSource() == bt_Eliminar) {
 			int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o id do Cliente que pretende eliminar"));
 			// VERIFICAÇÃO DE EXISTÊNCIA
-			Cliente cli = crudCliente.procuraClienteID(codigo, temp);
+			Cliente cli = crudCliente.produtoStock(codigo, temp);
 			
 			int a=crudCliente.procurarCodigo(temp,codigo);
 			if (a!=-1) {

@@ -40,7 +40,7 @@ public class ClienteOperacoes {
 
 	// Método que retorna o objecto produto no vector. É especificado, por isso os
 	// castings foram necessários
-	public Cliente procuraClienteID(int id, Vector lista) {
+	public Cliente produtoStock(int id, Vector lista) {
 		for (int i = 0; i < lista.size(); i++) {
 			if (((Cliente) lista.get(i)).getId() == id) {
 				return (Cliente) lista.get(i);
