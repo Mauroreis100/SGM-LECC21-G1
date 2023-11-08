@@ -19,12 +19,15 @@ import excepcoes.CampoVazioException;
 
 public class ListaArmazem extends JFrame implements ActionListener {
 	ArmazemOperacoes crudArmazem = new ArmazemOperacoes();
-	Vector temp = crudArmazem.recuperarBD();
-	Armazem arm = new Armazem();
+	Vector temp = crudArmazem.recuperarBD();// Preenchumento do vector de objectos do ficheiro na lista
+
+	Armazem arm = new Armazem();// temporaria no progra
+
 	private JLabel jl_nome;
 	private JLabel jl_id;
 	
 	private JLabel jl_quantidade;
+	//private JLabel jl_cell;
 
 	private JTextField jt_nome;
 	private JTextField jt_id;
@@ -123,7 +126,11 @@ public class ListaArmazem extends JFrame implements ActionListener {
 		jp_top.add(jt_id);
 		jp_top.add(jl_nome);
 		jp_top.add(jt_nome);
-
+		
+		
+		
+//		jp_top.add(jl_quantidade);
+//		jp_top.add(jt_quantidade);
 		jp_top.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		jp_bottom = new JPanel();
@@ -245,7 +252,7 @@ public class ListaArmazem extends JFrame implements ActionListener {
 
 		}
 				if(e.getSource()==bt_filtrar) {
-//					new FiltrarArmazem(new Vector());
+					new FiltrarArmazem(new Vector());
 				}
 				if(e.getSource()==bt_Voltar) {
 					new Menu__Prin();
