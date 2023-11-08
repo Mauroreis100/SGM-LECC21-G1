@@ -59,8 +59,8 @@ public class Menu__Prin extends JFrame implements ActionListener {
 	        updateTimeLabel(timeLabel);
 		
 		this.setTitle("Menu");
-		this.setSize(this.getMaximumSize());
-		this.setLocation(0,0);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+//		this.setUndecorated(true);
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 		
@@ -96,6 +96,7 @@ public class Menu__Prin extends JFrame implements ActionListener {
 		
 		this.add(jp1,"North");
 		this.add(jp3,"Center");
+		timeLabel.setFont(new Font("Verdana", Font.PLAIN, 18));
 		this.add(timeLabel,BorderLayout.SOUTH);
 		
 		this.setVisible(true);

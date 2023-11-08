@@ -12,6 +12,8 @@ import armazem.*;
 import produto.OperacoesProduto;
 import produto.Produto;
 import excepcoes.CampoVazioException;
+import menu.Menu__Prin;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -159,6 +161,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		bt_Editar = new JButton("EDITAR PRODUTO");
 		bt_Eliminar = new JButton("ELIMINAR PRODUTO");
 		bt_filtrar = new JButton("FILTRO");
+		bt_Voltar=new JButton("VOLTAR");
 		bt_Relatorio = new JButton("RELATÓRIO");
 
 		jp_tabela = new JPanel();
@@ -179,10 +182,8 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		jf_registrar.add(sp, BorderLayout.CENTER);
 
 		// -----DEFINIÇÕES DA JANELA*INICIO-------
-		jf_registrar.setTitle("Template de JForm");// O tittulo da janela.
-		jf_registrar.setSize(1280, 720);// Width and Height em pixels.[Comprimento, Largura]
-		jf_registrar.setLocation(100, 100);// Onde o programa vai arrancar
-		jf_registrar.setLocationRelativeTo(null);// Onde o programa vai arrancar
+		jf_registrar.setTitle("CRUD PRODUTOS");// O tittulo da janela.
+		jf_registrar.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		jf_registrar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// Quando o utilizador clicar no x. Mata todos os
 																	// frames
 		// ------DEFINIÇÕES DA JANELA*FIM--------
@@ -192,7 +193,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		bt_Editar.addActionListener(this);
 		bt_Eliminar.addActionListener(this);
 		bt_filtrar.addActionListener(this);
-
+		bt_Voltar.addActionListener(this);
 		// ----ACTION LISTENERS*FIM-------------------
 
 		// -----MOUSE LISNETERS*INICIO--------
@@ -255,7 +256,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		jp_butoes.add(bt_Editar);
 		jp_butoes.add(bt_Eliminar);
 		jp_butoes.add(bt_filtrar);
-
+		jp_butoes.add(bt_Voltar);
 		jp_tabela.setLayout(new FlowLayout());
 
 		jf_registrar.add(jp_butoes, BorderLayout.SOUTH);
@@ -321,7 +322,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 					temp.add(produto);// Actualização do vector temporário com o novo objecto
 					if (crudProduto.gravarObjecto(temp)) {//
 						JOptionPane.showMessageDialog(null, "PRODUTO REGISTRADO COM SUCESSO", "REGISTRADO COM SUCESSO",
-								JOptionPane.WARNING_MESSAGE);// MENSAGEM DE SUCESSO
+								JOptionPane.INFORMATION_MESSAGE);// MENSAGEM DE SUCESSO
 						new ListaProdutos();// Fecha
 						FecharListarProdutos();// Rerenderizar a página com produtos novoss
 					} // ERRO NA GRAVAÇÃO
@@ -340,9 +341,9 @@ public class ListaProdutos implements ActionListener, MouseListener {
 			if (prod != null) {
 				new Editar_Produto(prod);
 				jf_registrar.setVisible(false);
-			}else {
+			} else {
 				JOptionPane.showMessageDialog(null, "NÃO FOI ENCONTRADO", "PRODUTO NÃO FOI ENCONTRADO",
-						JOptionPane.WARNING_MESSAGE); // OK
+						JOptionPane.INFORMATION_MESSAGE); // OK
 			}
 		}
 
@@ -353,7 +354,7 @@ public class ListaProdutos implements ActionListener, MouseListener {
 			Produto prod = crudProduto.produtoStock(codigo, temp);
 			if (prod != null) {
 				int opcao = JOptionPane.showConfirmDialog(null,
-						"TEM A CERTEZA QUE QUER APAGAR \"+\"(DSADAS\"+\" DO STOCK?", "ELIMINAR",
+						"TEM A CERTEZA QUE QUER APAGAR " + prod.getNome() + " DO STOCK?", "ELIMINAR",
 						JOptionPane.YES_NO_OPTION);// YES apaga mesmo e NO não faz nada,
 				if (opcao == 0) {
 
@@ -369,20 +370,11 @@ public class ListaProdutos implements ActionListener, MouseListener {
 
 		}
 		if (e.getSource() == bt_filtrar) {
-//			String[] options = { "ID", "NOME" };
-//			int x = JOptionPane.showOptionDialog(null, "Selecione o teu filtro", "FILTRAR POR...",
-//					JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-//			if (x == 0) {
-//				int codigo = Integer.parseInt(JOptionPane.showInputDialog("Código que pretende procurar"));
-//				Produto prod = crudProduto.produtoStock(codigo, temp);
-//				if (prod != null) {
-//					
-//				} else {
-//					JOptionPane.showMessageDialog(null, "NÃO FOI ENCONTRADO", "PRODUTO NÃO FOI ENCONTRADO",
-//							JOptionPane.WARNING_MESSAGE); // OK
-//				}
-//			}
 			new FiltrarProdutos(new Vector());
+		}
+		if(e.getSource()==bt_Voltar) {
+			FecharListarProdutos();
+			new Menu__Prin();
 		}
 
 	}
@@ -393,7 +385,6 @@ public class ListaProdutos implements ActionListener, MouseListener {
 		if (e.getSource() == jp_foto) {
 			jf.showOpenDialog(null);
 			jf_registrar.remove(jp_foto);
-//			jf_registrar.add()
 			lb_foto.setText(jf.getSelectedFile().getAbsolutePath());
 		}
 	}

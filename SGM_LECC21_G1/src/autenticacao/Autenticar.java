@@ -2,6 +2,8 @@ package autenticacao;
 
 import telas.ListaProdutos;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +19,7 @@ public class Autenticar extends JFrame implements ActionListener{
 	private JTextField jt_user;
 	private JPasswordField jp_pass;
 	private JButton jb_acess,jb_sair;
-	private JLabel timeLabel;
+	private JLabel timeLabel,jp_content;
 
 	
 	public Autenticar() {
@@ -52,14 +54,17 @@ public class Autenticar extends JFrame implements ActionListener{
 
 		        // Initialize the time label
 		        updateTimeLabel(timeLabel);
-	
+	JPanel hora=new JPanel();
+	timeLabel.setFont(new Font("Verdana", Font.PLAIN, 18));
+	hora.add(timeLabel);
 
 		this.setLayout(new GridLayout(4,2,10,10));
 		this.setTitle("Autenticação");
-		this.setSize(500,150);
+		this.setSize(500,250);
 		this.setLocation(500,150);
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-		this.add(timeLabel);
+		this.add(new JLabel("TIME:"));
+		this.add(hora);
 		this.setVisible(true);
 	}
     private static void updateTimeLabel(JLabel label) {

@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -14,20 +16,20 @@ import clientes.ClienteOperacoes;
 import produto.OperacoesProduto;
 import produto.Produto;
 
-public class FiltrarProdutos extends JFrame implements ActionListener {
+public class FiltrarProdutos extends JFrame implements ActionListener, MouseListener {
 	OperacoesProduto crudProduto = new OperacoesProduto();
 	Vector temp = crudProduto.recuperarBD();// Preenchumento do vector de objectos do ficheiro na lista
 
 	Produto prod = new Produto();// temporaria no progra
 	private JTable jt_Clientes, jf_Clientes;
-	private JPanel jp,jp_south;
+	private JPanel jp, jp_south;
 	private JLabel jl_filtrar, lb_nome, lb_id;
 	private JTextField tf_codigo, tf_nome;
 
 	private JButton jt_nome_bt, bt_stock, bt_prazo;
 	private JRadioButton jrb_nome, jrb_id;
 	private ButtonGroup bg_select;
-	private String[] coluna = { "Código", "Nome", "Quantidade", "Preço","Stock Minimo", "Vendidos", "Validade" };
+	private String[] coluna = { "Código", "Nome", "Quantidade", "Preço", "Stock Minimo", "Vendidos", "Validade" };
 
 	public FiltrarProdutos(Vector lista) {
 
@@ -37,16 +39,22 @@ public class FiltrarProdutos extends JFrame implements ActionListener {
 		lb_id = new JLabel("ID:");
 		tf_codigo = new JTextField(5);
 		jt_nome_bt = new JButton("Procura");
-		bt_stock = new JButton("Stock Minímo");//FAZER TOOLTIP PARA O BOTÃO
-		bt_prazo=new JButton("Para Expirar");
+		bt_stock = new JButton("Stock Minímo");// FAZER TOOLTIP PARA O BOTÃO
+		bt_prazo = new JButton("Para Expirar");
 		jrb_nome = new JRadioButton("ID");
 		jrb_id = new JRadioButton("NOME");
 		bg_select = new ButtonGroup();
 		bg_select.add(jrb_nome);
 		bg_select.add(jrb_id);
-		jp_south=new JPanel();
+		jp_south = new JPanel();
+
+		// -----------------------------------
 		jt_nome_bt.addActionListener(this);
 		bt_stock.addActionListener(this);
+
+		// --------------------
+		tf_codigo.addMouseListener(this);
+		tf_nome.addMouseListener(this);
 		// -----DEFINIÇÕES DA JANELA*INICIO-------
 		this.setTitle("Filtrar por");// O tittulo da janela.
 		this.setSize(900, 500);// Width and Height em pixels.[Comprimento, Largura]
@@ -65,9 +73,8 @@ public class FiltrarProdutos extends JFrame implements ActionListener {
 		jp.add(jt_nome_bt);
 		jp_south.add(bt_stock);
 		jp_south.add(bt_prazo);
-		
+
 		jp.setLayout(new FlowLayout(FlowLayout.LEFT));
-	
 
 		this.add(jp, "North");
 		if (lista != null) {
@@ -81,7 +88,7 @@ public class FiltrarProdutos extends JFrame implements ActionListener {
 		JPanel rb = new JPanel();
 
 //		this.add(rb, BorderLayout.SOUTH);
-		this.add(jp_south,BorderLayout.SOUTH);
+		this.add(jp_south, BorderLayout.SOUTH);
 		this.setVisible(true);
 	}
 
@@ -113,50 +120,72 @@ public class FiltrarProdutos extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+
 		if (e.getSource() == jt_nome_bt) {
-			Vector nomes = crudProduto.filtrarNomes(tf_nome.getText(), temp);
-			closeJanela();
-			new FiltrarProdutos(nomes);
-//			this.setVisible(false);
-//			if (!(tf_nome.getText().equals(""))) {
-//				String[][] dados = new String[nomes.size()][5];
-//				for (int i = 0; i < nomes.size(); i++) {
-//
-//							dados[i][0] = (((Produto) nomes.get(i)).getId()) + "";
-//							dados[i][1] = (((Produto) nomes.get(i)).getNome()) + "";
-//							dados[i][2] = (((Produto) nomes.get(i)).getQtd()) + "";
-//							dados[i][3] = (((Produto) nomes.get(i)).getPreco()) + "";
-//							dados[i][4] = (((Produto) nomes.get(i)).getQtd()) + "";
-//				}
-//				JFrame jf=new JFrame();
-//				JTable tb=new JTable(dados,coluna);
-//				
-//				jf.setTitle("Pesquisa de :  "+tf_codigo.getText());// O tittulo da janela.
-//				jf.setSize(500, 500);// Width and Height em pixels.[Comprimento, Largura]
-//				jf.setLocation(980, 500);// Onde o programa vai arrancar
-//				jf.setLocationRelativeTo(null);// Onde o programa vai arrancar
-//				jf.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);// Quando o utilizador clicar no x. Mata todos os
-//				jf.setResizable(false);
-//				jf.setLayout(new BorderLayout());
-//				JScrollPane sp = new JScrollPane(tb);
-//				jf.add(sp, BorderLayout.CENTER);
-//				
-//		
-//				jf.setVisible(true);	
-//		} else {
-//			JOptionPane.showMessageDialog(null, "Pesquisa Vazia!", "", JOptionPane.WARNING_MESSAGE);
+			if ((tf_codigo.getText().equals(""))) {
+				Vector nomes = crudProduto.filtrarNomes(tf_nome.getText(), temp);
+				closeJanela();
+				new FiltrarProdutos(nomes);
+			}else if ((tf_nome.getText().equals(""))) {
+				Vector idProds = new Vector();
+				Produto encontra_prodID = crudProduto.produtoStock(Integer.parseInt(tf_codigo.getText()), temp);
+				if(encontra_prodID!=null) {
+					idProds.add(encontra_prodID);
+					closeJanela();
+					new FiltrarProdutos(idProds);
+				}else {
+					new FiltrarProdutos(idProds);
+				}
+			}else {
+				JOptionPane.showMessageDialog(null, "Pesquisa Vazia!", "", JOptionPane.WARNING_MESSAGE);
+			} 
+
 		}
 		if (e.getSource() == bt_stock) {
-			Vector minimo=new Vector();
-			for (int i=0;i<temp.size();i++) {
-				if(((Produto)temp.get(i)).getQtd()<((Produto)temp.get(i)).getStockMinimo()) {
+			Vector minimo = new Vector();
+			for (int i = 0; i < temp.size(); i++) {
+				if (((Produto) temp.get(i)).getQtd() < ((Produto) temp.get(i)).getStockMinimo()) {
 					closeJanela();
-					minimo.add((Produto)temp.get(i));
+					minimo.add((Produto) temp.get(i));
 				}
 			}
 			new FiltrarProdutos(minimo);
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getSource() == tf_codigo) {
+			tf_nome.setText("");
+		}
+		if (e.getSource() == tf_nome) {
+			tf_codigo.setText("");
+		}
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
